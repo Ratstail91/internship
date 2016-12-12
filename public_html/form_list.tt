@@ -1,0 +1,9 @@
+First Name:<br>
+<input type="text" id=[% fname %]><br>
+Last Name:<br>
+<input type="text" id=[% lname %]><br>
+Email:<br>
+<input type="text" id=[% email %]><br>
+<br>
+<input type="submit" value="Submit" onClick="pushToDatabase();refreshDatabase();">
+

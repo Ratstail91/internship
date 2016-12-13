@@ -3,16 +3,15 @@
 use strict;
 use warnings;
 
-use Test::More tests => 17;
+use Test::More tests => 24;
 
 #includes
 use DBI;
 use CGI 'param';
 use JSON;
 use JSON::Parse ':all';
-use Person;
+use_ok('Person');
 use Template;
-use Test::WWW::Jasmine;
 
 ##connect to the database
 my $dbhandle = DBI->connect('dbi:mysql:database=test;localhost',,,{AutoCommit=>1,RaiseError=>1,PrintError=>1});
@@ -99,6 +98,13 @@ for (my $i = 0; $i < @dbdump; $i++) {
 is($ret, 1, 'screendump matches the database dump');
 
 ##test Person.pm
+can_ok('Person', 'SetFirstName');
+can_ok('Person', 'SetLastName');
+can_ok('Person', 'SetEmail');
+
+can_ok('Person', 'GetFirstName');
+can_ok('Person', 'GetLastName');
+can_ok('Person', 'GetEmail');
 
 my $person = Person->new;
 ok($person->SetFirstName('kayne') eq 'kayne', 'Person::SetFirstName()');

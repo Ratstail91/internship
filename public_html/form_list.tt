@@ -5,5 +5,5 @@ Last Name:<br>
 Email:<br>
 <input type="text" id=[% email %]><br>
 <br>
-<input type="submit" value="Submit" onClick="pushToDatabase();refreshDatabase();">
+<input type="submit" value="Submit" onClick="pushToDatabase(true);refreshDatabase(true);">
 

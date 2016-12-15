@@ -1,5 +1,5 @@
 function refreshDatabase(async) {
-	var async = (typeof async === 'undefined') ? true : false;
+	async = (typeof async === 'undefined') ? true : false;
 
 	var httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
@@ -23,7 +23,7 @@ function refreshDatabase(async) {
 	httpRequest.send();
 }
 function pushToDatabase(async) {
-	var async = (typeof async === 'undefined') ? true : false;
+	async = (typeof async === 'undefined') ? true : false;
 
 	var formData = new FormData();
 

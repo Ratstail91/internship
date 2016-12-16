@@ -30,6 +30,14 @@ if (grep {/.*spam.*/} param('fname') != 0) {
 	return;
 }
 
+if (grep {/.*spam.*/} param('lname') != 0) {
+	return;
+}
+
+if ($email eq 'have@fun.com') {
+	return;
+}
+
 #enter it into the database
 my $dbhandle = DBI->connect('dbi:mysql:database=test;localhost',,,{AutoCommit=>1,RaiseError=>1,PrintError=>1});
 

@@ -18,7 +18,7 @@ describe("scripts.js", function() {
 
 	it("list.innerHTML should equal something", function() {
 		//the line to test
-		refreshDatabase(false);
+		refreshDatabase();
 
 		//check the results
 		var list = document.getElementById("entrylist");
@@ -39,10 +39,10 @@ describe("scripts.js", function() {
 		email.value = 'foobar@foobar.foobar;';
 
 		//the line to test
-		pushToDatabase(false);
+		pushToDatabase();
 
 		//check the results
-		refreshDatabase(false);
+		refreshDatabase();
 		var list = document.getElementById('entrylist');
 		expect(list.innerHTML).toEqual(jasmine.stringMatching( /.*foobar@foobar.foobar.*/ ));
 

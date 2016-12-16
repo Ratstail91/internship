@@ -18,7 +18,7 @@ function refreshDatabase(async) {
 				var item = "<li>" + htmlEntities(obj.fname) + " " + htmlEntities(obj.lname) + ": " + htmlEntities(obj.email) + "</li>";
 				list.innerHTML = list.innerHTML + item;
 			}
-			document.getElementById("rowcount").innerHTML = arr.length;
+			document.getElementById("rowcount").innerHTML = "Number of rows found: " + arr.length;
 		}
 
 		//debugging

@@ -13,5 +13,7 @@ my $template = Template->new({
 $template->process("index.tt", {
 	fname => "fname",
 	lname => "lname",
-	email => "email"
+	email => "email",
+	copyright => "Kayne Ruse",
+	copyrightYear => "2016"
 });

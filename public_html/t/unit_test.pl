@@ -91,6 +91,7 @@ for (my $i = 0; $i < @dbdump; $i++) {
 	while (my ($key, $value) = each $screendump[0][$i]) {
 		if ($dbdump[$i]{$key} ne $value) {
 			$ret = 0;
+			print($dbdump[$i]{$key}, $value);
 		}
 	}
 }

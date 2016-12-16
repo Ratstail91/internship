@@ -6,7 +6,7 @@ Content-type:text/html
 
 <body onLoad="refreshDatabase()">
 
-<p>Number of rows found: <div id = "rowcount"></div></p>
+<p id="rowcount">Number of rows found:</p>
 <ul id="entrylist">
 </ul>
 

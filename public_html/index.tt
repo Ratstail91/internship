@@ -6,9 +6,7 @@ Content-type:text/html
 
 <body onLoad="refreshDatabase()">
 
-<p id="rowcount">Number of rows found:</p>
-<ul id="entrylist">
-</ul>
+[% INCLUDE unordered_list.tt %]
 
 [% INCLUDE form_list.tt %]
 

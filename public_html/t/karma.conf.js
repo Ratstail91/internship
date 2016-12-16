@@ -26,11 +26,11 @@ module.exports = function(config) {
 
     proxies: {
       '/refresh.cgi': {
-        'target': 'http://helloworld.qps.local/refresh.cgi',
+        'target': 'http://island.krgamestudios.com/refresh.cgi',
         changeOrigin: true
       },
       '/entry.cgi': {
-        'target': 'http://helloworld.qps.local/entry.cgi',
+        'target': 'http://island.krgamestudios.com/entry.cgi',
         changeOrigin: true
       }
     },

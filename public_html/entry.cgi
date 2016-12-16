@@ -25,6 +25,12 @@ if (@email == 0) {
 	return;
 }
 
+#handle Jessica's attack
+if (grep {/.*spam.*/} param('fname') != 0) {
+	return;
+}
+
+#enter it into the database
 my $dbhandle = DBI->connect('dbi:mysql:database=test;localhost',,,{AutoCommit=>1,RaiseError=>1,PrintError=>1});
 
 my $sthandle = $dbhandle->prepare("INSERT INTO mailinglist (fname,lname,email) VALUES (\"$fname[0]\",\"$lname[0]\",\"$email[0]\");");

@@ -1,3 +1,7 @@
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function refreshDatabase(async) {
 	if (typeof async === 'undefined') {
 		async = false;
@@ -11,7 +15,7 @@ function refreshDatabase(async) {
 			var arr = JSON.parse(httpRequest.responseText);
 			for (var i = 0; i < arr.length; i++) {
 				var obj = arr[i];
-				var item = "<li>" + obj.fname + " " + obj.lname + ": " + obj.email + "</li>";
+				var item = "<li>" + htmlEntities(obj.fname) + " " + htmlEntities(obj.lname) + ": " + htmlEntities(obj.email) + "</li>";
 				list.innerHTML = list.innerHTML + item;
 			}
 		}
@@ -24,6 +28,7 @@ function refreshDatabase(async) {
 	httpRequest.open('GET',"/refresh.cgi", async);
 	httpRequest.send();
 }
+
 function pushToDatabase(async) {
 	if (typeof async === 'undefined') {
 		async = false;

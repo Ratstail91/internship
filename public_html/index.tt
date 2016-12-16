@@ -1,0 +1,19 @@
+Content-type:text/html
+
+<html>
+
+[% INCLUDE head.tt %]
+
+<body onLoad="refreshDatabase()">
+
+<p>Number of rows found: <div id = "rowcount"></div></p>
+<ul id="entrylist">
+</ul>
+
+[% INCLUDE form_list.tt %]
+
+</body>
+
+[% INCLUDE footer.tt %]
+
+</html>

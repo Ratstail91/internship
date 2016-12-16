@@ -1,5 +1,0 @@
-<ul id="entrylist">
-	[% FOREACH line IN entries %]
-	<li>[% line.fname %] [% line.lname %]: [% line.email %]</li>
-	[% END %]
-</ul>

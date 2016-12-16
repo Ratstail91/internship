@@ -1,6 +1,0 @@
-Content-type:text/html
-
-<html>
-[% INCLUDE head.tt %]
-<body>
-<p>Number of rows found: [% rows %]</p>

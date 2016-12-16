@@ -18,6 +18,7 @@ function refreshDatabase(async) {
 				var item = "<li>" + htmlEntities(obj.fname) + " " + htmlEntities(obj.lname) + ": " + htmlEntities(obj.email) + "</li>";
 				list.innerHTML = list.innerHTML + item;
 			}
+			document.getElementById("rowcount").innerHTML = arr.length;
 		}
 
 		//debugging
@@ -36,11 +37,17 @@ function pushToDatabase(async) {
 
 	var formData = new FormData();
 
-	formData.append("fname", document.getElementById("fname").value);
-	formData.append("lname", document.getElementById("lname").value);
-	formData.append("email", document.getElementById("email").value);
+	formData.append("fname", htmlEntities(document.getElementById("fname").value));
+	formData.append("lname", htmlEntities(document.getElementById("lname").value));
+	formData.append("email", htmlEntities(document.getElementById("email").value));
 
 	var httpRequest = new XMLHttpRequest();
 	httpRequest.open('POST', "/entry.cgi", async);
 	httpRequest.send(formData);
+}
+
+function clearInput() {
+	document.getElementById("fname").value = '';
+	document.getElementById("lname").value = '';
+	document.getElementById("email").value = '';
 }

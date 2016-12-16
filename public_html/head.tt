@@ -1,5 +1,5 @@
 <head>
-	<script>
-		[% INCLUDE scripts.js %]
-	</script>
+<script>
+[% INCLUDE scripts.js %]
+</script>
 </head>

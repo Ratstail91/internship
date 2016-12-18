@@ -1,3 +1,13 @@
+function parseDate(date) {
+	//tricky
+	date = date.split("-");
+	date = new Date(date[0], date[1]-1, date[2]);
+
+	//subtract today
+	var today = new Date();
+	return today.getUTCFullYear() - date.getUTCFullYear();
+}
+
 function refreshDatabase(async) {
 	if (typeof async === 'undefined') {
 		async = false;
@@ -11,7 +21,7 @@ function refreshDatabase(async) {
 			var arr = JSON.parse(httpRequest.responseText);
 			for (var i = 0; i < arr.length; i++) {
 				var obj = arr[i];
-				var item = "<li>" + obj.fname + " " + obj.lname + " (" + obj.email + "): $" + obj.income + "</li>";
+				var item = "<li>" + obj.fname + " " + obj.lname + " (" + obj.email + "), " + parseDate(obj.birthdate) + "yo: $" + obj.income + "</li>";
 				list.innerHTML = list.innerHTML + item;
 			}
 

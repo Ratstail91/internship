@@ -42,12 +42,11 @@ ul li {
 
 .left {
 	float: left;
-	width: 20%;
+	padding-right: 5px;
 	margin: 0;
 }
 
 .right {
 	overflow: hidden;
-	width: 80%;
 	margin: 0;
 }

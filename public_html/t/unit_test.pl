@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 24;
+use Test::More tests => 32;
 
 #includes
 use DBI;
@@ -24,6 +24,8 @@ ok(defined $dbhandle, 'Connected to the database');
 param('fname', 'foo');
 param('lname', 'bar');
 param('email', 'foobar@qps.com');
+param('birthdate','1995-07-21');
+param('income','1337');
 
 open(my $nullFH, '>', '/dev/null');
 my $stdoutFH = select $nullFH;
@@ -34,7 +36,14 @@ select $stdoutFH;
 close $nullFH;
 
 #find those debugging values
-my $sthandle = $dbhandle->prepare('SELECT fname, lname, email FROM mailinglist WHERE fname = "foo" AND lname = "bar" AND email = "foobar@qps.com";');
+my $sthandle = $dbhandle->prepare(
+	'SELECT fname,lname,email,birthdate,income FROM mailinglist WHERE
+	fname = "foo" AND
+	lname = "bar" AND
+	email = "foobar@qps.com" AND
+	birthdate = "1995-07-21" AND
+	income = 1337
+	;');
 
 $sthandle->execute() or die $DBI::errstr;
 
@@ -50,15 +59,15 @@ is($varcount, 1, 'Number of debugging entries found (entry.cgi)');
 ##test dump_database.cgi
 require_ok('dump_database.cgi');
 
-$sthandle = $dbhandle->prepare('SELECT fname, lname, email FROM mailinglist;');
+$sthandle = $dbhandle->prepare('SELECT fname, lname, email, birthdate, income FROM mailinglist;');
 $sthandle->execute();
 my @dbdump = dump_database($sthandle);
 $sthandle->finish();
 
 #check the dump
 $varcount = 0;
-foreach my $row (@dbdump) {
-	if (%$row->{fname} eq 'foo' and %$row->{lname} eq 'bar' and %$row->{email} eq 'foobar@qps.com') {
+	foreach my $row (@dbdump) {
+		if (%$row->{fname} eq 'foo' and %$row->{lname} eq 'bar' and %$row->{email} eq 'foobar@qps.com' and %$row->{birthdate} eq '1995-07-21' and %$row->{income} == 1337) {
 		$varcount++;
 	}
 }
@@ -89,6 +98,11 @@ my @screendump;
 my $ret = 1;
 for (my $i = 0; $i < @dbdump; $i++) {
 	while (my ($key, $value) = each $screendump[0][$i]) {
+		#avoid mixing perl's operator types
+		if ($i == 3) {
+			$value = sprintf("%d", $value);
+		}
+
 		if ($dbdump[$i]{$key} ne $value) {
 			$ret = 0;
 			print($dbdump[$i]{$key}, $value);
@@ -102,19 +116,27 @@ is($ret, 1, 'screendump matches the database dump');
 can_ok('Person', 'SetFirstName');
 can_ok('Person', 'SetLastName');
 can_ok('Person', 'SetEmail');
+can_ok('Person', 'SetBirthdate');
+can_ok('Person', 'SetIncome');
 
 can_ok('Person', 'GetFirstName');
 can_ok('Person', 'GetLastName');
 can_ok('Person', 'GetEmail');
+can_ok('Person', 'GetBirthdate');
+can_ok('Person', 'GetIncome');
 
 my $person = Person->new;
 ok($person->SetFirstName('kayne') eq 'kayne', 'Person::SetFirstName()');
 ok($person->SetLastName('ruse') eq 'ruse', 'Person::SetLastName()');
 ok($person->SetEmail('kayneruse@gmail.com') eq 'kayneruse@gmail.com', 'Person::SetEmail()');
+ok($person->SetBirthdate('1991-08-08') eq '1991-08-08', 'Person::SetBirthdate()');
+ok($person->SetIncome(30000) == 30000, 'Person::SetIncome()');
 
 ok($person->GetFirstName() eq 'kayne', 'Person::GetFirstName()');
 ok($person->GetLastName() eq 'ruse', 'Person::GetLastName()');
 ok($person->GetEmail() eq 'kayneruse@gmail.com', 'Person::GetEmail()');
+ok($person->GetBirthdate() eq '1991-08-08', 'Person::GetBirthdate()');
+ok($person->GetIncome() == 30000, 'Person::GetIncome()');
 
 ##check that the front end can parse the given JSON
 

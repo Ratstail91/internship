@@ -14,6 +14,8 @@ describe("scripts.js", function() {
 		makeDiv('fname');
 		makeDiv('lname');
 		makeDiv('email');
+		makeDiv('birthdate');
+		makeDiv('income');
 	});
 
 	it("list.innerHTML should equal something", function() {

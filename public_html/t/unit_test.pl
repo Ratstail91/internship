@@ -160,9 +160,14 @@ is(`curl -s -o /dev/null -I -w "%{http_code}" island.krgamestudios.com/t/broken.
 
 ##test the front end (done in JavaScript)
 
-my @results = grep { /.*Executed 2 of 2 SUCCESS.*/ } `node t/node_modules/karma/bin/karma start t/karma.conf.js`;
+my $fullresults = `node t/node_modules/karma/bin/karma start t/karma.conf.js`;
+my @results = grep { /.*Executed 2 of 2 SUCCESS.*/ } $fullresults;
 
 ok(@results != 0, '2/2 Reported from JavaScript front end');
+
+if (@results == 0) {
+	print $fullresults;
+}
 
 ##Remove those debugging values from the database
 $sthandle = $dbhandle->prepare('DELETE FROM mailinglist WHERE fname = "foo" AND lname = "bar";');

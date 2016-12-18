@@ -35,10 +35,14 @@ describe("scripts.js", function() {
 		var fname = document.getElementById('fname');
 		var lname = document.getElementById('lname');
 		var email = document.getElementById('email');
+		var birth = document.getElementById('birthdate');
+		var money = document.getElementById('income');
 
 		fname.value = 'foo';
 		lname.value = 'bar';
-		email.value = 'foobar@foobar.foobar;';
+		email.value = 'foobar@foobar.foobar';
+		birth.value = '1995-07-21';
+		money.value = 1337;
 
 		//the line to test
 		pushToDatabase();
@@ -49,9 +53,11 @@ describe("scripts.js", function() {
 		expect(list.innerHTML).toEqual(jasmine.stringMatching( /.*foobar@foobar.foobar.*/ ));
 
 		//cleanup
-		fname.value = null;
-		lname.value = null;
-		email.value = null;
+		fname.value = '';
+		lname.value = '';
+		email.value = '';
+		birth.value = '';
+		money.value = '';
 		list.innerHTML = '';
 	});
 });

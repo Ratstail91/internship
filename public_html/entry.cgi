@@ -6,42 +6,26 @@ use warnings;
 use CGI ":standard";
 use DBI;
 
+#supress warning
+$CGI::LIST_CONTEXT_WARN = 0;
+
+#begin output
 print "Content-type:text/html\n\n";
 
 #enter the name/email pair into the table
-my @fname = grep {/..*/} param('fname');
-my @lname = grep {/..*/} param('lname');
-my @email = grep {/.*@..*\...*/} param('email');
+my $fname = escapeHTML(param('fname'));
+my $lname = escapeHTML(param('lname'));
+my $email = escapeHTML(param('email'));
 
-if (@fname == 0) {
-	return;
-}
-
-if (@lname == 0) {
-	return;
-}
-
-if (@email == 0) {
-	return;
-}
-
-#handle Jessica's attack
-if (grep {/.*spam.*/} param('fname') != 0) {
-	return;
-}
-
-if (grep {/.*spam.*/} param('lname') != 0) {
-	return;
-}
-
-if ($email eq 'have@fun.com') {
+#sanitize the input
+if ($fname eq '' or $lname eq '' or $email !~ /..*@..*\...*/) {
 	return;
 }
 
 #enter it into the database
 my $dbhandle = DBI->connect('dbi:mysql:database=test;localhost',,,{AutoCommit=>1,RaiseError=>1,PrintError=>1});
 
-my $sthandle = $dbhandle->prepare("INSERT INTO mailinglist (fname,lname,email) VALUES (\"$fname[0]\",\"$lname[0]\",\"$email[0]\");");
+my $sthandle = $dbhandle->prepare("INSERT INTO mailinglist (fname,lname,email) VALUES (\"$fname\",\"$lname\",\"$email\");");
 
 $sthandle->execute() or die $DBI::errstr;
 $sthandle->finish();

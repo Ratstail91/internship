@@ -40,6 +40,27 @@ sub GetEmail {
         return $self->{email};
 }
 
+sub SetBirthdate {
+        my ($self, $birthdate) = @_;
+        return $self->{birthdate} = $birthdate;
+}
+
+sub GetBirthdate {
+        my ($self) = @_;
+        return $self->{birthdate};
+}
+
+sub SetIncome {
+        my ($self, $income) = @_;
+        return $self->{income} = $income;
+}
+
+sub GetIncome {
+        my ($self) = @_;
+        return $self->{income};
+}
+
+
 sub TO_JSON {
 	return { %{ shift() } };
 }

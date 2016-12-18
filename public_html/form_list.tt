@@ -1,8 +1,17 @@
+Email:<br>
+<input type="email" id=[% email %]><br>
+
 First Name:<br>
 <input type="text" id=[% fname %]><br>
+
 Last Name:<br>
 <input type="text" id=[% lname %]><br>
-Email:<br>
-<input type="text" id=[% email %]><br>
+
+Date of Birth:<br>
+<input type="date" id=[% birthdate %]><br>
+
+Annual Income:<br>
+<input type="number" id=[% income %]><br>
+
 <br>
 <input type="submit" value="Submit" onClick="pushToDatabase();refreshDatabase();clearInput();">

@@ -16,8 +16,10 @@ print "Content-type:text/html\n\n";
 my $fname = escapeHTML(param('fname'));
 my $lname = escapeHTML(param('lname'));
 my $email = escapeHTML(param('email'));
+my $birthdate = escapeHTML(param('birthdate'));
+my $income = escapeHTML(param('income'));
 
-#sanitize the input
+#check the input
 if ($fname eq '' or $lname eq '' or $email !~ /..*@..*\...*/) {
 	return;
 }
@@ -25,7 +27,7 @@ if ($fname eq '' or $lname eq '' or $email !~ /..*@..*\...*/) {
 #enter it into the database
 my $dbhandle = DBI->connect('dbi:mysql:database=test;localhost',,,{AutoCommit=>1,RaiseError=>1,PrintError=>1});
 
-my $sthandle = $dbhandle->prepare("INSERT INTO mailinglist (fname,lname,email) VALUES (\"$fname\",\"$lname\",\"$email\");");
+my $sthandle = $dbhandle->prepare("INSERT INTO mailinglist (fname,lname,email,birthdate,income) VALUES (\"$fname\",\"$lname\",\"$email\",\"$birthdate\",\"$income\");");
 
 $sthandle->execute() or die $DBI::errstr;
 $sthandle->finish();

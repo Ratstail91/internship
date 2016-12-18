@@ -15,7 +15,7 @@ print "Content-type:text/html\n\n";
 #retrieve the query from the test database
 my $dbhandle = DBI->connect('dbi:mysql:database=test;localhost',,,{AutoCommit=>1,RaiseError=>1,PrintError=>1});
 
-my $sthandle = $dbhandle->prepare("SELECT fname, lname, email FROM mailinglist;");
+my $sthandle = $dbhandle->prepare("SELECT fname, lname, email, birthdate, income FROM mailinglist;");
 
 $sthandle->execute() or die $DBI::errstr;
 

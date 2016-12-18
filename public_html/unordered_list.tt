@@ -1,6 +1,6 @@
 <p id="rowcount"></p>
 <ul id="entrylist">
 	[% FOREACH line IN entries %]
-	<li>[% line.fname %] [% line.lname %]: [% line.email %]</li>
+	<li>[% line.fname %] [% line.lname %] ([% line.email %]): $[% line.income %]</li>
 	[% END %]
 </ul>

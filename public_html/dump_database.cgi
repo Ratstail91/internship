@@ -13,7 +13,9 @@ sub dump_database {
 		my $person = Person->new(
 			fname => $row[0],
 			lname => $row[1],
-			email => $row[2]
+			email => $row[2],
+			birthdate => $row[3],
+			income => $row[4]
 		);
 		push @dbdump, $person;
 	}

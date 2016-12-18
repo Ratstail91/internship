@@ -14,6 +14,8 @@ $template->process("index.tt", {
 	fname => "fname",
 	lname => "lname",
 	email => "email",
+	birthdate => "birthdate",
+	income => "income",
 	copyright => "Kayne Ruse",
 	copyrightYear => "2016"
 });

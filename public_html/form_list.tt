@@ -1,3 +1,4 @@
+<div id="formlist">
 Email:<br>
 <input type="email" id=[% email %]><br>
 
@@ -15,3 +16,4 @@ Annual Income:<br>
 
 <br>
 <input type="submit" value="Submit" onClick="pushToDatabase();refreshDatabase();clearInput();">
+</div>

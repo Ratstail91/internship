@@ -6,9 +6,17 @@ Content-type:text/html
 
 <body onLoad="refreshDatabase()">
 
-[% INCLUDE unordered_list.tt %]
+<header>
+<h1>Hello World!</h1>
+</header>
 
+<div class="left">
 [% INCLUDE form_list.tt %]
+</div>
+
+<div class="right">
+[% INCLUDE unordered_list.tt %]
+</div>
 
 </body>
 

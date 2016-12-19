@@ -20,7 +20,7 @@ my $birthdate = escapeHTML(param('birthdate'));
 my $income = escapeHTML(param('income'));
 
 #check the input
-if ($fname eq '' or $lname eq '' or $email !~ /..*@..*\...*/) {
+if ($fname eq '' or $lname eq '' or $email !~ /..*@..*\...*/ or $birthdate !~ /....-..-../) {
 	return;
 }
 

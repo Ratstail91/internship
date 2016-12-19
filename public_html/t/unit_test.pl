@@ -99,10 +99,6 @@ my $ret = 1;
 for (my $i = 0; $i < @dbdump; $i++) {
 	while (my ($key, $value) = each $screendump[0][$i]) {
 		#avoid mixing perl's operator types
-		if ($i == 3) {
-			$value = sprintf("%d", $value);
-		}
-
 		if ($dbdump[$i]{$key} ne $value) {
 			$ret = 0;
 			print($dbdump[$i]{$key}, $value);

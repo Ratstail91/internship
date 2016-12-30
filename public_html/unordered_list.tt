@@ -1,8 +1,0 @@
-<div id="unorderedlist">
-<h2 id="rowcount"></h2>
-<ul id="entrylist">
-	[% FOREACH line IN entries %]
-	<li>[% line.fname %] [% line.lname %] ([% line.email %]): $[% line.income %]</li>
-	[% END %]
-</ul>
-</div>

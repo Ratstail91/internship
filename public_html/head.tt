@@ -1,6 +1,0 @@
-<head>
-<script>
-[% INCLUDE scripts.js %]
-</script>
-<link rel=StyleSheet href="styles/main.css" type="text/css" />
-</head>

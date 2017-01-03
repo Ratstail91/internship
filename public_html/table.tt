@@ -1,0 +1,13 @@
+<div id="datatable">
+  <h2 id="rowcount"></h2>
+  <table id="entrylist">
+    [% FOREACH line IN entries %]
+      <tr>
+        <td>[% line.fname %]</td>
+        <td>[% line.lname %]</td>
+        <td>[% line.email %]</td>
+        <td>[% line.birthdate %]</td>
+        <td>[% line.income %]</td>
+    [% END %]
+  </table>
+</div>

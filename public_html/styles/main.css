@@ -66,14 +66,45 @@ h2 {
 	text-align: right;
 }
 
-ul {
-	margin: 0;
-	padding-left: 0;
+#datatable{
+	border-style: solid;
+	border-width: 3px;
 }
 
-ul li {
-	list-style-type: none;
+#entrylist {
+}
+
+th {
+	border: 1px solid #000;
+	border-bottom: 3px solid #000;
+}
+
+tr {
 	margin: 0;
+}
+
+.record {
+	padding: 0;
+	margin: 0;
+}
+
+.record:hover {
+	background-color: red;
+}
+
+.field {
+	text-align: right;
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+	margin: 0;
+}
+
+.field:nth-child(2n) {
+	background-color: #888;
+}
+
+.record:hover .field:nth-child(2n) {
+	background-color: inherit;
 }
 
 .superleft {
@@ -82,7 +113,5 @@ ul li {
 
 .superright {
 	overflow: hidden;
-	border-style: solid;
-	border-width: 3px;
 	margin: 0;
 }

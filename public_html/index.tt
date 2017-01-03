@@ -15,7 +15,7 @@ Content-type:text/html
 </div>
 
 <div class="superright">
-[% INCLUDE unordered_list.tt %]
+[% INCLUDE table.tt %]
 </div>
 
 </body>

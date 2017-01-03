@@ -18,10 +18,42 @@ function refreshDatabase(async) {
 		if (httpRequest.readyState === 4 && httpRequest.status === 200) {
 			var list = document.getElementById("entrylist");
 			list.innerHTML = "";
+
+			//build the headers
+			list.innerHTML = "<tr>" +
+				"<th>First Name</th>" +
+				"<th>Last Name</th>" +
+				"<th>Email</th>" +
+				"<th>Age</th>" +
+				"<th>Income</th>" +
+			"</tr>";
+
 			var arr = JSON.parse(httpRequest.responseText);
 			for (var i = 0; i < arr.length; i++) {
 				var obj = arr[i];
-				var item = "<li>" + obj.fname + " " + obj.lname + " (" + obj.email + "), " + parseDate(obj.birthdate) + "yo: $" + obj.income + "</li>";
+
+				//build the structure
+				var item =
+
+				"<tr class=\"record\">" +
+					"<td class=\"field\">" +
+						obj.fname +
+					"</td>" +
+					"<td class=\"field\">" +
+						obj.lname +
+					"</td>" +
+					"<td class=\"field\">" +
+						obj.email +
+					"</td>" +
+					"<td class=\"field\">" +
+						parseDate(obj.birthdate) +
+					"</td>" +
+					"<td class=\"field\">" +
+						obj.income +
+					"</td>" +
+				"</tr>"
+				;
+
 				list.innerHTML = list.innerHTML + item;
 			}
 

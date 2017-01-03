@@ -150,9 +150,9 @@ is(scalar @lines, 1, "Result parsed from the front end");
 
 ##Check the return codes from the server
 
-is(`curl -s -o /dev/null -I -w "%{http_code}" island.krgamestudios.com`, 200, 'return code 200');
-is(`curl -s -o /dev/null -I -w "%{http_code}" island.krgamestudios.com/t/missing`, 404, 'return code 404');
-is(`curl -s -o /dev/null -I -w "%{http_code}" island.krgamestudios.com/t/broken.cgi`, 500, 'return code 500');
+is(`curl -s -o /dev/null -I -w "%{http_code}" helloworld.qps.local`, 200, 'return code 200');
+is(`curl -s -o /dev/null -I -w "%{http_code}" helloworld.qps.local/t/missing`, 404, 'return code 404');
+is(`curl -s -o /dev/null -I -w "%{http_code}" helloworld.qps.local/t/broken.cgi`, 500, 'return code 500');
 
 ##test the front end (done in JavaScript)
 

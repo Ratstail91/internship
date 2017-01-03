@@ -1,19 +1,57 @@
 <div id="formlist">
-Email:<br>
-<input type="email" id=[% email %]><br>
 
-First Name:<br>
-<input type="text" id=[% fname %]><br>
+  <div id="innerformlist">
+    <div class="formlistLeft">
+      <p>Email:</p>
+    </div>
+    <div class="formlistRight">
+      <input type="email" id=[% email %]>
+    </div>
+  </div>
 
-Last Name:<br>
-<input type="text" id=[% lname %]><br>
+      
+  <div id="innerformlist">
+    <div class="formlistLeft">
+      <p>First Name:</p>
+    </div>
+    <div class="formlistRight">
+      <input type="text" id=[% fname %]><br />
+    </div>
+  </div>
 
-Date of Birth:<br>
-<input type="date" id=[% birthdate %]><br>
 
-Annual Income:<br>
-<input type="number" id=[% income %]><br>
+  <div id="innerformlist">
+    <div class="formlistLeft">
+      <p>Last Name:</p>
+    </div>
+    <div class="formlistRight">
+      <input type="text" id=[% lname %]><br />
+    </div>
+  </div>
 
-<br>
-<input type="submit" value="Submit" onClick="pushToDatabase();refreshDatabase();clearInput();">
+
+  <div id="innerformlist">
+    <div class="formlistLeft">
+      <p>Date of Birth:</p>
+    </div>
+    <div class="formlistRight">
+      <input type="date" id=[% birthdate %]><br />
+    </div>
+  </div>
+
+
+  <div id="innerformlist">
+    <div class="formlistLeft">
+      <p>Annual Income:</p>
+    </div>
+    <div class="formlistRight">
+      <input type="number" id=[% income %]><br />
+    </div>
+  </div>
+
+
+  <div align="right">
+    <input type="submit" value="Submit" onClick="pushToDatabase();refreshDatabase();clearInput();">
+  </div>
+
 </div>

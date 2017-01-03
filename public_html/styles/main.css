@@ -4,15 +4,27 @@ body {
 	margin: 5px;
 }
 
-header {
-	font: arial;
+p {
 	margin: 0;
+	padding: 0 0 0 0;
+}
+
+header {
+	background: #AAF;
+	font: arial;
+	padding: 0 0 0 0;
+	margin: 0;
+}
+
+header h1 {
+	text-align: center;
 }
 
 footer {
 	clear: both;
 	font-size: 14;
 	font-style: italic;
+	text-align: center;
 	margin: 0;
 }
 
@@ -30,6 +42,30 @@ h2 {
 	margin: 0;
 }
 
+#formlist {
+	overflow: hidden;
+	padding-right: 5px;
+	border-style: solid;
+	border-width: 3px;
+	margin-right: 5px;
+}
+
+#innerformlist {
+	overflow: hidden;
+}
+
+.formlistLeft {
+	float: left;
+	text-align: left;
+	padding-top: 5px;
+	margin-right: 10px;
+}
+
+.formlistRight {
+	float: right;
+	text-align: right;
+}
+
 ul {
 	margin: 0;
 	padding-left: 0;
@@ -40,13 +76,13 @@ ul li {
 	margin: 0;
 }
 
-.left {
+.superleft {
 	float: left;
-	padding-right: 5px;
-	margin: 0;
 }
 
-.right {
+.superright {
 	overflow: hidden;
+	border-style: solid;
+	border-width: 3px;
 	margin: 0;
 }

@@ -10,11 +10,11 @@ Content-type:text/html
 <h1>Hello World!</h1>
 </header>
 
-<div class="left">
+<div class="superleft">
 [% INCLUDE form_list.tt %]
 </div>
 
-<div class="right">
+<div class="superright">
 [% INCLUDE unordered_list.tt %]
 </div>
 

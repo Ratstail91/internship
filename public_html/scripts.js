@@ -20,13 +20,15 @@ function refreshDatabase(async) {
 			list.innerHTML = "";
 
 			//build the headers
-			list.innerHTML = "<tr>" +
+			list.innerHTML = "<thead><tr>" +
 				"<th>First Name</th>" +
 				"<th>Last Name</th>" +
 				"<th>Email</th>" +
 				"<th>Age</th>" +
 				"<th>Income</th>" +
-			"</tr>";
+			"</tr></thead>";
+
+			list.innerHTML = list.innerHTML + "<tbody>";
 
 			var arr = JSON.parse(httpRequest.responseText);
 			for (var i = 0; i < arr.length; i++) {
@@ -35,20 +37,20 @@ function refreshDatabase(async) {
 				//build the structure
 				var item =
 
-				"<tr class=\"record\">" +
-					"<td class=\"field\">" +
+				"<tr>" +
+					"<td>" +
 						obj.fname +
 					"</td>" +
-					"<td class=\"field\">" +
+					"<td>" +
 						obj.lname +
 					"</td>" +
-					"<td class=\"field\">" +
+					"<td>" +
 						obj.email +
 					"</td>" +
-					"<td class=\"field\">" +
+					"<td>" +
 						parseDate(obj.birthdate) +
 					"</td>" +
-					"<td class=\"field\">" +
+					"<td>" +
 						obj.income +
 					"</td>" +
 				"</tr>"
@@ -56,6 +58,8 @@ function refreshDatabase(async) {
 
 				list.innerHTML = list.innerHTML + item;
 			}
+
+			list.innerHTML = list.innerHTML + "</tbody>";
 
 			//update the counter
 			var counter = document.getElementById("rowcount");

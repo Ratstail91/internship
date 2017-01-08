@@ -71,40 +71,41 @@ h2 {
 	border-width: 3px;
 }
 
-#entrylist {
-}
-
-th {
+table thead tr th {
 	border: 1px solid #000;
 	border-bottom: 3px solid #000;
-}
-
-tr {
 	margin: 0;
 }
 
-.record {
+table tbody tr {
 	padding: 0;
 	margin: 0;
 }
 
-.record:hover {
+table tbody tr:hover {
 	background-color: red;
 }
 
-.field {
+table tbody tr td {
 	text-align: right;
 	border-bottom: 1px solid #000;
 	border-right: 1px solid #000;
 	margin: 0;
 }
 
-.field:nth-child(2n) {
+table tbody tr td:nth-child(2n) {
 	background-color: #888;
 }
 
-.record:hover .field:nth-child(2n) {
+table tbody tr:hover td:nth-child(2n) {
 	background-color: inherit;
+}
+
+.sortable thead tr th.descend:after {
+	content: "\25B2";
+}
+.sortable thead tr th.ascend:after {
+	content: "\25BC";
 }
 
 .superleft {

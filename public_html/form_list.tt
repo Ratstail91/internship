@@ -35,7 +35,7 @@
       <p>Date of Birth:</p>
     </div>
     <div class="formlistRight">
-      <input type="date" id=[% birthdate %]><br />
+      <input type="date" id=[% birthdate %] placeholder="YYYY-MM-DD"><br />
     </div>
   </div>
 

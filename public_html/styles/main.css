@@ -101,10 +101,10 @@ table tbody tr:hover td:nth-child(2n) {
 	background-color: inherit;
 }
 
-.sortable thead tr th.descend:after {
+.sortable th.descend:after {
 	content: "\25B2";
 }
-.sortable thead tr th.ascend:after {
+.sortable th.ascend:after {
 	content: "\25BC";
 }
 

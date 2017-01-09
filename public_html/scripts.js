@@ -61,6 +61,8 @@ function refreshDatabase(async) {
 			}
 			list.innerHTML = list.innerHTML + tmpLine;
 
+			var sorter = tsorter.create('entrylist');
+
 			//update the counter
 			var counter = document.getElementById("rowcount");
 			if (counter !== null) {

@@ -10,12 +10,14 @@ Content-type:text/html
 <h1>Hello World!</h1>
 </header>
 
+<div class="super">
 <div class="superleft">
 [% INCLUDE form_list.tt %]
 </div>
 
 <div class="superright">
 [% INCLUDE table.tt %]
+</div>
 </div>
 
 </body>

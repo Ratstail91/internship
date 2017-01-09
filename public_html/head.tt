@@ -3,5 +3,7 @@
 <script>
 [% INCLUDE scripts.js %]
 </script>
-<link rel=StyleSheet href="styles/main.css" type="text/css" />
+<link rel="StyleSheet" href="styles/shared.css" type="text/css" />
+<link rel="StyleSheet" href="styles/desktop.css" type="text/css" media="(min-width: 641px)" />
+<link rel="StyleSheet" href="styles/mobile.css" type="text/css" media="(max-width: 640px)" />
 </head>

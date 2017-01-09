@@ -24,8 +24,8 @@ function refreshDatabase(async) {
 				"<th>First Name</th>" +
 				"<th>Last Name</th>" +
 				"<th>Email</th>" +
-				"<th>Age</th>" +
-				"<th>Income</th>" +
+				"<th data-tsorter='numeric'>Age</th>" +
+				"<th data-tsorter='numeric'>Income</th>" +
 			"</tr></thead>";
 
 			var arr = JSON.parse(httpRequest.responseText);

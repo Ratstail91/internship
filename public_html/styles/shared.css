@@ -1,6 +1,6 @@
 body {
 	background: #EEF;
-	font-size: 16pt;
+	font-size: 24pt;
 	margin: 5px;
 }
 
@@ -48,10 +48,10 @@ h2 {
 
 #formlist {
 	overflow: hidden;
-	padding-right: 5px;
 	border-style: solid;
 	border-width: 3px;
-	margin-right: 3px;
+	margin-top: 15px;
+	margin-right: 15px;
 	display: inline-block;
 }
 
@@ -62,25 +62,55 @@ h2 {
 .formlistLeft {
 	float: left;
 	text-align: left;
-	padding-top: 5px;
 	margin-right: 10px;
+	margin-top: 15px;
+	margin-left: 15px;
 }
 
 .formlistRight {
 	float: right;
 	text-align: right;
+	margin-top: 15px;
+	margin-right: 15px;
+}
+
+input {
+	width: 300px;
+	height: 50px;
+}
+
+button {
+	width: 150px;
+	height: 50px;
+	margin-top: 15px;
+	margin-right: 15px;
+	margin-bottom: 15px;
 }
 
 #datatable{
 	border-style: solid;
 	border-width: 3px;
 	display: inline-block;
+	margin-top: 15px;
+}
+
+table {
+	font-size: 24px;
+}
+
+#rowcount {
+	font-size: 24px;
 }
 
 table thead tr th {
 	border: 1px solid #000;
 	border-bottom: 3px solid #000;
 	margin: 0;
+}
+
+.scrollable {
+	overflow-y: scroll;
+	height: 376px;
 }
 
 table tbody tr {

@@ -28,9 +28,10 @@ function refreshDatabase(async) {
 				"<th>Income</th>" +
 			"</tr></thead>";
 
-			list.innerHTML = list.innerHTML + "<tbody>";
-
 			var arr = JSON.parse(httpRequest.responseText);
+
+			var tmpLine = ""; //avoid strange auto-insert of <tbody> tags
+
 			for (var i = 0; i < arr.length; i++) {
 				var obj = arr[i];
 
@@ -56,10 +57,9 @@ function refreshDatabase(async) {
 				"</tr>"
 				;
 
-				list.innerHTML = list.innerHTML + item;
+				tmpLine = tmpLine + item;
 			}
-
-			list.innerHTML = list.innerHTML + "</tbody>";
+			list.innerHTML = list.innerHTML + tmpLine;
 
 			//update the counter
 			var counter = document.getElementById("rowcount");

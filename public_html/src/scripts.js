@@ -18,12 +18,50 @@ function refreshDatabase(async) {
 		if (httpRequest.readyState === 4 && httpRequest.status === 200) {
 			var list = document.getElementById("entrylist");
 			list.innerHTML = "";
+
+			//build the headers
+			list.innerHTML = "<thead><tr>" +
+				"<th>First Name</th>" +
+				"<th>Last Name</th>" +
+				"<th>Email</th>" +
+				"<th data-tsorter='numeric'>Age</th>" +
+				"<th data-tsorter='numeric'>Income</th>" +
+			"</tr></thead>";
+
 			var arr = JSON.parse(httpRequest.responseText);
+
+			var tmpLine = ""; //avoid strange auto-insert of <tbody> tags
+
 			for (var i = 0; i < arr.length; i++) {
 				var obj = arr[i];
-				var item = "<li>" + obj.fname + " " + obj.lname + " (" + obj.email + "), " + parseDate(obj.birthdate) + "yo: $" + obj.income + "</li>";
-				list.innerHTML = list.innerHTML + item;
+
+				//build the structure
+				var item =
+
+				"<tr>" +
+					"<td>" +
+						obj.fname +
+					"</td>" +
+					"<td>" +
+						obj.lname +
+					"</td>" +
+					"<td>" +
+						obj.email +
+					"</td>" +
+					"<td>" +
+						parseDate(obj.birthdate) +
+					"</td>" +
+					"<td>" +
+						obj.income +
+					"</td>" +
+				"</tr>"
+				;
+
+				tmpLine = tmpLine + item;
 			}
+			list.innerHTML = list.innerHTML + tmpLine;
+
+			var sorter = tsorter.create('entrylist');
 
 			//update the counter
 			var counter = document.getElementById("rowcount");

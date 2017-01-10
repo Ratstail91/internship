@@ -10,23 +10,59 @@ class FormList extends React.Component {
   render() {
     return (
       <div id="formlist">
-        Email:<br />
-        <input type="email" id={this.props.email} /><br />
 
-        First Name:<br />
-        <input type="text" id={this.props.fname} /><br />
+        //EMAIL
+        <div class="innerformlist">
+          <div class="formlistLeft">
+            <p>Email:</p>
+          </div>
+          <div class="formlistRight">
+            <input type="email" id={this.props.email} />
+          </div>
+        </div>
 
-        Last Name:<br />
-        <input type="text" id={this.props.lname} /><br />
+        //FIRST NAME
+        <div class="innerformlist">
+          <div class="formlistLeft">
+            <p>First Name:</p>
+          </div>
+          <div class="formlistRight">
+            <input type="text" id={this.props.fname} />
+          </div>
+        </div>
 
-        Date of Birth:<br />
-        <input type="date" id={this.props.birthdate} /><br />
+        //LAST NAME
+        <div class="innerformlist">
+          <div class="formlistLeft">
+            <p>Last Name:</p>
+          </div>
+          <div class="formlistRight">
+            <input type="text" id={this.props.fname} />
+          </div>
+        </div>
 
-        Annual Income:<br />
-        <input type="number" id={this.props.income} /><br />
+        //BIRTHDATE
+        <div class="innerformlist">
+          <div class="formlistLeft">
+            <p>Date of Birth:</p>
+          </div>
+          <div class="formlistRight">
+            <input type="date" id={this.props.birthdate} />
+          </div>
+        </div>
 
-        <br />
-        <input type="submit" value="Submit" onClick={this.myClick} />
+        //INCOME
+        <div class="innerformlist">
+          <div class="formlistLeft">
+            <p>Annual Income:</p>
+          </div>
+          <div class="formlistRight">
+            <input type="number" id={this.props.income} />
+          </div>
+        </div>
+
+        //INPUT
+        <button type="submit" onClick={this.myClick}>Submit</button>
       </div>
     );
   }

@@ -55,7 +55,7 @@ h2 {
 	display: inline-block;
 }
 
-#innerformlist {
+.innerformlist {
 	overflow: hidden;
 }
 
@@ -82,8 +82,6 @@ input {
 button {
 	width: 150px;
 	height: 50px;
-	margin-top: 15px;
-	margin-right: 15px;
 	margin-bottom: 15px;
 }
 
@@ -110,7 +108,7 @@ table thead tr th {
 
 .scrollable {
 	overflow-y: scroll;
-	height: 376px;
+	height: 436px;
 }
 
 table tbody tr {

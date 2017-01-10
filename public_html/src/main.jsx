@@ -15,17 +15,24 @@ node = document.createElement("DIV");
 ReactDOM.render(<Header />, node);
 document.getElementById("root").appendChild(node);
 
+//super
+var superNode = document.createElement("DIV");
+superNode.className = "super";
+
 //Form list
 node = document.createElement("DIV");
 node.className = "superleft";
 ReactDOM.render(<FormList fname="fname" lname="lname" email="email" birthdate="birthdate" income="income" />, node);
-document.getElementById("root").appendChild(node);
+superNode.appendChild(node);
 
 //Unordered list
 node = document.createElement("DIV");
 node.className = "superright";
 ReactDOM.render(<UnorderedList />, node);
-document.getElementById("root").appendChild(node);
+superNode.appendChild(node);
+
+//super
+document.getElementById("root").appendChild(superNode);
 
 //footer
 node = document.createElement("DIV");

@@ -1,5 +1,5 @@
 config = {
-	entry: './src/main.jsx',
+	entry: './src/app.jsx',
 	output: {
 		path:'./',
 		filename: 'output.js',

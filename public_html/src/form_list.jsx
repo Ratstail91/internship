@@ -31,7 +31,8 @@ class FormList extends React.Component {
       fname: '',
       lname: '',
       birthdate: '',
-      income: ''
+      income: '',
+      disabled: "true"
     });
   }
 
@@ -50,30 +51,66 @@ class FormList extends React.Component {
     this.setState({
       email: evt.target.value
     });
+    this.checkButtonDisabled();
   }
 
   updateFirstName(evt) {
     this.setState({
       fname: evt.target.value
     });
+    this.checkButtonDisabled();
   }
 
   updateLastName(evt) {
     this.setState({
       lname: evt.target.value
     });
+    this.checkButtonDisabled();
   }
 
   updateBirthdate(evt) {
     this.setState({
       birthdate: evt.target.value
     });
+    this.checkButtonDisabled();
   }
 
   updateIncome(evt) {
     this.setState({
       income: evt.target.value
     });
+    this.checkButtonDisabled();
+  }
+
+  //disabled system
+  checkButtonDisabled() {
+    if (!this.state.email.length) {
+      this.setState({disabled: "true"});
+      console.log("email");
+      return;
+    }
+    if (!this.state.fname.length) {
+      this.setState({disabled: "true"});
+      console.log("fname");
+      return;
+    }
+    if (!this.state.lname.length) {
+      this.setState({disabled: "true"});
+      console.log("lname");
+      return;
+    }
+    if (!this.state.birthdate.length) {
+      this.setState({disabled: "true"});
+      console.log("birthdate");
+      return;
+    }
+    if (!this.state.income.length) {
+      this.setState({disabled: "true"});
+      console.log("income");
+      return;
+    }
+    console.log("SET");
+    this.setState({disabled: false}); 
   }
 
   //render
@@ -113,7 +150,7 @@ class FormList extends React.Component {
             <p>Date of Birth:</p>
           </div>
           <div className="formlistRight">
-            <input type="date" id={this.props.birthdate} value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} />
+            <input type="date" id={this.props.birthdate} value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
           </div>
         </div>
 
@@ -127,7 +164,7 @@ class FormList extends React.Component {
         </div>
 
         <div className="formlistRight">
-          <button type="submit" onClick={this.myClick.bind(this)}>Submit</button>
+          <button type="submit" onClick={this.myClick.bind(this)} disabled={this.state.disabled}>Submit</button>
         </div>
       </div>
     );

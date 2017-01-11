@@ -1,9 +1,17 @@
 import React from 'react';
 
 class FormList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  setOnSubmit(func) {
+    onSubmit = func;
+  }
+
   myClick() {
     pushToDatabase();
-    refreshDatabase();
+    this.props.callHook();
     clearInput();
   }
 
@@ -57,7 +65,7 @@ class FormList extends React.Component {
         </div>
 
         <div className="formlistRight">
-          <button type="submit" onClick={this.myClick}>Submit</button>
+          <button type="submit" onClick={this.myClick.bind(this)}>Submit</button>
         </div>
       </div>
     );

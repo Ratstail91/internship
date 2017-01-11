@@ -8,13 +8,28 @@ import Table from './unordered_list.jsx';
 import Footer from './footer.jsx';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  //the callback system
+  setHook(func) {
+    this.state.hook = func;
+  }
+
+  callHook() {
+    this.state.hook();
+  }
+
+  //render
   render() {
     return (
       <div>
         <Header />
         <div className="super">
-          <FormList className="superleft" fname="fname" lname="lname" email="email" birthdate="birthdate" income="income" />
-          <Table className="superright" />
+          <FormList className="superleft" fname="fname" lname="lname" email="email" birthdate="birthdate" income="income" callHook={this.callHook.bind(this)} />
+          <Table className="superright" setHook={this.setHook.bind(this)} />
         </div>
         <Footer copyright="Kayne Ruse" copyrightYear="2016-2017" />
       </div>

@@ -1,12 +1,17 @@
 import React from 'react';
 
 class UnorderedList extends React.Component {
+  constructor(props) {
+    super(props);
+    props.setHook(this.refreshDatabase.bind(this));
+  }
+
   parseDate(date) {
     date = date.split('-');
     date = new Date(date[0], date[1]-1, date[2]);
 
     var today = new Date();
-    return today.getUTCFullYear() - date.getUTCFullYear();
+    return today.getFullYear() - date.getFullYear();
   }
 
   refreshDatabase(async) {
@@ -62,7 +67,7 @@ class UnorderedList extends React.Component {
           <td>{row.fname}</td>
           <td>{row.lname}</td>
           <td>{row.email}</td>
-          <td>{row.birthdate}</td>
+          <td>{this.parseDate(row.birthdate)}</td>
           <td>{row.income}</td>
         </tr>
       );
@@ -71,7 +76,7 @@ class UnorderedList extends React.Component {
     //finally, compile the table
     return (
       <div id="datatable">
-        <h2 id="rowcount"></h2>
+        <h2 id="rowcount">Number of rows Found: {arr.length}</h2>
         <div className="scrollable">
           <table id="entrylist" className="sortable">
             {headrow}

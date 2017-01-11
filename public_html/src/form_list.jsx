@@ -5,14 +5,24 @@ class FormList extends React.Component {
     super(props);
   }
 
-  setOnSubmit(func) {
-    onSubmit = func;
+  clearInput() {
+    this.setState({
+      email: <input type="email" id={this.props.email} />,
+      fname: <input type="text" id={this.props.fname} />,
+      lname: <input type="text" id={this.props.lname} />,
+      birthdate: <input type="date" id={this.props.birthdate} />,
+      income: <input type="number" id={this.props.income} />
+    });
   }
 
   myClick() {
     pushToDatabase();
     this.props.callHook();
-    clearInput();
+    this.clearInput();
+  }
+
+  componentWillMount() {
+    this.clearInput();
   }
 
   render() {
@@ -24,7 +34,7 @@ class FormList extends React.Component {
             <p>Email:</p>
           </div>
           <div className="formlistRight">
-            <input type="email" id={this.props.email} />
+            {this.state.email}
           </div>
         </div>
 
@@ -33,7 +43,7 @@ class FormList extends React.Component {
             <p>First Name:</p>
           </div>
           <div className="formlistRight">
-            <input type="text" id={this.props.fname} />
+            {this.state.fname}
           </div>
         </div>
 
@@ -42,7 +52,7 @@ class FormList extends React.Component {
             <p>Last Name:</p>
           </div>
           <div className="formlistRight">
-            <input type="text" id={this.props.lname} />
+            {this.state.lname}
           </div>
         </div>
 
@@ -51,7 +61,7 @@ class FormList extends React.Component {
             <p>Date of Birth:</p>
           </div>
           <div className="formlistRight">
-            <input type="date" id={this.props.birthdate} />
+            {this.state.birthdate}
           </div>
         </div>
 
@@ -60,7 +70,7 @@ class FormList extends React.Component {
             <p>Annual Income:</p>
           </div>
           <div className="formlistRight">
-            <input type="number" id={this.props.income} />
+            {this.state.income}
           </div>
         </div>
 

@@ -10,16 +10,19 @@ import Footer from './footer.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   //the callback system
   setHook(func) {
-    this.state.hook = func;
+    this.setState({hook: func});
   }
 
   callHook() {
     this.state.hook();
+  }
+
+  componentWillMount() {
+    this.setState({});
   }
 
   //render

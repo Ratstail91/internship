@@ -16,10 +16,3 @@ function pushToDatabase(async) {
 	httpRequest.send(formData);
 }
 
-function clearInput() {
-	document.getElementById("fname").value = '';
-	document.getElementById("lname").value = '';
-	document.getElementById("email").value = '';
-	document.getElementById("birthdate").value = '';
-	document.getElementById("income").value = '';
-}

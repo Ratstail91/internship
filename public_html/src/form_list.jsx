@@ -34,7 +34,7 @@ class FormList extends React.Component {
             <p>Last Name:</p>
           </div>
           <div className="formlistRight">
-            <input type="text" id={this.props.fname} />
+            <input type="text" id={this.props.lname} />
           </div>
         </div>
 

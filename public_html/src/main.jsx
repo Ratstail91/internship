@@ -40,4 +40,4 @@ ReactDOM.render(<Footer copyright="Kayne Ruse" copyrightYear="2016" />, node);
 document.getElementById("root").appendChild(node);
 
 //setup the page's state
-refreshDatabase();
+//TODO

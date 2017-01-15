@@ -1,7 +1,19 @@
+html {
+	height: 100%;
+	box-sizing: border-box;
+}
+
+* {
+	box-sizing: inherit;
+}
+
 body {
+	position: relative;
+	min-height: 100%;
+	padding-bottom: -2rem;
 	background: #EEF;
 	font-size: 24pt;
-	margin: 5px;
+	margin: 0;
 }
 
 p {

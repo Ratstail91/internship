@@ -3,10 +3,6 @@ html {
 	box-sizing: border-box;
 }
 
-* {
-	box-sizing: inherit;
-}
-
 body {
 	position: relative;
 	min-height: 100%;
@@ -42,6 +38,7 @@ footer {
 	left: 0;
 	right: 0;
 	background: #FFA;
+	box-sizing: inherit;
 }
 
 h1 {

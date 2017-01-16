@@ -4,7 +4,7 @@ import { addUser } from './actions.js';
 
 var unsubscribe;
 
-class UnorderedList extends React.Component {
+class Table extends React.Component {
   constructor(props) {
     super(props);
 
@@ -97,4 +97,4 @@ class UnorderedList extends React.Component {
   }
 }
 
-export default UnorderedList;
+export default Table;

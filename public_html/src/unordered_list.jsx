@@ -1,11 +1,19 @@
 import React from 'react';
 
+import { addUser } from './actions.js';
+
+var unsubscribe;
+
 class UnorderedList extends React.Component {
   constructor(props) {
     super(props);
-    props.setHook(this.refreshDatabase.bind(this));
+
+    unsubscribe = props.store.subscribe(function() {
+      this.forceUpdate();
+    }.bind(this));
   }
 
+  //buggy
   parseDate(date) {
     date = date.split('-');
     date = new Date(date[0], date[1]-1, date[2]);
@@ -14,19 +22,20 @@ class UnorderedList extends React.Component {
     return today.getFullYear() - date.getFullYear();
   }
 
-  refreshDatabase(async) {
-    if (typeof async === 'undefined') {
-      async = false;
-    }
-
+  refreshDatabase(async = false) {
     //new request
     var request = new XMLHttpRequest();
 
     //callback
     request.onreadystatechange = function() {
       if (request.readyState === 4 && request.status === 200) {
-        //save the given something...
-        this.setState(JSON.parse(request.responseText));
+        //save the given entries
+        var arr = JSON.parse(request.responseText);
+
+        for (var i = 0; i < arr.length; i++) {
+          var x = arr[i];
+          this.props.store.dispatch(addUser(x.fname, x.lname, x.email, x.birthdate, x.income));
+        };
       }
 
       //debugging
@@ -60,14 +69,14 @@ class UnorderedList extends React.Component {
 
     //build the body
     var arr = [];
-    for (var key in this.state) {
-      var row = this.state[key];
+    for (var i = 0; i < this.props.store.getState().length; i++) {
+      var row = this.props.store.getState()[i];
       arr.push(
        <tr>
           <td>{row.fname}</td>
           <td>{row.lname}</td>
           <td>{row.email}</td>
-          <td>{this.parseDate(row.birthdate)}</td>
+          <td>{row.birthdate}</td>
           <td>{row.income}</td>
         </tr>
       );

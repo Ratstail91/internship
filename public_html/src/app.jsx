@@ -17,6 +17,8 @@ var store = createStore(
   applyMiddleware(thunk)
 );
 
+var sorter;
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -30,6 +32,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <script type="text/javascript" src="./tsorter.js"></script>
         <Header />
         <div className="ui stackable centered two column grid">
           <FormList store={store} />
@@ -45,3 +48,5 @@ class App extends React.Component {
 var appNode = document.createElement('DIV');
 ReactDOM.render(<App />, appNode);
 document.getElementById('root').appendChild(appNode);
+
+sorter = tsorter.create('entrylist');

@@ -116,11 +116,14 @@ table tbody tr:hover td:nth-child(2n) {
 	background-color: inherit;
 }
 
-.sortable th.descend:after {
-	content: "\25B2";
-}
-.sortable th.ascend:after {
+.ui.sortable.table thead th.descend:after {
+	display: inline;
 	content: "\25BC";
+}
+
+.ui.sortable.table thead th.ascend:after {
+	display: inline;
+	content: "\25B2";
 }
 
 .superleft {

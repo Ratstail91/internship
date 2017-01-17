@@ -31,12 +31,12 @@ class TablePanel extends React.Component {
     //build the header row
     var headrow = (
       <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell className="padding small">First Name</Table.HeaderCell>
-          <Table.HeaderCell className="padding small">Last Name</Table.HeaderCell>
-          <Table.HeaderCell className="padding small">Email</Table.HeaderCell>
-          <Table.HeaderCell className="padding small" data-tsorter='numeric'>Age</Table.HeaderCell>
-          <Table.HeaderCell className="padding small" data-tsorter='numeric'>Income</Table.HeaderCell>
+        <Table.Row className="padding small">
+          <Table.HeaderCell>First Name</Table.HeaderCell>
+          <Table.HeaderCell>Last Name</Table.HeaderCell>
+          <Table.HeaderCell>Email</Table.HeaderCell>
+          <Table.HeaderCell data-tsorter='numeric'>Age</Table.HeaderCell>
+          <Table.HeaderCell data-tsorter='numeric'>Income</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
     );
@@ -46,12 +46,12 @@ class TablePanel extends React.Component {
     for (var i = 0; i < this.props.store.getState().length; i++) {
       var row = this.props.store.getState()[i];
       arr.push(
-       <Table.Row>
-          <Table.Cell className="padding small">{row.fname}</Table.Cell>
-          <Table.Cell className="padding small">{row.lname}</Table.Cell>
-          <Table.Cell className="padding small">{row.email}</Table.Cell>
-          <Table.Cell className="padding small">{row.birthdate}</Table.Cell>
-          <Table.Cell className="padding small">{row.income}</Table.Cell>
+       <Table.Row className="padding small">
+          <Table.Cell>{row.fname}</Table.Cell>
+          <Table.Cell>{row.lname}</Table.Cell>
+          <Table.Cell>{row.email}</Table.Cell>
+          <Table.Cell>{row.birthdate}</Table.Cell>
+          <Table.Cell>{row.income}</Table.Cell>
         </Table.Row>
       );
     }

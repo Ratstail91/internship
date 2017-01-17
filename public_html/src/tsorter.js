@@ -75,11 +75,12 @@ var tsorter = (function()
             else
             {
                 // not sorted - call quicksort
-                th.className = 'ascend';
+                th.className = 'descend';
                 if( that.prevCol !== -1 && that.ths[that.prevCol].className !== 'exc_cell'){
                     that.ths[that.prevCol].className = '';
                 }
                 that.quicksort(0, that.trs.length);
+		that.reverseTable();
             }
             that.prevCol = that.column;
         },

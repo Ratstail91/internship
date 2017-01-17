@@ -58,7 +58,7 @@ class Table extends React.Component {
     //finally, compile the table
     return (
       <div id="datatable" className="superright bordered">
-        <h2 id="rowcount" className="text medium">Number of rows Found: {arr.length}</h2>
+        <h2 id="rowcount" className="padding text medium">Number of rows Found: {arr.length}</h2>
         <div className="scrollable">
           <table id="entrylist" className="sortable text medium">
             {headrow}

@@ -56,6 +56,13 @@ footer {
 	margin: 0;
 }
 
+@media screen and (max-width: 768px) {
+	footer {
+		position: relative;
+		top: 1rem;
+	}
+}
+
 #formlist {
 	overflow: hidden;
 	margin-top: 15px;

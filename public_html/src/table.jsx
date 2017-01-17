@@ -57,7 +57,7 @@ class Table extends React.Component {
 
     //finally, compile the table
     return (
-      <div id="datatable">
+      <div id="datatable" className="superright">
         <h2 id="rowcount">Number of rows Found: {arr.length}</h2>
         <div className="scrollable">
           <table id="entrylist" className="sortable">

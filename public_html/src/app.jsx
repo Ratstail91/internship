@@ -32,8 +32,8 @@ class App extends React.Component {
       <div>
         <Header />
         <div className="super">
-          <FormList className="superleft" store={store} />
-          <Table className="superright" store={store} />
+          <FormList store={store} />
+          <Table store={store} />
         </div>
         <Footer copyright="Kayne Ruse" copyrightYear="2016-2017" />
       </div>

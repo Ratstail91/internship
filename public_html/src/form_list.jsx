@@ -65,7 +65,7 @@ class FormList extends React.Component {
   //render
   render() {
     return (
-      <div id="formlist">
+      <div id="formlist" className="superleft ui form">
 
         <div className="innerformlist">
           <div className="formlistLeft">

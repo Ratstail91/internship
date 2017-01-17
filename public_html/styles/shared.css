@@ -1,23 +1,43 @@
+.text.large {
+	font-size: 42px;
+}
+
+.text.medium {
+	font-size: 24px;
+}
+
+.text.small {
+	font-size: 14px;
+}
+
+.padding.large {
+	padding: 50px;
+}
+
+.padding.small {
+	padding: 0.8rem 0.4rem;
+}
+
+.bordered {
+	border-style: solid;
+	border-width: 3px;
+}
+
 body {
 	background: #EEF;
-	font-size: 24pt;
 	margin: 0;
 }
 
 header {
 	background: #AAF;
-	font: arial;
-	padding: 50px;
 	margin: 0;
 }
 
-header h1 {
-	text-align: center;
+h1, h2 {
+	margin: 0;
 }
 
 footer {
-	clear: both;
-	font-size: 14px;
 	font-style: italic;
 	text-align: center;
 	position: absolute;
@@ -25,27 +45,11 @@ footer {
 	left: 0;
 	right: 0;
 	background: #FFA;
-	box-sizing: inherit;
-}
-
-h1 {
-	font-size: 24;
-	font-weight: bold;
-	color: 080;
-	margin: 0;
-}
-
-h2 {
-	font-size: 16;
-	font-weight: bold;
-	color: 080;
 	margin: 0;
 }
 
 #formlist {
 	overflow: hidden;
-	border-style: solid;
-	border-width: 3px;
 	margin-top: 15px;
 	margin-right: 15px;
 	display: inline-block;
@@ -72,18 +76,8 @@ h2 {
 }
 
 #datatable{
-	border-style: solid;
-	border-width: 3px;
 	display: inline-block;
 	margin-top: 15px;
-}
-
-table {
-	font-size: 24px;
-}
-
-#rowcount {
-	font-size: 24px;
 }
 
 table thead tr th {
@@ -94,7 +88,7 @@ table thead tr th {
 
 .scrollable {
 	overflow-y: scroll;
-	height: 436px;
+	height: 410px;
 }
 
 table tbody tr {

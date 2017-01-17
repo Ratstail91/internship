@@ -3,8 +3,8 @@ import React from 'react';
 class Header extends React.Component {
   render() {
     return (
-      <header>
-        <h1>Hello World!</h1>
+      <header className="ui header centered padding large">
+        <h1 className="text large">Hello World!</h1>
       </header>
     );
   }

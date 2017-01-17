@@ -31,11 +31,11 @@ class Table extends React.Component {
     var headrow = (
       <thead>
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th data-tsorter='numeric'>Age</th>
-          <th data-tsorter='numeric'>Income</th>
+          <th className="padding small">First Name</th>
+          <th className="padding small">Last Name</th>
+          <th className="padding small">Email</th>
+          <th className="padding small" data-tsorter='numeric'>Age</th>
+          <th className="padding small" data-tsorter='numeric'>Income</th>
         </tr>
       </thead>
     );
@@ -46,21 +46,21 @@ class Table extends React.Component {
       var row = this.props.store.getState()[i];
       arr.push(
        <tr>
-          <td>{row.fname}</td>
-          <td>{row.lname}</td>
-          <td>{row.email}</td>
-          <td>{row.birthdate}</td>
-          <td>{row.income}</td>
+          <td className="padding small">{row.fname}</td>
+          <td className="padding small">{row.lname}</td>
+          <td className="padding small">{row.email}</td>
+          <td className="padding small">{row.birthdate}</td>
+          <td className="padding small">{row.income}</td>
         </tr>
       );
     }
 
     //finally, compile the table
     return (
-      <div id="datatable" className="superright">
-        <h2 id="rowcount">Number of rows Found: {arr.length}</h2>
+      <div id="datatable" className="superright bordered">
+        <h2 id="rowcount" className="text medium">Number of rows Found: {arr.length}</h2>
         <div className="scrollable">
-          <table id="entrylist" className="sortable">
+          <table id="entrylist" className="sortable text medium">
             {headrow}
             <tbody>{arr}</tbody>
           </table>

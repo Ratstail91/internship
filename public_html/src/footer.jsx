@@ -4,7 +4,7 @@ class Footer extends React.Component {
   render() {
     return (
       <footer>
-        <p>Copyright {this.props.copyright} {this.props.copyrightYear}</p>
+        <p className="text small">Copyright {this.props.copyright} {this.props.copyrightYear}</p>
       </footer>
     );
   }

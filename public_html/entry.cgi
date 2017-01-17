@@ -21,6 +21,7 @@ my $income = escapeHTML(param('income'));
 
 #check the input
 if ($fname eq '' or $lname eq '' or $email !~ /..*@..*\...*/ or $birthdate !~ /....-..-../) {
+	print "failure -1";
 	return;
 }
 
@@ -34,3 +35,4 @@ $sthandle->finish();
 
 $dbhandle->disconnect();
 
+print "success";

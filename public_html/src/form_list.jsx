@@ -6,32 +6,6 @@ class FormList extends React.Component {
     super(props);
   }
 
-  pushToDatabase(async = false) {
-
-    //build the request
-    var formData = new FormData();
-    formData.append("fname", this.state.fname);
-    formData.append("lname", this.state.lname);
-    formData.append("email", this.state.email);
-    formData.append("birthdate", this.state.birthdate);
-    formData.append("income", this.state.income);
-
-    //send the request
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', "/entry.cgi", async);
-    httpRequest.send(formData);
-  }
-
-  pushToLocalList() {
-    this.props.store.dispatch(addUser(
-      this.state.fname,
-      this.state.lname,
-      this.state.email,
-      this.state.birthdate,
-      this.state.income)
-    );
-  }
-
   clearInput() {
     this.setState({
       email: '',
@@ -43,8 +17,13 @@ class FormList extends React.Component {
   }
 
   myClick() {
-    this.pushToDatabase();
-    this.pushToLocalList();
+    this.props.store.dispatch(addUser(
+      this.state.fname,
+      this.state.lname,
+      this.state.email,
+      this.state.birthdate,
+      this.state.income
+    ));
     this.clearInput();
   }
 

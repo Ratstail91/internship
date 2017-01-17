@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addUser } from './actions.js';
+import { refreshDatabase } from './actions.js';
 
 var unsubscribe;
 
@@ -22,35 +22,8 @@ class Table extends React.Component {
     return today.getFullYear() - date.getFullYear();
   }
 
-  refreshDatabase(async = false) {
-    //new request
-    var request = new XMLHttpRequest();
-
-    //callback
-    request.onreadystatechange = function() {
-      if (request.readyState === 4 && request.status === 200) {
-        //save the given entries
-        var arr = JSON.parse(request.responseText);
-
-        for (var i = 0; i < arr.length; i++) {
-          var x = arr[i];
-          this.props.store.dispatch(addUser(x.fname, x.lname, x.email, x.birthdate, x.income));
-        };
-      }
-
-      //debugging
-      if (request.readyState === 4 && request.status !== 200) {
-        console.log('Status:', request.status, request.responseText);
-      }
-    }.bind(this);
-
-    //finally, send the request
-    request.open('GET', '/refresh.cgi', async);
-    request.send();
-  }
-
   componentWillMount() {
-    this.refreshDatabase();
+    this.props.store.dispatch(refreshDatabase());
   }
 
   render() {

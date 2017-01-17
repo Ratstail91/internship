@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 //includes
 import Header from './header.jsx';
@@ -11,7 +12,10 @@ import Footer from './footer.jsx';
 
 import { reduce } from './reducer.js';
 
-var store = createStore(reduce);
+var store = createStore(
+  reduce,
+  applyMiddleware(thunk)
+);
 
 class App extends React.Component {
   constructor(props) {

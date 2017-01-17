@@ -1,11 +1,11 @@
-import { ADD_USER, CLEAR_STORE } from './actions.js';
+import { ADD_USER_LOCAL, CLEAR_STORE } from './actions.js';
 
 const initialState = [];
 
 //the reducers should remain pure
 export function reduce(state = initialState, action) {
   switch(action.type) {
-    case ADD_USER:
+    case ADD_USER_LOCAL:
       return [
         ...state,
         {

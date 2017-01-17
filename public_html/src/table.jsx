@@ -1,10 +1,11 @@
 import React from 'react';
+import { Table } from 'semantic-ui-react';
 
 import { refreshDatabase } from './actions.js';
 
 var unsubscribe;
 
-class Table extends React.Component {
+class TablePanel extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,15 +30,15 @@ class Table extends React.Component {
   render() {
     //build the header row
     var headrow = (
-      <thead>
-        <tr>
-          <th className="padding small">First Name</th>
-          <th className="padding small">Last Name</th>
-          <th className="padding small">Email</th>
-          <th className="padding small" data-tsorter='numeric'>Age</th>
-          <th className="padding small" data-tsorter='numeric'>Income</th>
-        </tr>
-      </thead>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell className="padding small">First Name</Table.HeaderCell>
+          <Table.HeaderCell className="padding small">Last Name</Table.HeaderCell>
+          <Table.HeaderCell className="padding small">Email</Table.HeaderCell>
+          <Table.HeaderCell className="padding small" data-tsorter='numeric'>Age</Table.HeaderCell>
+          <Table.HeaderCell className="padding small" data-tsorter='numeric'>Income</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
     );
 
     //build the body
@@ -45,29 +46,29 @@ class Table extends React.Component {
     for (var i = 0; i < this.props.store.getState().length; i++) {
       var row = this.props.store.getState()[i];
       arr.push(
-       <tr>
-          <td className="padding small">{row.fname}</td>
-          <td className="padding small">{row.lname}</td>
-          <td className="padding small">{row.email}</td>
-          <td className="padding small">{row.birthdate}</td>
-          <td className="padding small">{row.income}</td>
-        </tr>
+       <Table.Row>
+          <Table.Cell className="padding small">{row.fname}</Table.Cell>
+          <Table.Cell className="padding small">{row.lname}</Table.Cell>
+          <Table.Cell className="padding small">{row.email}</Table.Cell>
+          <Table.Cell className="padding small">{row.birthdate}</Table.Cell>
+          <Table.Cell className="padding small">{row.income}</Table.Cell>
+        </Table.Row>
       );
     }
 
     //finally, compile the table
     return (
-      <div id="datatable" className="superright bordered">
+      <div id="datatable" className="superright ui ten wide column left aligned card">
         <h2 id="rowcount" className="padding text medium">Number of rows Found: {arr.length}</h2>
         <div className="scrollable">
-          <table id="entrylist" className="sortable text medium">
+          <Table celled id="entrylist" className="sortable text medium">
             {headrow}
-            <tbody>{arr}</tbody>
-          </table>
+            <Table.Body>{arr}</Table.Body>
+          </Table>
         </div>
       </div>
     );
   }
 }
 
-export default Table;
+export default TablePanel;

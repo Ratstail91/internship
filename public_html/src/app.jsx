@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 //includes
 import Header from './header.jsx';
 import FormList from './form_list.jsx';
-import Table from './table.jsx';
+import TablePanel from './table.jsx';
 import Footer from './footer.jsx';
 
 import { reduce } from './reducer.js';
@@ -31,9 +31,9 @@ class App extends React.Component {
     return (
       <div>
         <Header />
-        <div className="super">
+        <div className="ui stackable centered two column grid">
           <FormList store={store} />
-          <Table store={store} />
+          <TablePanel store={store} />
         </div>
         <Footer copyright="Kayne Ruse" copyrightYear="2016-2017" />
       </div>

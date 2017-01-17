@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'semantic-ui-react';
 import { addUser } from './actions.js';
 
 class FormList extends React.Component {
@@ -65,7 +66,7 @@ class FormList extends React.Component {
   //render
   render() {
     return (
-      <div id="formlist" className="superleft bordered ui form">
+      <div id="formlist" className="superleft ui form five wide column right aligned card">
 
         <div className="innerformlist">
           <div className="formlistLeft">
@@ -113,7 +114,7 @@ class FormList extends React.Component {
         </div>
 
         <div className="formlistRight">
-          <button type="submit" onClick={this.myClick.bind(this)}>Submit</button>
+          <Button type="submit" onClick={this.myClick.bind(this)}>Submit</Button>
         </div>
       </div>
     );

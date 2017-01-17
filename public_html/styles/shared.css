@@ -65,35 +65,8 @@ footer {
 	font-size: 24px;
 }
 
-.innerformlist {
-	overflow: hidden;
-}
-
-.formlistLeft {
-	float: left;
-	text-align: left;
-	margin-right: 10px;
-	margin-top: 25px;
-	margin-left: 15px;
-}
-
-.formlistRight {
-	float: right;
-	text-align: right;
-	margin-top: 15px;
-	margin-right: 15px;
-}
-
-.ui.form input[type="email"],
-.ui.form input[type="text"],
-.ui.form input[type="date"],
-.ui.form input[type="number"]
-{
-	width: 300px;
-}
-
-.formlistRight .ui.button {
-	margin-bottom: 15px;
+.ui.input input {
+	min-width: 100%;
 }
 
 #datatable{
@@ -109,7 +82,7 @@ table thead tr th {
 
 .scrollable {
 	overflow-y: scroll;
-	height: 406px;
+	height: 495px;
 }
 
 table tbody tr {

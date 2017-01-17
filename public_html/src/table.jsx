@@ -61,7 +61,7 @@ class TablePanel extends React.Component {
       <div id="datatable" className="superright ui ten wide column left aligned card">
         <h2 id="rowcount" className="padding text medium">Number of rows Found: {arr.length}</h2>
         <div className="scrollable">
-          <Table celled id="entrylist" className="sortable text medium">
+          <Table celled id="entrylist" className="sortable unstackable text medium">
             {headrow}
             <Table.Body>{arr}</Table.Body>
           </Table>

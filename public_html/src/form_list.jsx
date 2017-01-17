@@ -66,55 +66,58 @@ class FormList extends React.Component {
   //render
   render() {
     return (
-      <div id="formlist" className="superleft ui form five wide column right aligned card">
+      <div id="formlist" className="superleft ui two column equal width grid five wide column right aligned card">
 
-        <div className="innerformlist">
-          <div className="formlistLeft">
-            <p>Email:</p>
+        <div className="row">
+          <div className="column computer only">
+            <p className="left aligned">Email:</p>
           </div>
-          <div className="formlistRight">
-            <input type="email" id="email" value={this.state.email} onChange={this.updateEmail.bind(this)} />
+          <div className="column ui input">
+            <input type="email" id="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
           </div>
         </div>
 
-        <div className="innerformlist">
-          <div className="formlistLeft">
-            <p>First Name:</p>
+        <div className="row">
+          <div className="column computer only">
+            <p className="left aligned">First Name:</p>
           </div>
-          <div className="formlistRight">
-            <input type="text" id="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} />
-          </div>
-        </div>
-
-        <div className="innerformlist">
-          <div className="formlistLeft">
-            <p>Last Name:</p>
-          </div>
-          <div className="formlistRight">
-            <input type="text" id="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} />
+          <div className="column ui input">
+            <input type="text" id="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
           </div>
         </div>
 
-        <div className="innerformlist">
-          <div className="formlistLeft">
-            <p>Date of Birth:</p>
+        <div className="row">
+          <div className="column computer only">
+            <p className="left aligned">Last Name:</p>
           </div>
-          <div className="formlistRight">
+          <div className="column ui input">
+            <input type="text" id="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="column computer only">
+            <p className="left aligned">Date of Birth:</p>
+          </div>
+          <div className="column ui input">
             <input type="date" id="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
           </div>
         </div>
 
-        <div className="innerformlist">
-          <div className="formlistLeft">
-            <p>Annual Income:</p>
+        <div className="row">
+          <div className="column computer only">
+            <p className="left aligned">Annual Income:</p>
           </div>
-          <div className="formlistRight">
-            <input type="number" id="income" value={this.state.income} onChange={this.updateIncome.bind(this)} />
+          <div className="column ui input">
+            <input type="number" id="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
           </div>
         </div>
 
-        <div className="formlistRight">
-          <Button type="submit" onClick={this.myClick.bind(this)}>Submit</Button>
+        <div className="row">
+          <div className="column"></div>
+          <div className="column">
+            <Button className="massive ui button right aligned" type="submit" onClick={this.myClick.bind(this)}>Submit</Button>
+          </div>
         </div>
       </div>
     );

@@ -33,6 +33,10 @@ header {
 	margin: 0;
 }
 
+.ui.header {
+	margin: 0;
+}
+
 h1, h2 {
 	margin: 0;
 }

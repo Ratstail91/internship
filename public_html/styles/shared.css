@@ -37,10 +37,6 @@ header {
 	margin: 0;
 }
 
-.ui.header {
-	margin: 0;
-}
-
 h1, h2 {
 	margin: 0;
 }
@@ -140,4 +136,10 @@ table tbody tr:hover td:nth-child(2n) {
 	margin-left: auto;
 }
 
+.ui.header {
+	margin: 0;
+}
 
+.ui.card {
+	margin-bottom: 0;
+}

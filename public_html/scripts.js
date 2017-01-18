@@ -1,3 +1,7 @@
+//for use with the graphs
+var ageGroups = [0, 0, 0, 0];
+
+//INCREDIBLY BROKEN
 function parseDate(date) {
 	//tricky
 	date = date.split("-");
@@ -16,8 +20,10 @@ function refreshDatabase(async) {
 	var httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === 4 && httpRequest.status === 200) {
+			//clear the given data
 			var list = document.getElementById("entrylist");
 			list.innerHTML = "";
+			ageGroups = [0,0,0,0];
 
 			//build the headers
 			list.innerHTML = "<thead><tr>" +
@@ -58,6 +64,17 @@ function refreshDatabase(async) {
 				;
 
 				tmpLine = tmpLine + item;
+
+				//update the bar graph
+				var age = parseDate(obj.birthdate);
+				if (age <= 20)
+					ageGroups[0]++;
+				else if (age <= 40)
+					ageGroups[1]++;
+				else if (age <= 60)
+					ageGroups[2]++;
+				else
+					ageGroups[3]++;
 			}
 			list.innerHTML = list.innerHTML + tmpLine;
 
@@ -68,6 +85,11 @@ function refreshDatabase(async) {
 			if (counter !== null) {
 				counter.innerHTML = "Number of rows found: " + arr.length;
 			}
+
+			//rerender the graphs
+			document.getElementById("bargraph").innerHTML = "";
+			var max = Math.max(...ageGroups);
+			drawBarGraph("bargraph", 500, 100, ageGroups, 100 / max);
 		}
 
 		//debugging

@@ -5,64 +5,31 @@ Content-type:text/html
   [% INCLUDE head.tt %]
 
   <body onLoad="refreshDatabase()">
-<!--
+
     <header>
       <h1>Hello World!</h1>
     </header>
 
     <div class="super">
-      <div class="superleft">
+      <div class="superleft bordered">
         [% INCLUDE form_list.tt %]
       </div>
 
-      <div class="superright">
+      <div class="superright bordered">
         [% INCLUDE table.tt %]
       </div>
+    </div>
 
-      <div class="superleft">
+    <div class="super">
+      <div class="superleft bordered">
+        <p>PLACEHOLDER TEXT</p>
       </div>
 
-      <div class="superright">
+      <div class="superright bordered">
+        <div id="bargraph" style="display: inline"></div>
       </div>
     </div>
--->
-
-    <script src="./d3.v3.min.js" type="text/javascript"></script>
-
-    <script type="text/javascript">
-      var dataset = [5, 10, 13, 19, 21, 25, 22,18, 15, 13, 11, 12, 15, 20, 18, 17, 16, 18, 23, 25];
-
-      var svg = d3.select("body").append("svg");
-
-      var w = 500, h = 100, barPadding=1;
-      svg.attr("width", w).attr("height", h);
-
-      svg.selectAll("rect")
-        .data(dataset)
-        .enter()
-        .append("rect")
-        .attr("x", (d, i) => { return i * (w / dataset.length); })
-        .attr("y", (d, i) => { return h - (d * 4)})
-        .attr("width", w / dataset.length -barPadding)
-        .attr("height", (d) => { return d * 4; })
-        .attr("fill", (d) => { return "rgb(0, 0, " + (d*10) + ")"});
-
-
-      svg.selectAll("text")
-        .data(dataset)
-        .enter()
-        .append("text")
-        .text((d) => { return d; })
-        .attr("x", (d, i) => { return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2; })
-          .attr("text-anchor", "middle")
-        .attr("y", (d, i) => { return h - (d * 4) + 14})
-        .attr("fill", "white")
-        .attr("font-size", 12)
-        .attr("font-family", "sans-serif");
- 
-    </script>
   </body>
 
   [% INCLUDE footer.tt %]
-
 </html>

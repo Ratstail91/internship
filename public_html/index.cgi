@@ -17,5 +17,5 @@ $template->process("index.tt", {
 	birthdate => "birthdate",
 	income => "income",
 	copyright => "Kayne Ruse",
-	copyrightYear => "2016"
+	copyrightYear => "2016-2017"
 });

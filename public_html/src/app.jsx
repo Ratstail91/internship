@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import * as d3 from 'd3';
 
 //includes
 import Header from './header.jsx';
@@ -40,8 +39,6 @@ class App extends React.Component {
         <div className="ui stackable centered two column grid">
           <FormList store={store} />
           <TablePanel store={store} />
-          <PieGraph store={store} />
-          <BarGraph store={store} />
         </div>
         <Footer copyright="Kayne Ruse" copyrightYear="2016-2017" />
       </div>

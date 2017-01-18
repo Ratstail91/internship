@@ -1,3 +1,4 @@
+/* -- UTILITIES -- */
 .text.large {
 	font-size: 42px;
 }
@@ -27,6 +28,7 @@
 	border-width: 3px;
 }
 
+/* -- STANDARD -- */
 body {
 	background: #EEF;
 	margin: 0;
@@ -59,6 +61,7 @@ footer {
 	}
 }
 
+/* -- FORM LIST */
 #formlist {
 	overflow: hidden;
 	margin-top: 15px;
@@ -72,6 +75,7 @@ footer {
 	min-width: 100%;
 }
 
+/* -- DATATABLE */
 #datatable{
 	display: inline-block;
 	margin-top: 15px;
@@ -122,6 +126,11 @@ table tbody tr:hover td:nth-child(2n) {
 	content: "\25B2";
 }
 
+/* -- PIE CHART -- */
+
+/* -- BAR CHART -- */
+
+/* -- SUPER -- */
 .superleft {
 	float: left;
 }
@@ -136,6 +145,7 @@ table tbody tr:hover td:nth-child(2n) {
 	margin-left: auto;
 }
 
+/* -- SEMANTIC UI TWEAKS -- */
 .ui.header {
 	margin: 0;
 }

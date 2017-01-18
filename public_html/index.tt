@@ -3,7 +3,6 @@ Content-type:text/html
 <html>
   [% INCLUDE head.tt %]
 <body>
-<!--
   <body onLoad="refreshDatabase()">
     <header>
       <h1>Hello World!</h1>
@@ -21,52 +20,15 @@ Content-type:text/html
 
     <div class="super">
       <div class="superleft bordered">
-        <p>PLACEHOLDER TEXT</p>
+        <div id="piegraph"></div>
       </div>
 
       <div class="superright bordered">
-        <div id="bargraph" style="display: inline"></div>i
+        <div id="bargraph"></div>
       </div>
     </div>
--->
   </body>
 
   [% INCLUDE footer.tt %]
-
-  <script>
-    var dataset= [
-      { label: "abulia", count: 10 },
-      { label: "Betelgeuse", count: 20 },
-      { label: "Cantaloupe", count: 30 },
-      { label: "Dijkstra", count: 40 }
-    ];
-
-    var w = 360;
-    var h = 360;
-    var r = Math.min(w, h) /2;
-
-    var color = d3.scale.ordinal().range(['#FF0000', '#00FF00', '#0000FF', '#FFFF00']);
-
-    var svg = d3.select("body").append("svg")
-      .attr("width", w)
-      .attr("height", h)
-      .append("g")
-      .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
-
-    var arc = d3.svg.arc()
-      .innerRadius(0)
-      .outerRadius(r);
-
-    var pie = d3.layout.pie()
-      .value((d) => { return d.count; })
-      .sort(null);
-
-    var path = svg.selectAll("path")
-      .data(pie(dataset))
-      .enter()
-      .append("path")
-      .attr("d", arc)
-      .attr("fill", (d, i) => { return color(d.data.label); });
-  </script>
 
 </html>

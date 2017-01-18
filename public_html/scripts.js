@@ -1,5 +1,7 @@
 //for use with the graphs
 var ageGroups = [0, 0, 0, 0];
+var incomeRange = [0, 0, 0, 0];
+var colorRange = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
 
 //INCREDIBLY BROKEN
 function parseDate(date) {
@@ -24,6 +26,7 @@ function refreshDatabase(async) {
 			var list = document.getElementById("entrylist");
 			list.innerHTML = "";
 			ageGroups = [0,0,0,0];
+			incomeRange = [0,0,0,0];
 
 			//build the headers
 			list.innerHTML = "<thead><tr>" +
@@ -65,6 +68,16 @@ function refreshDatabase(async) {
 
 				tmpLine = tmpLine + item;
 
+				//update the pie chart
+				if (obj.income <= 18200)
+					incomeRange[0]++;
+				else if (obj.income <= 37000)
+					incomeRange[1]++;
+				else if (obj.income <= 80000)
+					incomeRange[2]++;
+				else
+					incomeRange[3]++;
+
 				//update the bar graph
 				var age = parseDate(obj.birthdate);
 				if (age <= 20)
@@ -87,9 +100,13 @@ function refreshDatabase(async) {
 			}
 
 			//rerender the graphs
+			document.getElementById("piegraph").innerHTML = "";
 			document.getElementById("bargraph").innerHTML = "";
-			var max = Math.max(...ageGroups);
-			drawBarGraph("bargraph", 500, 100, ageGroups, 100 / max);
+
+			drawPieGraph("piegraph", 300, 300, -1, incomeRange, colorRange);
+
+			var maxBarHeight = Math.max(...ageGroups);
+			drawBarGraph("bargraph", 500, 100, ageGroups, 100 / maxBarHeight);
 		}
 
 		//debugging

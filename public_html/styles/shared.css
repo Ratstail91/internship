@@ -170,3 +170,14 @@ table tbody tr:hover td:nth-child(2n) {
 	border-style: solid;
 	border-width: 3px;
 }
+
+.centered {
+	text-align: center;
+}
+
+@media only screen and (min-width: 1024px) {
+	.min-stretch {
+		padding-left: 208px;
+		padding-right: 208px;
+	}
+}

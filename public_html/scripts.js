@@ -106,7 +106,7 @@ function refreshDatabase(async) {
 			drawPieGraph("piegraph", 300, 300, -1, incomeRange, colorRange);
 
 			var maxBarHeight = Math.max(...ageGroups);
-			drawBarGraph("bargraph", 500, 100, ageGroups, 100 / maxBarHeight);
+			drawBarGraph("bargraph", 500, 300, ageGroups, 300 / maxBarHeight);
 		}
 
 		//debugging

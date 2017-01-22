@@ -19,12 +19,14 @@ Content-type:text/html
     </div>
 
     <div class="super">
-      <div class="superleft bordered">
+      <div class="superleft bordered centered min-stretch">
         <div id="piegraph"></div>
+        <p>Income Range</p>
       </div>
 
-      <div class="superright bordered">
+      <div class="superright bordered centered min-stretch">
         <div id="bargraph"></div>
+        <p>Age Range</p>
       </div>
     </div>
   </body>

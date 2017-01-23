@@ -197,11 +197,3 @@ text.label {
 	font-size: 14px;
 };
 
-polyline.line {
-	opacity: .3;
-	stroke: black;
-	stroke-width: 2px;
-	fill: none;
-}
-
-

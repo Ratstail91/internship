@@ -100,10 +100,10 @@ function refreshDatabase(async) {
 			}
 
 			//rerender the graphs
-			document.getElementById("piegraph").innerHTML = "";
+//			document.getElementById("piegraph").innerHTML = "";
 			document.getElementById("bargraph").innerHTML = "";
 
-			drawPieGraph("piegraph", 300, 300, -1, incomeRange,
+			updatePieGraph("piegraph", incomeRange,
 				['<18,200','18,201-37,000','37,001-80,000','80,001+']
 				, colorRange);
 
@@ -145,3 +145,4 @@ function clearInput() {
 	document.getElementById("birthdate").value = '';
 	document.getElementById("income").value = '';
 }
+

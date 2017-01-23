@@ -177,7 +177,31 @@ table tbody tr:hover td:nth-child(2n) {
 
 @media only screen and (min-width: 1024px) {
 	.min-stretch {
+		padding-top: 15px;
 		padding-left: 208px;
 		padding-right: 208px;
 	}
 }
+
+svg {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+path.slice {
+	stroke-width: 2px;
+}
+
+text.label {
+	font-size: 14px;
+};
+
+polyline.line {
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}
+
+

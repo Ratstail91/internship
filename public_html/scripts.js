@@ -103,7 +103,9 @@ function refreshDatabase(async) {
 			document.getElementById("piegraph").innerHTML = "";
 			document.getElementById("bargraph").innerHTML = "";
 
-			drawPieGraph("piegraph", 300, 300, -1, incomeRange, colorRange);
+			drawPieGraph("piegraph", 300, 300, -1, incomeRange,
+				['<18,200','18,201-37,000','37,001-80,000','80,001+']
+				, colorRange);
 
 			var maxBarHeight = Math.max(...ageGroups);
 			drawBarGraph("bargraph", 500, 300, ageGroups, 300 / maxBarHeight);

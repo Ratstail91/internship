@@ -1,3 +1,40 @@
+//DOCS: pie_graph.js
+//
+//There are two functions in this file, which utilize d3 to draw a pie graph.
+//First, before calling either, you must ensure that there is a <div> object
+//with an ID somewhere in your project; this will be the container for the pie
+//graph.
+//
+//  function drawPieGraph(id, w, h, dataset = [], labels = [], colors = [])
+//
+//drawPieGraph() creates a static SVG image of the pie chart, derived from the
+//given input. ‘id’ is the unique ID of the <div> object, w and h are simply
+//the width and height of the SVG canvas to create. ‘dataset’ is the array of
+//integers representing different sectors (or “slices”) of the chart. ‘labels’
+//is an array of strings containing each sector’s label. Finally, ‘color’ is an
+//array of color codes (i.e. #FF0000; other formats may work, but are
+//unsupported) for each sector. If there are fewer colors than sectors, the
+//system will simply reuse colors.
+//
+//This function is designed to render static pie charts, however it can be used
+//in conjunction with the following.
+//
+//  updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1000)
+//
+//This function is designed to act on a pie graph that was created by
+//drawPieGraph() (above). ‘id’ is the ID of the <div> element holding the SVG.
+//‘dataset’ is the new data to be displayed, while ‘labels’ are their
+//corresponding labels. Finally, ‘colors’ must also be passed and, as above, if
+//there are fewer colors than sectors, colors will be reused. 
+//
+//There is an extra parameter here, “duration”. This allows you to set, in
+//milliseconds, the amount of time the transition between the previous chart
+//state and the new one should take. This transition is animated thanks to the
+//power of d3, but as I said, updatePieGraph() can ONLY act on pie graphs
+//created by drawPieGraph(), it can’t create it’s own.
+
+//-----------------------------------------------------------------------------
+
 //PARAM: id = the ID of a <div> element
 //PARAM: w = width of the resulting SVG
 //PARAM: h = height of the resulting SVG

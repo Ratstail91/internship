@@ -1,15 +1,20 @@
 //PARAM: id = the ID of a <div> element
-//PARAM: w = width of the resulting SVG
-//PARAM: h = height of the resulting SVG
+//PARAM: w = width of the bar graph
+//PARAM: h = height of the bar graph
+//PARAM: padding = table containing elements:
+//  top = padding on the top
+//  left = padding on the left
+//  right = padding on the right
+//  bottom = padding on the bottom
 //PARAM: barPadding = space between bars
 //PARAM: dataset = array of data to draw
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = pair of colors to use
-function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], colors = []) {
+function drawBarGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, barPadding = 1, dataset = [], labels = [], colors = []) {
   //utilities
   var colorOrdinal = d3.scale.ordinal().range([...colors]);
   var max = Math.max(...dataset);
-  var average = dataset.reduce(function(a, b) { return a+b; }) / dataset.length;
+  var average = dataset.length ? dataset.reduce(function(a, b) { return a+b; }) / dataset.length : 0;
 
   var yScale = d3.scale.linear()
     .domain([0, max])
@@ -17,8 +22,8 @@ function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], color
 
   //do the stuff
   var svg = d3.select("#" + id).append("svg")
-    .attr("width", w)
-    .attr("height", h)
+    .attr("width", w + padding.left + padding.right)
+    .attr("height", h + padding.top + padding.bottom)
     .append("g");
 
   //add the classes (elements of the SVG)
@@ -35,9 +40,9 @@ function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], color
     .append("text")
     .text(function(d) { return d; })
     .attr("class", "tips")
-    .attr("x", function(d, i) { return i * (w/dataset.length) + (w/dataset.length - barPadding) / 2; })
+    .attr("x", function(d, i) { return padding.left + i * (w/dataset.length) + (w/dataset.length - barPadding) / 2; })
       .attr("text-anchor", "middle")
-    .attr("y", function(d, i) { return yScale(d); })
+    .attr("y", function(d, i) { return padding.top + yScale(d); })
       .attr("dy", "1em")
     .attr("fill", "white")
     .attr("display", "none")
@@ -50,8 +55,8 @@ function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], color
     .enter()
     .append("rect")
     .attr("class", "bar")
-    .attr("x", function(d, i) { return i * (w / dataset.length); })
-    .attr("y", function(d, i) { return yScale(d); })
+    .attr("x", function(d, i) { return padding.left + i * (w / dataset.length); })
+    .attr("y", function(d, i) { return padding.top + yScale(d); })
     .attr("width", w / dataset.length -barPadding)
     .attr("height", function(d) { return h - yScale(d); })
     .attr("fill", (d) => { return colorOrdinal(d < average); })
@@ -65,9 +70,9 @@ function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], color
     .append("text")
     .attr("class", "label")
     .text(function(d) { return d; })
-    .attr("x", function(d, i) { return i * (w/dataset.length) + (w/dataset.length -barPadding) / 2; })
+    .attr("x", function(d, i) { return padding.left + i * (w/dataset.length) + (w/dataset.length -barPadding) / 2; })
       .attr("text-anchor", "middle")
-    .attr("y", function(d, i) { return h; })
+    .attr("y", function(d, i) { return padding.top + h; })
       .attr("dy", "1em")
     .attr("fill", "black")
     .attr("font-size", 12)
@@ -79,6 +84,7 @@ function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], color
     .orient("left");
 
   svg.select(".axis")
+    .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
     .style("fill", "none")
     .style("stroke", "black")
     .style("shape-rendering", "crispEdges")
@@ -91,10 +97,10 @@ function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], color
     .data([average])
     .enter()
     .append("line")
-    .attr("x1", 0)
-    .attr("y1", function(d) { return yScale(d); })
-    .attr("x2", w)
-    .attr("y2", function(d) { return yScale(d); })
+    .attr("x1", padding.left)
+    .attr("y1", function(d) { return padding.top + yScale(d); })
+    .attr("x2", padding.left + w)
+    .attr("y2", function(d) { return padding.top + yScale(d); })
     .style("stroke-width", "2")
     .style("stroke", "black")
     .attr("stroke-dasharray", "5,5");
@@ -106,10 +112,10 @@ function drawBarGraph(id, w, h, barPadding = 1, dataset = [], labels = [], color
     .data([[0, h, w, h]])
     .enter()
     .append("line")
-    .attr("x1", (d) => { return d[0]; })
-    .attr("y1", (d) => { return d[1]; })
-    .attr("x2", (d) => { return d[2]; })
-    .attr("y2", (d) => { return d[3]; })
+    .attr("x1", (d) => { return padding.left + d[0]; })
+    .attr("y1", (d) => { return padding.top + d[1]; })
+    .attr("x2", (d) => { return padding.left + d[2]; })
+    .attr("y2", (d) => { return padding.top + d[3]; })
     .style("stroke", "black")
     .style("stroke-width", "2");
 

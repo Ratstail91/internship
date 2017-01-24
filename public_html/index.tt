@@ -37,7 +37,7 @@ Content-type:text/html
         right: 150,
         bottom: 20
       });
-      drawBarGraph("bargraph", 500, 300);
+//      drawBarGraph("bargraph", 500, 300);
     </script>
   </body>
 

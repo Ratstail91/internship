@@ -40,8 +40,8 @@
 //-----------------------------------------------------------------------------
 
 //PARAM: id = the ID of a <div> element
-//PARAM: w = width of the resulting SVG
-//PARAM: h = height of the resulting SVG
+//PARAM: w = width of the pie graph
+//PARAM: h = height of the pie graph
 //PARAM: padding = table containing elements:
 //  top = padding on the top
 //  left = padding on the left

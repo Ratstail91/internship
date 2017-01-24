@@ -20,18 +20,19 @@ Content-type:text/html
 
     <div class="super">
       <div class="superleft bordered centered min-stretch">
-        <div id="piegraph"></div>
         <p>Income Range</p>
+        <div id="piegraph"></div>
       </div>
 
       <div class="superright bordered centered min-stretch">
-        <div id="bargraph"></div>
         <p>Age Range</p>
+        <div id="bargraph"></div>
       </div>
     </div>
 
     <script>
       drawPieGraph("piegraph", 300, 300);
+      drawBarGraph("bargraph", 500, 300);
     </script>
   </body>
 

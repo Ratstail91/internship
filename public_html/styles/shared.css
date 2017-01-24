@@ -1,16 +1,5 @@
-html {
-	height: 100%;
-	box-sizing: border-box;
-}
-
-* {
-	box-sizing: inherit;
-}
-
 body {
-	position: relative;
-	min-height: 100%;
-	padding-bottom: -2rem;
+	padding-bottom: 2rem;
 	background: #EEF;
 	font-size: 24pt;
 	margin: 0;
@@ -37,7 +26,7 @@ footer {
 	font-size: 14;
 	font-style: italic;
 	text-align: center;
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -177,23 +166,10 @@ table tbody tr:hover td:nth-child(2n) {
 
 @media only screen and (min-width: 1024px) {
 	.min-stretch {
-		padding-top: 15px;
-		padding-left: 208px;
-		padding-right: 208px;
+		font-size: 14px;
+		padding-bottom: 1rem;
+		padding-left: 10rem;
+		padding-right: 10rem;
 	}
 }
-
-svg {
-	width: 100%;
-	height: 100%;
-	overflow: visible;
-}
-
-path.slice {
-	stroke-width: 2px;
-}
-
-text.label {
-	font-size: 14px;
-};
 

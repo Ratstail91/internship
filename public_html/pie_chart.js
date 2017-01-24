@@ -91,6 +91,7 @@ function drawPieGraph(id, w, h, dataset = [], labels = [], colors = []) {
     .append("text")
     .attr("class", "label")
     .attr("dy", ".35em")
+    .attr("font-size", "14px")
     .attr("fill", function(d, i) { return colorOrdinal(i); })
     .text(function(d) { return d; })
     .attr("transform", function(d, i) {
@@ -188,6 +189,7 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
     .append("text")
     .attr("class", "label")
     .attr("dy", ".35em")
+    .attr("font-size", "14px")
     .style("fill", function(d, i) { return colorOrdinal(i); })
     .text(function(d) { return d; });
 

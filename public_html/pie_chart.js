@@ -8,19 +8,19 @@
 //  function drawPieGraph(id, w, h, padding,
 //    dataset = [], labels = [], colors = [])
 //
-//drawPieGraph() creates a static SVG image of the pie chart, derived from the
+//drawPieGraph() creates a static SVG image of the pie graph, derived from the
 //given input. ‘id’ is the unique ID of the <div> object, w and h are simply
-//the width and height of the SVG canvas to create. Padding is a structure 
+//the width and height of the image canvas to create. Padding is a structure 
 //indicating how much empty space to insert along each edge of the SVG, with
 //separate fields for the top, left, right and bottom edges.
 //
 //‘dataset’ is the array of integers representing different sectors (or
-//“slices”) of the chart. ‘labels’ is an array of strings containing each
+//“slices”) of the graph. ‘labels’ is an array of strings containing each
 //sector’s label. Finally, ‘color’ is an array of color codes (i.e. #FF0000;
 //other formats may work, but are unsupported) for each sector. If there are
 //fewer colors than sectors, the system will simply reuse colors.
 //
-//This function is designed to render static pie charts, however it can be used
+//This function is designed to render static pie graphs, however it can be used
 //in conjunction with the following.
 //
 //  updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1000)
@@ -32,7 +32,7 @@
 //there are fewer colors than sectors, colors will be reused. 
 //
 //There is an extra parameter here, “duration”. This allows you to set, in
-//milliseconds, the amount of time the transition between the previous chart
+//milliseconds, the amount of time the transition between the previous graph
 //state and the new one should take. This transition is animated thanks to the
 //power of d3, but as I said, updatePieGraph() can ONLY act on pie graphs
 //created by drawPieGraph(), it can’t create it’s own.
@@ -87,10 +87,10 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
 
   //get width, height and padding
   var padding = {
-    top: svg.attr("padding-top"),
-    left: svg.attr("padding-left"),
-    right: svg.attr("padding-right"),
-    bottom: svg.attr("padding-bottom")
+    top: Number(svg.attr("padding-top")),
+    left: Number(svg.attr("padding-left")),
+    right: Number(svg.attr("padding-right")),
+    bottom: Number(svg.attr("padding-bottom"))
   }
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;

@@ -103,9 +103,10 @@ function refreshDatabase(async) {
 //			document.getElementById("piegraph").innerHTML = "";
 //			document.getElementById("bargraph").innerHTML = "";
 
-			updatePieGraph("piegraph", incomeRange,
-				['<18,200','18,201-37,000','37,001-80,000','80,001+']
-				, colorRange);
+			updatePieGraph("piegraph",
+				incomeRange,
+				['<18,200','18,201-37,000','37,001-80,000','80,001+'],
+				 colorRange);
 
 			drawBarGraph("bargraph", 500, 300, 10, ageGroups,
 				['<20', '21-40', '41-60', '61+'],

@@ -5,16 +5,20 @@
 //with an ID somewhere in your project; this will be the container for the pie
 //graph.
 //
-//  function drawPieGraph(id, w, h, dataset = [], labels = [], colors = [])
+//  function drawPieGraph(id, w, h, padding,
+//    dataset = [], labels = [], colors = [])
 //
 //drawPieGraph() creates a static SVG image of the pie chart, derived from the
 //given input. ‘id’ is the unique ID of the <div> object, w and h are simply
-//the width and height of the SVG canvas to create. ‘dataset’ is the array of
-//integers representing different sectors (or “slices”) of the chart. ‘labels’
-//is an array of strings containing each sector’s label. Finally, ‘color’ is an
-//array of color codes (i.e. #FF0000; other formats may work, but are
-//unsupported) for each sector. If there are fewer colors than sectors, the
-//system will simply reuse colors.
+//the width and height of the SVG canvas to create. Padding is a structure 
+//indicating how much empty space to insert along each edge of the SVG, with
+//separate fields for the top, left, right and bottom edges.
+//
+//‘dataset’ is the array of integers representing different sectors (or
+//“slices”) of the chart. ‘labels’ is an array of strings containing each
+//sector’s label. Finally, ‘color’ is an array of color codes (i.e. #FF0000;
+//other formats may work, but are unsupported) for each sector. If there are
+//fewer colors than sectors, the system will simply reuse colors.
 //
 //This function is designed to render static pie charts, however it can be used
 //in conjunction with the following.
@@ -38,86 +42,37 @@
 //PARAM: id = the ID of a <div> element
 //PARAM: w = width of the resulting SVG
 //PARAM: h = height of the resulting SVG
+//PARAM: padding = table containing elements:
+//  top = padding on the top
+//  left = padding on the left
+//  right = padding on the right
+//  bottom = padding on the bottom
 //PARAM: dataset = array of data to draw
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = array of colors to use
-function drawPieGraph(id, w, h, dataset = [], labels = [], colors = []) {
+function drawPieGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = [], labels = [], colors = []) {
   //calc radius
   r = Math.min(w, h) /2;
 
-  //utilities
-  colorOrdinal = d3.scale.ordinal().range([...colors]);
-
-  var arc = d3.svg.arc()
-    .innerRadius(0)
-    .outerRadius(r);
-
-  var outerArc = d3.svg.arc()
-    .innerRadius(r)
-    .outerRadius(r*1.1);
-
-  var pie = d3.layout.pie()
-    .value((d) => { return d; })
-    .sort(null);
-
-  //do the stuff
+  //create the SVG object
   var svg = d3.select("#" + id).append("svg")
-    .attr("width", w)
-    .attr("height", h)
+    .attr("width", w + padding.left + padding.right)
+    .attr("height", h + padding.top + padding.bottom)
+    .attr("padding-top", padding.top)
+    .attr("padding-left", padding.left)
+    .attr("padding-right", padding.right)
+    .attr("padding-bottom", padding.bottom)
     .append("g")
     //move the origin to the center of the image
-    .attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
+    .attr("transform", "translate(" + (padding.left + (w / 2)) + "," + (padding.top + (h / 2)) + ")");
 
   //add the classes (elements of the SVG)
   svg.append("g").attr("class", "slices");
   svg.append("g").attr("class", "labels");
   svg.append("g").attr("class", "lines");
 
-  //fill the slices with a color
-  svg.select(".slices").selectAll("path.slice")
-    .data(pie(dataset))
-    .enter()
-    .append("path")
-    .attr("d", arc)
-    .attr("fill", (d, i) => { return colorOrdinal(i); })
-    .attr("class", "slice");
-
-  //add text labels
-  function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle)/2; };
-
-  svg.select(".labels").selectAll("text")
-    .data(labels)
-    .enter()
-    .append("text")
-    .attr("class", "label")
-    .attr("dy", ".35em")
-    .attr("font-size", "14px")
-    .attr("fill", function(d, i) { return colorOrdinal(i); })
-    .text(function(d) { return d; })
-    .attr("transform", function(d, i) {
-      var outerCenter = outerArc.centroid(pie(dataset)[i]);
-      var shift = midAngle(pie(dataset)[i]) < Math.PI ? (w/2) : (-w/2);
-      return "translate(" + [shift, outerCenter[1]] + ")"; 
-    })
-    .style("text-anchor", function(d, i) {
-      return midAngle(pie(dataset)[i]) < Math.PI ? "start" : "end";
-    });
-
-  //add polylines to slice and text
-  svg.select(".lines").selectAll("polyline")
-    .data(pie(dataset))
-    .enter()
-    .append("polyline")
-    .attr("opacity", "1")
-    .attr("stroke", "black")
-    .attr("stroke-width", "2px")
-    .attr("fill", "none")
-    .attr("points", function(d, i) {
-      var pos = arc.centroid(d);
-      var outerPos = outerArc.centroid(d);
-      var shift = midAngle(pie(dataset)[i]) < Math.PI ? (w/2) : (-w/2);
-      return "" + pos + " " + outerPos + " " + [shift, outerPos[1]];
-    });
+  //call the lower part of this process
+  updatePieGraph(id, dataset, labels, colors, 1000);
 
   return svg;
 }
@@ -130,9 +85,15 @@ function drawPieGraph(id, w, h, dataset = [], labels = [], colors = []) {
 function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1000) {
   var svg = d3.select("#" + id).select("svg");
 
-  //get width & height
-  var w = svg.attr("width");
-  var h = svg.attr("height");
+  //get width, height and padding
+  var padding = {
+    top: svg.attr("padding-top"),
+    left: svg.attr("padding-left"),
+    right: svg.attr("padding-right"),
+    bottom: svg.attr("padding-bottom")
+  }
+  var w = svg.attr("width") - padding.left - padding.right;
+  var h = svg.attr("height") - padding.top - padding.bottom;
   var r = Math.min(w, h) /2;
 
   //utilities
@@ -144,7 +105,7 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
 
   var outerArc = d3.svg.arc()
     .innerRadius(r)
-    .outerRadius(r*1.1);
+    .outerRadius(r * 1.1);
 
   var pie = d3.layout.pie()
     .value((d) => { return d; })
@@ -159,7 +120,7 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
     .enter()
     .append("path")
     .attr("fill", (d, i) => { return colorOrdinal(i); })
-    .attr("class", "slice");
+    .attr("class", "slice")
 
   slices
     .transition()

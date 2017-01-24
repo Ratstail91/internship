@@ -110,7 +110,15 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
   //utilities
   var colorOrdinal = d3.scale.ordinal().range([...colors]);
   var max = Math.max(...dataset);
-  var average = dataset.reduce(function(a, b) { return a+b; }) / dataset.length;
+  var average;
+
+  if(dataset.length != 0) {
+    average = dataset.reduce(function(a, b) { return a+b; }) / dataset.length;
+  }
+  else {
+    average = 0;
+  }
+
   var yScale = d3.scale.linear()
     .domain([0, max])
     .range([h, 1]);

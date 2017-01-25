@@ -114,6 +114,10 @@ function refreshDatabase(async) {
 				['#FF0000', '#0000FF']);
 		}
 
+			//hackety hackety hack
+			var average = ageGroups.reduce((a,b) => { return a+b; }) / ageGroups.length;
+			updateGraphLegend("legend", symbols, ['Above Average', 'Below Average', 'Average: ' + average]);
+
 		//debugging
 		if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
 			console.log('Status:',httpRequest.status, httpRequest.responseText);
@@ -149,3 +153,46 @@ function clearInput() {
 	document.getElementById("income").value = '';
 }
 
+//hacky fix
+var symbols = [
+  '#FF0000',
+  '#0000FF',
+  {
+    symbol: "line",
+    stroke: "black",
+    strokeWidth: 2,
+    meta: "stroke-array",
+    value: "5,5"
+  }
+];
+
+//hacking a hack
+var padding = 0;
+
+function initializeGraphs() {
+  drawPieGraph("piegraph", 300, 300, {
+    top: 20,
+    left: 150 + padding,
+    right: 150 + padding,
+    bottom: 30
+  });
+  drawBarGraph("bargraph", 500, 300, {
+    top: 10,
+    left: 20 + padding,
+    right: 20 + padding,
+    bottom: 20
+  });
+  drawGraphLegend("legend", 150, 20, {
+    top: 0,
+    left: 0,
+    right: 150 * 2,
+    bottom: 0
+  }, {
+    horizontal: 150,
+    vertical: 0
+  },
+    "left",
+    symbols,
+    ['Above Average', 'Below Average', 'Average']
+  );
+}

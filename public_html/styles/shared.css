@@ -1,5 +1,4 @@
 body {
-	padding-bottom: 2rem;
 	background: #EEF;
 	font-size: 24pt;
 	margin: 0;
@@ -49,7 +48,6 @@ h2 {
 
 #formlist {
 	overflow: hidden;
-	display: inline-block;
 }
 
 #innerformlist {
@@ -84,8 +82,7 @@ button {
 	margin-bottom: 15px;
 }
 
-#datatable{
-	display: inline-block;
+#datatable {
 }
 
 table {
@@ -172,4 +169,3 @@ table tbody tr:hover td:nth-child(2n) {
 		padding-right: 10rem;
 	}
 }
-

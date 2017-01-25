@@ -155,8 +155,8 @@ function clearInput() {
 
 //hacky fix
 var symbols = [
-  '#FF0000',
   '#0000FF',
+  '#FF0000',
   {
     symbol: "line",
     stroke: "black",

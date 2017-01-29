@@ -3,37 +3,40 @@ Content-type:text/html
 <html>
   [% INCLUDE head.tt %]
 <body>
-  <body onLoad="refreshDatabase()">
+  <body onLoad="initializeGraphs();refreshDatabase();">
+
     <header>
-      <h1>Hello World!</h1>
+      <h1 class="centered">Hello World!</h1>
     </header>
 
-    <div class="super">
-      <div class="superleft bordered">
-        [% INCLUDE form_list.tt %]
+    <div class="content">
+      <div class="row">
+        <div class="bordered panel">
+          [% INCLUDE form_list.tt %]
+        </div>
+
+        <div class="bordered panel">
+         <h2 id="rowcount" class="centered"></h2>
+           <div class="scrollable">
+            <table id="entrylist" class="sortable"></table>
+           </div>
+        </div>
       </div>
 
-      <div class="superright bordered">
-        [% INCLUDE table.tt %]
+      <div class="row">
+        <div class="bordered panel">
+          <p class="centered">Income Range</p>
+          <div id="piegraph" class="centered"></div>
+        </div>
+
+        <div class="bordered panel">
+          <p class="centered">Age Range</p>
+          <div id="bargraph" class="centered"></div>
+          <div id="legend" class="centered"></div>
+        </div>
       </div>
     </div>
 
-    <div class="super">
-      <div class="superleft bordered centered">
-        <p>Income Range</p>
-        <div id="piegraph"></div>
-      </div>
-
-      <div class="superright bordered centered">
-        <p>Age Range</p>
-        <div id="bargraph"></div>
-        <div id="legend"></div>
-      </div>
-    </div>
-
-    <script>
-      initializeGraphs();
-    </script>
   </body>
 
   [% INCLUDE footer.tt %]

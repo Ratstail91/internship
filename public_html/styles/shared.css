@@ -1,4 +1,18 @@
+html {
+	box-sizing: border-box;
+}
+
+*,
+*:before
+*:after {
+	box-sizing: inherit;
+}
+
 body {
+	position: relative;
+	width: 100%;
+	min-height: 100%;
+	padding-bottom: 1rem;
 	background: #EEF;
 	font-size: 24pt;
 	margin: 0;
@@ -11,13 +25,8 @@ p {
 
 header {
 	background: #AAF;
-	font: arial;
 	padding: 50px;
 	margin: 0;
-}
-
-header h1 {
-	text-align: center;
 }
 
 footer {
@@ -69,12 +78,12 @@ h2 {
 	margin-right: 15px;
 }
 
-input {
+#formlist input {
 	width: 300px;
 	height: 50px;
 }
 
-button {
+#formlist button {
 	width: 150px;
 	height: 50px;
 	margin-top: 15px;
@@ -82,11 +91,9 @@ button {
 	margin-bottom: 15px;
 }
 
-#datatable {
-}
-
 table {
 	font-size: 24px;
+	width: 100%;
 }
 
 #rowcount {
@@ -135,21 +142,28 @@ table tbody tr:hover td:nth-child(2n) {
 	content: "\25BC";
 }
 
-.superleft {
+.content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex-basis: auto;
+	width: 90%;
+}
+
+.panel {
+	flex-grow: 1;
 	margin-top: 15px;
 	margin-right: 15px;
-	float: left;
 }
-
-.superright {
-	margin-top: 15px;
-	float: left;
-}
-
-.super {
-	display: table;
-	margin-right: auto;
-	margin-left: auto;
+	
+.panel:last-of-type {
+	margin-right: 0;
 }
 
 .bordered {
@@ -161,11 +175,3 @@ table tbody tr:hover td:nth-child(2n) {
 	text-align: center;
 }
 
-@media only screen and (min-width: 1024px) {
-	.min-stretch {
-		font-size: 14px;
-		padding-bottom: 1rem;
-		padding-left: 10rem;
-		padding-right: 10rem;
-	}
-}

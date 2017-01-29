@@ -1,6 +1,0 @@
-<div id="datatable">
-  <h2 id="rowcount"></h2>
-  <div class="scrollable">
-    <table id="entrylist" class="sortable"></table>
-  </div>
-</div>

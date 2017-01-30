@@ -62,6 +62,10 @@
 //equal to the number of elements minus one, and set width to equal a single
 //element width. Then, set shift.horizontal to equal width as normal.
 
+//TODO:
+//
+//All non-essential parameters to update*() can be -1 to keep as is.
+
 //-----------------------------------------------------------------------------
 
 //PARAM: id = the ID of a <div> element

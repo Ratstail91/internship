@@ -123,15 +123,15 @@ function refreshDatabase(async) {
 				],
 				 colorRange);
 
-			updateBarGraph("bargraph", 10, 'Approximate Age Ranges', 'Number In Each Range',
+			updateBarGraph("bargraph", -1, -1, -1,
 				ageGroups,
-				['<20yrs', '21-40yrs', '41-60yrs', '61yrs+'],
+				['<20', '21-40', '41-60', '61+'],
 				['#FF0000', '#0000FF']);
 		}
 
-			//hackety hackety hack
-			var average = ageGroups.reduce((a,b) => { return a+b; }) / ageGroups.length;
-			updateGraphLegend("legend", symbols, ['Above Average', 'Below Average', 'Average: ' + average]);
+		//hackety hackety hack
+		var average = ageGroups.reduce((a,b) => { return a+b; }) / ageGroups.length;
+		updateGraphLegend("legend", symbols, ['Above Average', 'Below Average', 'Average: ' + average]);
 
 		//debugging
 		if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
@@ -196,7 +196,7 @@ function initializeGraphs() {
     left: 30 + padding,
     right: 20 + padding,
     bottom: 20
-  });
+  }, 10, "Age Ranges", "Number Of People In Each Range");
   drawGraphLegend("legend", 150, 20, {
     top: 0,
     left: 0,

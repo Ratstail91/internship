@@ -6,14 +6,15 @@
 //graph.
 //
 //  function drawBarGraph(id, w, h, padding, barPadding = 1,
-//    dataset = [], labels = [], colors = [])
+//    xTitle = '', yTitle = '', dataset = [], labels = [], colors = [])
 //
 //drawBarGraph() creates a static SVG image of the bar graph, derived from the
 //given input. ‘id’ is the unique ID of the <div> object, w and h are simply
 //the width and height of the image canvas to create. Padding is a structure 
 //indicating how much empty space to insert along each edge of the SVG, with
 //separate fields for the top, left, right and bottom edges. barPadding
-//indicates how much space should be between each bar.
+//indicates how much space should be between each bar. xTitle and yTitle are
+//drawn along the X and Y axes, respectfully.
 //
 //‘dataset’ is the array of integers representing different bars of the graph.
 //‘labels’ is an array of strings containing each bar’s label. Finally, ‘color’
@@ -24,15 +25,16 @@
 //This function is designed to render static bar graphs, however it can be used
 //in conjunction with the following.
 //
-//  updateBarGraph(id, barPadding = -1,
+//  updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '',
 //    dataset = [], labels = [], colors = [], duration = 1000)
 //
 //This function is designed to act on a bar graph that was created by
 //drawBarGraph() (above). ‘id’ is the ID of the <div> element holding the SVG.
 //'barPadding' is the amount of space to place between bars or -1 to leave as
-//is. ‘dataset’ is the new data to be displayed, while ‘labels’ are their
-//corresponding labels. Finally, ‘colors’ must also be passed and, as above,
-//these are used to distinguish bars below or above the average.
+//is. xTitle and yTitle are drawn alongside the X & Y axes, respectfully; pass
+//-1 to leave as is. ‘dataset’ is the new data to be displayed, while ‘labels’
+//are their corresponding labels. Finally, ‘colors’ must also be passed and, as
+//above, these are used to distinguish bars below or above the average.
 //
 //There is an extra parameter here, “duration”. This allows you to set, in
 //milliseconds, the amount of time the transition between the previous graph
@@ -45,6 +47,10 @@
 //There is a graphical bug that occurs when adding to the tallest bar. This is
 //because the entire graph must shrink before the animation takes place, so a
 //jarring jump is present.
+
+//TODO:
+//
+//All non-essential parameters to update*() can be -1 to keep as is.
 
 //-----------------------------------------------------------------------------
 
@@ -299,60 +305,64 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
 
   //draw the titles
 
-  //x title
-  svg.select(".titles").selectAll(".x-title").remove();
+  if (xTitle !== -1) {
+    //x title
+    svg.select(".titles").selectAll(".x-title").remove();
 
-  var xTitleSelector = svg.select(".titles")
-    .selectAll("x-title")
-    .data([xTitle]);
+    var xTitleSelector = svg.select(".titles")
+      .selectAll("x-title")
+      .data([xTitle]);
 
-  xTitleSelector
-    .enter()
-    .append("text")
-    .text(function(d) { console.log(d);return d; })
-    .attr("class", "x-title")
-    .attr("x", function(d) { return padding.left + (w/2); } )
-    .attr("y", function(d) { return padding.top + h; } )
-    .attr("dy", "2em")
-    .attr("text-anchor", "middle");
+    xTitleSelector
+      .enter()
+      .append("text")
+      .text(function(d) { console.log(d);return d; })
+      .attr("class", "x-title")
+      .attr("x", function(d) { return padding.left + (w/2); } )
+      .attr("y", function(d) { return padding.top + h; } )
+      .attr("dy", "2em")
+      .attr("text-anchor", "middle");
 
-  xTitleSelector
-    .attr("fill", "black")
-    .attr("display", "inline")
-    .attr("font-size", 12)
-    .attr("font-family", "sans-serif");
+    xTitleSelector
+      .attr("fill", "black")
+      .attr("display", "inline")
+      .attr("font-size", 12)
+      .attr("font-family", "sans-serif");
 
-  xTitleSelector
-    .exit()
-    .remove();
+    xTitleSelector
+      .exit()
+      .remove();
+  }
 
-  //y title
-  svg.select(".titles").selectAll(".y-title").remove();
+  if (yTitle !== -1) {
+    //y title
+    svg.select(".titles").selectAll(".y-title").remove();
 
-  var yTitleSelector = svg.select(".titles")
-    .selectAll("y-title")
-    .data([yTitle]);
+    var yTitleSelector = svg.select(".titles")
+      .selectAll("y-title")
+      .data([yTitle]);
 
-  yTitleSelector
-    .enter()
-    .append("text")
-    .text(function(d) { console.log(d);return d; })
-    .attr("class", "y-title")
-    .attr("x", function(d) { return -padding.top - (h/2); } )
-    .attr("y", function(d) { return 0; } )
-    .attr("dy", titlePadding)
-    .attr("text-anchor", "middle");
+    yTitleSelector
+      .enter()
+      .append("text")
+      .text(function(d) { console.log(d);return d; })
+      .attr("class", "y-title")
+      .attr("x", function(d) { return -padding.top - (h/2); } )
+      .attr("y", function(d) { return 0; } )
+      .attr("dy", titlePadding)
+      .attr("text-anchor", "middle");
 
-  yTitleSelector
-    .attr("fill", "black")
-    .attr("display", "inline")
-    .attr("font-size", 12)
-    .attr("font-family", "sans-serif")
-    .attr("transform", "rotate(270)");
+    yTitleSelector
+      .attr("fill", "black")
+      .attr("display", "inline")
+      .attr("font-size", 12)
+      .attr("font-family", "sans-serif")
+      .attr("transform", "rotate(270)");
 
-  yTitleSelector
-    .exit()
-    .remove();
+    yTitleSelector
+      .exit()
+      .remove();
+  }
 
   //draw the X-axis line
   svg.select(".xaxis").remove();

@@ -37,6 +37,10 @@
 //power of d3, but as I said, updatePieGraph() can ONLY act on pie graphs
 //created by drawPieGraph(), it can’t create it’s own.
 
+//TODO:
+//
+//All non-essential parameters to update*() can be -1 to keep as is.
+
 //-----------------------------------------------------------------------------
 
 //PARAM: id = the ID of a <div> element

@@ -214,18 +214,17 @@ function initializeGraphs() {
     ['Above Average', 'Below Average', 'Average']
   );
 
-  drawGraphLegend("pielegend", 100, 50, {
+  drawGraphLegend("pielegend", 150, 80, {
     top: 0,
     left: 0,
     right: 0,
     bottom: 0
   }, {
     horizontal: 0,
-    vertical: 12
+    vertical: 14
   },
     "left",
     pieColorRange,
-    ['<20yrs', '21-40yrs', '41-60yrs', '61yrs+']
+    ['$0 - $18,200', '$18,201 - $37,000', '$37,001 - $80,000', '$80,001+']
   );
-
 }

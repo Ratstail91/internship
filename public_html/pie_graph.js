@@ -1,6 +1,6 @@
 //DOCS: pie_graph.js
 //
-//There are two functions in this file, which utilize d3 to draw a pie graph.
+//There are five functions in this file, which utilize d3 to draw a pie graph.
 //First, before calling either, you must ensure that there is a <div> object
 //with an ID somewhere in your project; this will be the container for the pie
 //graph.
@@ -36,6 +36,24 @@
 //state and the new one should take. This transition is animated thanks to the
 //power of d3, but as I said, updatePieGraph() can ONLY act on pie graphs
 //created by drawPieGraph(), it can’t create it’s own.
+//
+//  activateSlice(svg, index)
+//
+//This is a utility function used for manually activating a slice's mouse hover
+//animation. 'svg' is the svg created with drawPieGraph(), and 'index' is the
+//index of the slice to activate.
+//
+//  deactivateSlice(svg, index)
+//
+//Similar to activateSlice(), this function is used instead to reverse that
+//slice's animation. 'svg' is the svg created with drawPieGraph(), and 'index'
+//is the index of the slice to deactivate.
+//
+//  toggleSlice(svg, index)
+//
+//Finally, this slice will toggle a slice's activation state between on and
+//off. 'svg' is the svg created with drawPieGraph(), and 'index' is the index
+//of the slice to toggle.
 
 //TODO:
 //
@@ -138,6 +156,9 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
       }
     });
 
+  slices.on("mouseover", function(d, i) { activateSlice(svg, i); });
+  slices.on("mouseout", function(d, i) { deactivateSlice(svg, i); });
+
   slices
     .exit()
     .remove();
@@ -226,4 +247,82 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
     .remove();
 
   return svg;
+}
+
+//PARAM: svg = SVG object created with drawPieGraph()
+//PARAM: index = index of the slice to activate
+function activateSlice(svg, index) {
+  //utilities
+  var arc = d3.svg.arc()
+    .innerRadius(0)
+    .outerRadius(r);
+
+  var buffArc = d3.svg.arc()
+    .innerRadius(0)
+    .outerRadius(r*1.1);
+
+  //get the slices
+  var slices = svg.select(".slices").selectAll("path.slice");
+
+  slices
+    .filter(function(d, f) { return f === index; })
+    .attr("active", true)
+    .transition()
+    .duration(300)
+    .attrTween("d", function(d) {
+      var interpolate = d3.interpolate(arc(d), buffArc(d));
+      return function(t) {
+        return interpolate(t);
+      }
+    });
+}
+
+//PARAM: svg = SVG object created with drawPieGraph()
+//PARAM: index = index of the slice to deactivate
+function deactivateSlice(svg, index) {
+  //utilities
+  var arc = d3.svg.arc()
+    .innerRadius(0)
+    .outerRadius(r);
+
+  var buffArc = d3.svg.arc()
+    .innerRadius(0)
+    .outerRadius(r*1.1);
+
+  //get the slices
+  var slices = svg.select(".slices").selectAll("path.slice");
+
+  slices
+    .filter(function(d, f) { return f === index; })
+    .attr("active", false)
+    .transition()
+    .duration(300)
+    .attrTween("d", function(d) {
+      var interpolate = d3.interpolate(buffArc(d), arc(d));
+      return function(t) {
+        return interpolate(t);
+      }
+    });
+}
+
+//PARAM: svg = SVG object created with drawPieGraph()
+//PARAM: index = index of the slice to toggle
+function toggleSlice(svg, index) {
+  //get the slices
+  var slices = svg.select(".slices").selectAll("path.slice");
+
+  var active;
+
+  slices.each(function(d, i) {
+    if (i === index) {
+      active = d3.select(this).attr("active");
+    }
+  });
+
+  if (active) {
+    deactivateSlice(svg, index);
+  }
+  else {
+    activateSlice(svg, index);
+  }
 }

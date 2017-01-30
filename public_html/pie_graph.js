@@ -257,9 +257,17 @@ function activateSlice(svg, index) {
     .innerRadius(0)
     .outerRadius(r);
 
+  var outerArc = d3.svg.arc()
+    .innerRadius(r)
+    .outerRadius(r*1.1);
+
   var buffArc = d3.svg.arc()
     .innerRadius(0)
     .outerRadius(r*1.1);
+
+  var buffOuterArc = d3.svg.arc()
+    .innerRadius(r*1.1)
+    .outerRadius(r*1.2)
 
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");

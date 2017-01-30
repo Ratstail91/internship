@@ -107,7 +107,7 @@ function drawPieGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}
 function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1000) {
   var svg = d3.select("#" + id).select("svg");
 
-  //get width, height and padding
+  //get width, height, radius and padding
   var padding = {
     top: Number(svg.attr("padding-top")),
     left: Number(svg.attr("padding-left")),
@@ -252,6 +252,20 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to activate
 function activateSlice(svg, index) {
+  //constants
+  var duration = 300;
+
+  //get width, height, radius and padding
+  var padding = {
+    top: Number(svg.attr("padding-top")),
+    left: Number(svg.attr("padding-left")),
+    right: Number(svg.attr("padding-right")),
+    bottom: Number(svg.attr("padding-bottom"))
+  }
+  var w = svg.attr("width") - padding.left - padding.right;
+  var h = svg.attr("height") - padding.top - padding.bottom;
+  var r = Math.min(w, h) /2;
+
   //utilities
   var arc = d3.svg.arc()
     .innerRadius(0)
@@ -276,26 +290,103 @@ function activateSlice(svg, index) {
     .filter(function(d, f) { return f === index; })
     .attr("active", true)
     .transition()
-    .duration(300)
+    .duration(duration)
     .attrTween("d", function(d) {
+      //interpolate between the two positions
       var interpolate = d3.interpolate(arc(d), buffArc(d));
       return function(t) {
         return interpolate(t);
       }
+    });
+
+  var labels = svg.select(".labels").selectAll("text");
+
+  labels
+    .attr("display", "none")
+    .filter(function(d, f) { return f === index; })
+    .attr("display", "inline")
+    .transition()
+    .duration(duration)
+    .attrTween("transform", function(d, i) {
+      //interpolate between the two positions (of the slices)
+      var interpolate;
+
+      slices
+        .each(function(d, i) {
+          if (i === index) {
+            interpolate = d3.interpolate(outerArc.centroid(d), buffOuterArc.centroid(d));
+          }
+      });
+
+      return function(t) {
+        var interCenter = interpolate(t);
+        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
+        return "translate(" + [shift, interCenter[1]] + ")";
+      };
+    });
+
+  var lines = svg.select(".lines").selectAll("polyline");
+
+  lines
+    .attr("display", "none")
+    .filter(function(d, f) { return f === index; })
+    .attr("display", "inline")
+    .transition()
+    .duration(duration)
+    .attrTween("points", function(d, i) {
+      //interpolate between the two positions (of the slices)
+      var interpolate;
+      var pos;
+
+      slices
+        .each(function(d, i) {
+          if (i === index) {
+            interpolate = d3.interpolate(outerArc.centroid(d), buffOuterArc.centroid(d));
+            pos = arc.centroid(d);
+          }
+      });
+
+      return function(t) {
+        var interCenter = interpolate(t);
+        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
+        return "" + pos + " " + interCenter + " " + [shift, interCenter[1]];
+      };
     });
 }
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to deactivate
 function deactivateSlice(svg, index) {
+  //constants
+  var duration = 300;
+
+  //get width, height, radius and padding
+  var padding = {
+    top: Number(svg.attr("padding-top")),
+    left: Number(svg.attr("padding-left")),
+    right: Number(svg.attr("padding-right")),
+    bottom: Number(svg.attr("padding-bottom"))
+  }
+  var w = svg.attr("width") - padding.left - padding.right;
+  var h = svg.attr("height") - padding.top - padding.bottom;
+  var r = Math.min(w, h) /2;
+
   //utilities
   var arc = d3.svg.arc()
     .innerRadius(0)
     .outerRadius(r);
 
+  var outerArc = d3.svg.arc()
+    .innerRadius(r)
+    .outerRadius(r*1.1);
+
   var buffArc = d3.svg.arc()
     .innerRadius(0)
     .outerRadius(r*1.1);
+
+  var buffOuterArc = d3.svg.arc()
+    .innerRadius(r*1.1)
+    .outerRadius(r*1.2)
 
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
@@ -310,6 +401,58 @@ function deactivateSlice(svg, index) {
       return function(t) {
         return interpolate(t);
       }
+    });
+
+  var labels = svg.select(".labels").selectAll("text");
+
+  labels
+    .attr("display", "inline")
+    .filter(function(d, f) { return f === index; })
+    .transition()
+    .duration(duration)
+    .attrTween("transform", function(d, i) {
+      //interpolate between the two positions (of the slices)
+      var interpolate;
+
+      slices
+        .each(function(d, i) {
+          if (i === index) {
+            interpolate = d3.interpolate(buffOuterArc.centroid(d), outerArc.centroid(d));
+          }
+      });
+
+      return function(t) {
+        var interCenter = interpolate(t);
+        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
+        return "translate(" + [shift, interCenter[1]] + ")";
+      };
+    });
+
+  var lines = svg.select(".lines").selectAll("polyline");
+
+  lines
+    .attr("display", "inline")
+    .filter(function(d, f) { return f === index; })
+    .transition()
+    .duration(duration)
+    .attrTween("points", function(d, i) {
+      //interpolate between the two positions (of the slices)
+      var interpolate;
+      var pos;
+
+      slices
+        .each(function(d, i) {
+          if (i === index) {
+            interpolate = d3.interpolate(buffOuterArc.centroid(d), outerArc.centroid(d));
+            pos = arc.centroid(d);
+          }
+      });
+
+      return function(t) {
+        var interCenter = interpolate(t);
+        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
+        return "" + pos + " " + interCenter + " " + [shift, interCenter[1]];
+      };
     });
 }
 

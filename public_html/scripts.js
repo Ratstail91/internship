@@ -186,10 +186,10 @@ var padding = 0;
 
 function initializeGraphs() {
 
-  drawPieGraph("piegraph", 300, 300, {
-    top: 20,
-    left: 50 + padding,
-    right: 50 + padding,
+  drawPieGraph("piegraph", 340, 300, {
+    top: 30,
+    left: 30 + padding,
+    right: 30 + padding,
     bottom: 30
   });
 

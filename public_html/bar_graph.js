@@ -57,14 +57,19 @@
 //  right = padding on the right
 //  bottom = padding on the bottom
 //PARAM: barPadding = space between bars
+//PARAM: xTitle = name of the xAxis
+//PARAM: yTitle = name of the yAxis
 //PARAM: dataset = array of data to draw
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = pair of colors to use
-function drawBarGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, barPadding = 1, dataset = [], labels = [], colors = []) {
+function drawBarGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, barPadding = 1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = []) {
+  //constants
+  titlePadding = 12;
+
   //do the stuff
   var svg = d3.select("#" + id).append("svg")
-    .attr("width", w + padding.left + padding.right)
-    .attr("height", h + padding.top + padding.bottom)
+    .attr("width", w + padding.left + padding.right + titlePadding)
+    .attr("height", h + padding.top + padding.bottom + titlePadding)
     .attr("padding-top", padding.top)
     .attr("padding-left", padding.left)
     .attr("padding-right", padding.right)
@@ -78,19 +83,25 @@ function drawBarGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}
   svg.append("g").attr("class", "labels");
   svg.append("g").attr("class", "axis");
   svg.append("g").attr("class", "dashline");
+  svg.append("g").attr("class", "titles");
 
-  updateBarGraph(id, barPadding, dataset, labels, colors);
+  updateBarGraph(id, barPadding, xTitle, yTitle, dataset, labels, colors);
 
   return svg;
 }
 
 //PARAM: id = the ID of a <div> element
 //PARAM: barPadding = space between bars
+//PARAM: xTitle = name of the xAxis
+//PARAM: yTitle = name of the yAxis
 //PARAM: dataset = array of data to draw
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = pair of colors to use
 //PARAM: duration = time in ms update transition takes
-function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors = [], duration = 1000) {
+function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = [], duration = 1000) {
+  //constants
+  titlePadding = 12;
+
   var svg = d3.select("#" + id).select("svg");
 
   //calc barpadding
@@ -104,8 +115,8 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
     bottom: Number(svg.attr("padding-bottom"))
   }
 
-  var w = svg.attr("width") - padding.left - padding.right;
-  var h = svg.attr("height") - padding.top - padding.bottom;
+  var w = svg.attr("width") - padding.left - padding.right - titlePadding;
+  var h = svg.attr("height") - padding.top - padding.bottom - titlePadding;
 
   //utilities
   var colorOrdinal = d3.scale.ordinal().range([...colors]);
@@ -133,7 +144,7 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
     .append("text")
     .text(function(d) { return d; })
     .attr("class", "tips")
-    .attr("x", function(d, i) { return padding.left + i * (w/dataset.length) + (w/dataset.length - barPadding) / 2; })
+    .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length - barPadding) / 2; })
       .attr("text-anchor", "middle")
     .attr("y", function(d, i) { return padding.top + yScale(d); })
       .attr("dy", "1em");
@@ -169,7 +180,7 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
     .enter()
     .append("rect")
     .attr("class", "bar")
-    .attr("x", function(d, i) { return padding.left + i * (w / dataset.length); })
+    .attr("x", function(d, i) { return padding.left + titlePadding + i * (w / dataset.length); })
     .attr("y", function(d, i) { return padding.top + yScale(d); })
     .attr("width", w / dataset.length -barPadding)
     .attr("height", function(d) { return h - yScale(d); })
@@ -218,7 +229,7 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
     .append("text")
     .attr("class", "label")
     .text(function(d) { return d; })
-    .attr("x", function(d, i) { return padding.left + i * (w/dataset.length) + (w/dataset.length -barPadding) / 2; })
+    .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length -barPadding) / 2; })
       .attr("text-anchor", "middle")
     .attr("y", function(d, i) { return padding.top + h; })
       .attr("dy", "1em")
@@ -232,7 +243,7 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
     .orient("left");
 
   var axis = svg.select(".axis")
-    .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+    .attr("transform", "translate(" + (padding.left + titlePadding) + "," + padding.top + ")")
     .style("fill", "none")
     .style("stroke", "black")
     .style("shape-rendering", "crispEdges")
@@ -252,9 +263,9 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
   dashline
     .enter()
     .append("line")
-    .attr("x1", padding.left)
+    .attr("x1", padding.left + titlePadding)
     .attr("y1", function(d) { return padding.top + yScale(d); })
-    .attr("x2", padding.left + w)
+    .attr("x2", padding.left  + titlePadding + w)
     .attr("y2", function(d) { return padding.top + yScale(d); })
 
   dashline
@@ -286,16 +297,75 @@ function updateBarGraph(id, barPadding = -1, dataset = [], labels = [], colors =
     .exit()
     .remove();
 
+  //draw the titles
+
+  //x title
+  svg.select(".titles").selectAll(".x-title").remove();
+
+  var xTitleSelector = svg.select(".titles")
+    .selectAll("x-title")
+    .data([xTitle]);
+
+  xTitleSelector
+    .enter()
+    .append("text")
+    .text(function(d) { console.log(d);return d; })
+    .attr("class", "x-title")
+    .attr("x", function(d) { return padding.left + (w/2); } )
+    .attr("y", function(d) { return padding.top + h; } )
+    .attr("dy", "2em")
+    .attr("text-anchor", "middle");
+
+  xTitleSelector
+    .attr("fill", "black")
+    .attr("display", "inline")
+    .attr("font-size", 12)
+    .attr("font-family", "sans-serif");
+
+  xTitleSelector
+    .exit()
+    .remove();
+
+  //y title
+  svg.select(".titles").selectAll(".y-title").remove();
+
+  var yTitleSelector = svg.select(".titles")
+    .selectAll("y-title")
+    .data([yTitle]);
+
+  yTitleSelector
+    .enter()
+    .append("text")
+    .text(function(d) { console.log(d);return d; })
+    .attr("class", "y-title")
+    .attr("x", function(d) { return -padding.top - (h/2); } )
+    .attr("y", function(d) { return 0; } )
+    .attr("dy", titlePadding)
+    .attr("text-anchor", "middle");
+
+  yTitleSelector
+    .attr("fill", "black")
+    .attr("display", "inline")
+    .attr("font-size", 12)
+    .attr("font-family", "sans-serif")
+    .attr("transform", "rotate(270)");
+
+  yTitleSelector
+    .exit()
+    .remove();
+
   //draw the X-axis line
+  svg.select(".xaxis").remove();
+
   svg.append("g")
     .attr("class", "xaxis")
     .selectAll("line")
     .data([[0, h, w, h]])
     .enter()
     .append("line")
-    .attr("x1", (d) => { return padding.left + d[0]; })
+    .attr("x1", (d) => { return padding.left + titlePadding + d[0]; })
     .attr("y1", (d) => { return padding.top + d[1]; })
-    .attr("x2", (d) => { return padding.left + d[2]; })
+    .attr("x2", (d) => { return padding.left + titlePadding + d[2]; })
     .attr("y2", (d) => { return padding.top + d[3]; })
     .style("stroke", "black")
     .style("stroke-width", "2");

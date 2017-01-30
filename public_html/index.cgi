@@ -16,6 +16,6 @@ $template->process("index.tt", {
 	email => "email",
 	birthdate => "birthdate",
 	income => "income",
-	copyright => "Kayne Ruse",
+	copyright => "QPS Benchmarking",
 	copyrightYear => "2016-2017"
 });

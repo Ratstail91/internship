@@ -1,7 +1,7 @@
 //for use with the graphs
 var ageGroups = [0, 0, 0, 0];
 var incomeRange = [0, 0, 0, 0];
-var colorRange = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'];
+var colorRange = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF'];
 
 //INCREDIBLY BROKEN
 function parseDate(date) {
@@ -12,6 +12,16 @@ function parseDate(date) {
 	//subtract today
 	var today = new Date();
 	return today.getUTCFullYear() - date.getUTCFullYear();
+}
+
+function calcPercentage(integerArray, value) {
+	if (integerArray.length === 0) {
+		return -1;
+	}
+
+	var total = integerArray.reduce(function(a, b) { return a+b; });
+
+	return Math.round(value / total * 100);
 }
 
 function refreshDatabase(async) {
@@ -105,12 +115,17 @@ function refreshDatabase(async) {
 
 			updatePieGraph("piegraph",
 				incomeRange,
-				['<18,200','18,201-37,000','37,001-80,000','80,001+'],
+				[
+					calcPercentage(incomeRange, incomeRange[0]) + '%',
+					calcPercentage(incomeRange, incomeRange[1]) + '%',
+					calcPercentage(incomeRange, incomeRange[2]) + '%',
+					calcPercentage(incomeRange, incomeRange[3]) + '%'
+				],
 				 colorRange);
 
-			updateBarGraph("bargraph", 10, 
+			updateBarGraph("bargraph", 10, 'Approximate Age Ranges', 'Number In Each Range',
 				ageGroups,
-				['<20', '21-40', '41-60', '61+'],
+				['<20yrs', '21-40yrs', '41-60yrs', '61yrs+'],
 				['#FF0000', '#0000FF']);
 		}
 
@@ -178,7 +193,7 @@ function initializeGraphs() {
   });
   drawBarGraph("bargraph", 500, 300, {
     top: 10,
-    left: 20 + padding,
+    left: 30 + padding,
     right: 20 + padding,
     bottom: 20
   });

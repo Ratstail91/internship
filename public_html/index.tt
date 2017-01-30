@@ -10,7 +10,7 @@ Content-type:text/html
     </header>
 
     <div class="content">
-      <div class="row">
+      <div class="row" style="width: 90%">
         <div class="bordered panel">
           [% INCLUDE form_list.tt %]
         </div>
@@ -23,16 +23,19 @@ Content-type:text/html
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" style="width: 90%">
         <div class="bordered panel">
           <p class="centered">Income Range</p>
-          <div id="piegraph" class="centered"></div>
+          <div class="row centered">
+            <div id="piegraph" class="centered"></div>
+            <div id="pielegend" class="centered valign"></div>
+          </div>
         </div>
 
         <div class="bordered panel">
           <p class="centered">Age Range</p>
           <div id="bargraph" class="centered"></div>
-          <div id="legend" class="centered"></div>
+          <div id="barlegend" class="centered"></div>
         </div>
       </div>
     </div>

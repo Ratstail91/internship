@@ -316,7 +316,7 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
     xTitleSelector
       .enter()
       .append("text")
-      .text(function(d) { console.log(d);return d; })
+      .text(function(d) { return d; })
       .attr("class", "x-title")
       .attr("x", function(d) { return padding.left + (w/2); } )
       .attr("y", function(d) { return padding.top + h; } )
@@ -345,7 +345,7 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
     yTitleSelector
       .enter()
       .append("text")
-      .text(function(d) { console.log(d);return d; })
+      .text(function(d) { return d; })
       .attr("class", "y-title")
       .attr("x", function(d) { return -padding.top - (h/2); } )
       .attr("y", function(d) { return 0; } )

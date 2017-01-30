@@ -1,7 +1,7 @@
 //for use with the graphs
 var ageGroups = [0, 0, 0, 0];
 var incomeRange = [0, 0, 0, 0];
-var colorRange = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF'];
+var pieColorRange = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF'];
 
 //INCREDIBLY BROKEN
 function parseDate(date) {
@@ -121,7 +121,7 @@ function refreshDatabase(async) {
 					calcPercentage(incomeRange, incomeRange[2]) + '%',
 					calcPercentage(incomeRange, incomeRange[3]) + '%'
 				],
-				 colorRange);
+				 pieColorRange);
 
 			updateBarGraph("bargraph", -1, -1, -1,
 				ageGroups,
@@ -131,7 +131,7 @@ function refreshDatabase(async) {
 
 		//hackety hackety hack
 		var average = ageGroups.reduce((a,b) => { return a+b; }) / ageGroups.length;
-		updateGraphLegend("legend", symbols, ['Above Average', 'Below Average', 'Average: ' + average]);
+		updateGraphLegend("barlegend", symbols, ['Above Average', 'Below Average', 'Average: ' + average]);
 
 		//debugging
 		if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
@@ -185,19 +185,22 @@ var symbols = [
 var padding = 0;
 
 function initializeGraphs() {
+
   drawPieGraph("piegraph", 300, 300, {
     top: 20,
-    left: 150 + padding,
-    right: 150 + padding,
+    left: 50 + padding,
+    right: 50 + padding,
     bottom: 30
   });
+
   drawBarGraph("bargraph", 500, 300, {
     top: 10,
     left: 30 + padding,
     right: 20 + padding,
     bottom: 20
   }, 10, "Age Ranges", "Number Of People In Each Range");
-  drawGraphLegend("legend", 150, 20, {
+
+  drawGraphLegend("barlegend", 150, 20, {
     top: 0,
     left: 0,
     right: 150 * 2,
@@ -210,4 +213,19 @@ function initializeGraphs() {
     symbols,
     ['Above Average', 'Below Average', 'Average']
   );
+
+  drawGraphLegend("pielegend", 100, 50, {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  }, {
+    horizontal: 0,
+    vertical: 12
+  },
+    "left",
+    pieColorRange,
+    ['<20yrs', '21-40yrs', '41-60yrs', '61yrs+']
+  );
+
 }

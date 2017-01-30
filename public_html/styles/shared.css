@@ -153,7 +153,6 @@ table tbody tr:hover td:nth-child(2n) {
 	flex-direction: row;
 	flex-wrap: wrap;
 	flex-basis: auto;
-	width: 90%;
 }
 
 .panel {
@@ -161,7 +160,11 @@ table tbody tr:hover td:nth-child(2n) {
 	margin-top: 15px;
 	margin-right: 15px;
 }
-	
+
+.panel.nomargin {
+	margin: 0;
+}
+
 .panel:last-of-type {
 	margin-right: 0;
 }
@@ -173,5 +176,15 @@ table tbody tr:hover td:nth-child(2n) {
 
 .centered {
 	text-align: center;
+}
+
+.content .centered {
+	display: flex;
+	justify-content: center;
+}
+
+.valign {
+	display: flex;
+	align-items: center;
 }
 

@@ -126,7 +126,7 @@ function refreshDatabase(async) {
 			updateBarGraph("bargraph", -1, -1, -1,
 				ageGroups,
 				['<20', '21-40', '41-60', '61+'],
-				['#FF0000', '#0000FF']);
+				['#FF0000', '#0000FF', '#440000', '#000044']);
 		}
 
 		//hackety hackety hack

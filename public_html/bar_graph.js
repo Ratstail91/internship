@@ -20,7 +20,8 @@
 //‘labels’ is an array of strings containing each bar’s label. Finally, ‘color’
 //is a array of color codes (i.e. #FF0000; other formats may work, but are
 //unsupported). The first two colors are used to color bars that are below and
-//above the average bar, respectively.
+//above the average bar, respectively; the second two color the bars while they
+//are 'activated' (i.e. on mouse hover).
 //
 //This function is designed to render static bar graphs, however it can be used
 //in conjunction with the following.
@@ -34,13 +35,32 @@
 //is. xTitle and yTitle are drawn alongside the X & Y axes, respectfully; pass
 //-1 to leave as is. ‘dataset’ is the new data to be displayed, while ‘labels’
 //are their corresponding labels. Finally, ‘colors’ must also be passed and, as
-//above, these are used to distinguish bars below or above the average.
+//above, these are used to distinguish bars below or above the average, both in
+//inactive and active states.
 //
 //There is an extra parameter here, “duration”. This allows you to set, in
 //milliseconds, the amount of time the transition between the previous graph
 //state and the new one should take. This transition is animated thanks to the
 //power of d3, but as I said, updateBarGraph() can ONLY act on bar graphs
 //created by drawBarGraph(), it can’t create it’s own.
+//
+//  activateBar(svg, index)
+//
+//This is a utility function used for manually activating a bar's mouse hover
+//animation. 'svg' is the svg created with drawBarGraph(), and 'index' is the
+//index of the slice to activate.
+//
+//  deactivateBar(svg, index)
+//
+//Similar to activateBar(), this function is used instead to reverse that bar's
+//animation. 'svg' is the svg created with drawBarGraph(), and 'index'
+//is the index of the bar to deactivate.
+//
+//  toggleBar(svg, index)
+//
+//Finally, this slice will toggle a bar's activation state between on and off.
+//'svg' is the svg created with drawBarGraph(), and 'index' is the index of the
+//bar to toggle.
 
 //BUGS:
 //
@@ -124,6 +144,9 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
   var w = svg.attr("width") - padding.left - padding.right - titlePadding;
   var h = svg.attr("height") - padding.top - padding.bottom - titlePadding;
 
+  //store the given colors
+  svg.attr("colors", colors);
+
   //utilities
   var colorOrdinal = d3.scale.ordinal().range([...colors]);
   var max = Math.max(...dataset);
@@ -193,8 +216,12 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
     .attr("fill", (d) => { return colorOrdinal(d < average); });
 
   bars
-    .on("mouseover", (d, i) => {tooltips.style("display", (e, j) => {return i==j ? "inline":"none";}); })
-    .on("mouseout", (d, i) => { tooltips.style("display", "none"); });
+    .on("mouseover", function(d, i) {
+      activateBar(svg, i);
+    })
+    .on("mouseout", function(d, i) {
+      deactivateBar(svg, i);
+    });
 
   bars
     .transition()
@@ -382,3 +409,114 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
 
   return svg;
 }
+
+//PARAM: svg = SVG object created with drawBarGraph()
+//PARAM: index = index pf the bar to activate
+function activateBar(svg, index) {
+  //constants
+  duration = 100;
+
+  //get the bars
+  var bars = svg.select(".bars").selectAll("rect");
+
+  //calculate the average
+  var count = 0;
+  var total = 0;
+
+  bars.each(function(d) {
+    total = total + d;
+    count = count + 1;
+  });
+
+  var average = total / count;
+
+  //utilities
+  var colors = svg.attr("colors").split(",");
+
+  bars
+    .filter(function(d, f) { return index === f; })
+    .attr("active", true)
+    .transition()
+    .duration(duration)
+    .attrTween("fill", function(d) {
+      var lower = colors[(d<average) ? 0:1];
+      var upper = colors[(d<average) ? 2:3];
+      var interpolate = d3.interpolate(lower, upper);
+      return function(t) {
+        return interpolate(t);
+      }
+    });
+
+  var tooltips = svg.select(".tooltips").selectAll("text");
+
+  tooltips
+    .filter(function(d, f) { return f === index; })
+    .attr("display", "inline");
+}
+
+//PARAM: svg = SVG object created with drawBarGraph()
+//PARAM: index = index pf the bar to deactivate
+function deactivateBar(svg, index) {
+  //constants
+  duration = 100;
+
+  //get the bars
+  var bars = svg.select(".bars").selectAll("rect");
+
+  //calculate the average
+  var count = 0;
+  var total = 0;
+
+  bars.each(function(d) {
+    total = total + d;
+    count = count + 1;
+  });
+
+  var average = total / count;
+
+  //utilities
+  var colors = svg.attr("colors").split(",");
+
+  bars
+    .filter(function(d, f) { return index === f; })
+    .attr("active", false)
+    .transition()
+    .duration(duration)
+    .attrTween("fill", function(d) {
+      var lower = colors[(d<average) ? 0:1];
+      var upper = colors[(d<average) ? 2:3];
+      var interpolate = d3.interpolate(upper, lower);
+      return function(t) {
+        return interpolate(t);
+      }
+    });
+
+  var tooltips = svg.select(".tooltips").selectAll("text");
+
+  tooltips
+    .filter(function(d, f) { return f === index; })
+    .attr("display", "none");
+}
+
+//PARAM: svg = SVG object created with drawBarGraph()
+//PARAM: index = index pf the bar to toggle
+function toggleBar(svg, index) {
+  //get the bars
+  bars = svg.select(".bars").selectAll("rect");
+
+  var active;
+
+  slices.each(function(d, i) {
+    if (i === index) {
+      active = d3.select(this).attr("active");
+    }
+  });
+
+  if (active) {
+    deactivateBar(svg, index);
+  }
+  else {
+    activateBar(svg, index);
+  }
+}
+

@@ -211,7 +211,7 @@ function initializeGraphs() {
     bottom: 20
   }, 10, "Age Ranges", "Number Of People In Each Range");
 
-  drawGraphLegend("barlegend", 150, 20, {
+  drawGraphLegend("barlegend", 150, 16, {
     top: 0,
     left: 0,
     right: 150 * 2,

@@ -100,6 +100,7 @@ function drawGraphLegend(id, w, h, padding = {top: 0, left: 0, right: 0, bottom:
     .append("g");
 
   //add the classes (elements of the SVG)
+  svg.append("g").attr("class", "backgrounds");
   svg.append("g").attr("class", "labels");
   svg.append("g").attr("class", "symbols");
 
@@ -142,6 +143,7 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
     .enter()
     .append("text")
     .attr("class", "label")
+    .attr("active", false)
     .attr("font-size", 12)
     .attr("font-family", "sans-serif")
     .attr("dy", "1em")
@@ -150,7 +152,7 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
 
   labelSelector
     .text(function(d) { return d; })
-    .on("click", function(d, i) { if (callback) callback(i); });
+    .on("click", function(d, i) { toggleBackground(svg, i); if (callback) callback(i); });
 
   labelSelector
     .exit()
@@ -174,7 +176,7 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
     .attr("fill", function(d) { return colors[count++]; })
 
   symbolsRect
-    .on("click", function(d, i) { if (callback) callback(i); });
+    .on("click", function(d, i) { toggleBackground(svg, i); if (callback) callback(i); });
 
   //handle object = arbitrary data (customizable)
   var objects = symbols.filter(function(d) { return typeof(d) === 'object'; });
@@ -215,6 +217,69 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
       
   }
   else {
-    labelSelector.attr("dx", 20);
+    labelSelector.attr("dx", 24);
+  }
+
+  //place the backgrounds
+  var backgrounds = svg.select(".backgrounds")
+    .selectAll("rect")
+    .data(labels);
+
+  backgrounds
+    .enter()
+    .append("rect")
+    .attr("x", function(d, i) { return padding.left + i*(shift.horizontal) + 22; })
+    .attr("y", function(d, i) { return padding.top + i*(shift.vertical) + 1; })
+    .attr("width", w - 24) //BUG: width tends to be buggy
+    .attr("height", shift.vertical ? shift.vertical - 2 : h - 2)
+    .attr("fill", function(d) { return '#888888'; })
+    .attr("rx", 6)
+    .attr("ry", 6)
+    .attr("display", "none")
+    .attr("active", false);
+}
+
+function activateBackground(svg, index) {
+  //get the backgrounds
+  var backgrounds = svg.select(".backgrounds").selectAll("rect");
+
+  //change the background
+  backgrounds
+    .filter(function(d, f) { return index === f; })
+    .attr("display", "inline")
+    .attr("active", true);
+}
+
+function deactivateBackground(svg, index) {
+  //get the backgrounds
+  var backgrounds = svg.select(".backgrounds").selectAll("rect");
+
+  //change the background
+  backgrounds
+    .filter(function(d, f) { return index === f; })
+    .attr("display", "none")
+    .attr("active", false);
+}
+
+function toggleBackground(svg, index) {
+  //get the backgrounds
+  var backgrounds = svg.select(".backgrounds").selectAll("rect");
+
+  var active;
+
+  //find the state of the background 'index'
+  backgrounds.each(function(d, i) {
+    if (i === index) {
+      active = d3.select(this).attr("active");
+    }
+  });
+
+  //flip the given label
+  if (active === "true") {
+    deactivateBackground(svg, index);
+  }
+  else {
+    activateBackground(svg, index);
   }
 }
+

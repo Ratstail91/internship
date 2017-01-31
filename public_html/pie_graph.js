@@ -222,7 +222,8 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
     .attr("opacity", "1")
     .attr("stroke", "black")
     .attr("stroke-width", "2px")
-    .attr("fill", "none");
+    .attr("fill", "none")
+    .style("pointer-events", "none");
 
   lines
     .transition()
@@ -283,6 +284,8 @@ function activateSlice(svg, index) {
     .innerRadius(r*1.1)
     .outerRadius(r*1.2)
 
+  function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle)/2; };
+
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
 
@@ -296,6 +299,15 @@ function activateSlice(svg, index) {
       var interpolate = d3.interpolate(arc(d), buffArc(d));
       return function(t) {
         return interpolate(t);
+      }
+    })
+    .attrTween("transform", function(d) {
+      var interpolate = d3.interpolate([0,0], [
+        Math.cos(Math.PI/2-(midAngle(d))) * 5,
+        -Math.sin(Math.PI/2-(midAngle(d))) * 5
+      ]);
+      return function(t) {
+        return "translate(" + interpolate(t) + ")";
       }
     });
 
@@ -388,6 +400,8 @@ function deactivateSlice(svg, index) {
     .innerRadius(r*1.1)
     .outerRadius(r*1.2)
 
+  function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle)/2; };
+
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
 
@@ -400,6 +414,15 @@ function deactivateSlice(svg, index) {
       var interpolate = d3.interpolate(buffArc(d), arc(d));
       return function(t) {
         return interpolate(t);
+      }
+    })
+    .attrTween("transform", function(d) {
+      var interpolate = d3.interpolate([
+        Math.cos(Math.PI/2-(midAngle(d))) * 5,
+        -Math.sin(Math.PI/2-(midAngle(d))) * 5
+      ], [0,0]);
+      return function(t) {
+        return "translate(" + interpolate(t) + ")";
       }
     });
 

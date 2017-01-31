@@ -211,7 +211,8 @@ function initializeGraphs() {
   },
     "left",
     symbols,
-    ['Above Average', 'Below Average', 'Average']
+    ['Above Average', 'Below Average', 'Average'],
+    function(i) { console.log(i); }
   );
 
   drawGraphLegend("pielegend", 150, 80, {
@@ -225,6 +226,7 @@ function initializeGraphs() {
   },
     "left",
     pieColorRange,
-    ['$0 - $18,200', '$18,201 - $37,000', '$37,001 - $80,000', '$80,001+']
+    ['$0 - $18,200', '$18,201 - $37,000', '$37,001 - $80,000', '$80,001+'],
+    function(i) { console.log(i); }
   );
 }

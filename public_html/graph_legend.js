@@ -6,7 +6,7 @@
 //legend.
 //
 //  function drawGraphLegend(id, w, h, padding = {}, shift = {},
-//    placement = "left", symbols = [], labels = [])
+//    placement = "left", symbols = [], labels = [], callback = null)
 //
 //drawGraphLegend() creates a static SVG image of the legend, derived from the
 //given input. ‘id’ is the unique ID of the <div> object, w and h are simply
@@ -21,17 +21,19 @@
 //containing arbitrary data. The data structure must have a member called
 //"symbol", indicating the type of key to use. Currently, only a line is
 //implemented. See below for details. ‘labels’ is an array of strings
-//containing each key’s label.
+//containing each key’s label. Callback is a function that is called when the
+//label or symbol is clicked.
 //
 //This function is designed to render static legends, however it can be used in
 //conjunction with the following.
 //
-//  updateGraphLegend(id, symbols = [], labels = [])
+//  updateGraphLegend(id, symbols = [], labels = [], callback = null)
 //
 //This function is designed to act on a legend that was created by
 //drawGraphLegend() (above). ‘id’ is the ID of the <div> element holding the
-//SVG. 'symbols' and 'labels' are the replacements for the arguments given to
-//drawGraphLegend(). This function, although available, is not supported.
+//SVG. 'symbols', 'labels' and callback are the replacements for the arguments
+//given to drawGraphLegend(). This function, although available, is not
+//supported.
 //
 //Keys
 //
@@ -82,7 +84,8 @@
 //PARAM: placement = where to place the box, "left" or "right"
 //PARAM: symbols = colors/metadata to draw as a key
 //PARAM: labels = labels for the keys
-function drawGraphLegend(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, shift = {horizontal: 0, vertical: 0}, placement = "left", symbols = [], labels = []) {
+//PARAM: callback = the callback function used by onClick
+function drawGraphLegend(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, shift = {horizontal: 0, vertical: 0}, placement = "left", symbols = [], labels = [], callback = null) {
   //create SVG object
   var svg = d3.select("#" + id).append("svg")
     .attr("width", w + padding.left + padding.right)
@@ -100,12 +103,16 @@ function drawGraphLegend(id, w, h, padding = {top: 0, left: 0, right: 0, bottom:
   svg.append("g").attr("class", "labels");
   svg.append("g").attr("class", "symbols");
 
-  updateGraphLegend(id, symbols, labels);
+  updateGraphLegend(id, symbols, labels, callback);
 
   return svg; 
 }
 
-function updateGraphLegend(id, symbols = [], labels = []) {
+//PARAM: id = the ID of a <div> element
+//PARAM: symbols = colors/metadata to draw as a key
+//PARAM: labels = labels for the keys
+//PARAM: callback = the callback function used by onClick
+function updateGraphLegend(id, symbols = [], labels = [], callback) {
   var svg = d3.select("#" + id).select("svg");
 
   //get width, height, shift, padding and placement
@@ -139,7 +146,8 @@ function updateGraphLegend(id, symbols = [], labels = []) {
     .attr("font-family", "sans-serif")
     .attr("dy", "1em")
     .attr("x", function(d, i) { return padding.left + i*(shift.horizontal); })
-    .attr("y", function(d, i) { return padding.top + i*(shift.vertical); });
+    .attr("y", function(d, i) { return padding.top + i*(shift.vertical); })
+    .on("click", function(d, i) { if (callback) callback(i); });
 
   labelSelector
     .text(function(d) { return d; });
@@ -161,7 +169,8 @@ function updateGraphLegend(id, symbols = [], labels = []) {
     .attr("y", function(d, i) { return padding.top + symbols.indexOf(d)*shift.vertical +1; })
     .attr("width", 20)
     .attr("height", 12)
-    .attr("fill", function(d) { return colors[count++]; });
+    .attr("fill", function(d) { return colors[count++]; })
+    .on("click", function(d, i) { if (callback) callback(i); });
 
   //handle object = arbitrary data (customizable)
   var objects = symbols.filter(function(d) { return typeof(d) === 'object'; });
@@ -180,7 +189,8 @@ function updateGraphLegend(id, symbols = [], labels = []) {
           .attr("x2", function(d) { return padding.left + symbols.indexOf(d)*shift.horizontal + 20; })
           .attr("y2", function(d) { return padding.top  + symbols.indexOf(d)*shift.vertical + 7; })
           .attr("stroke", x.stroke)
-          .attr("stroke-width", x.strokeWidth);
+          .attr("stroke-width", x.strokeWidth)
+          .on("click", function(d, i) { if (callback) callback(i); });
 
         if (x.meta === "stroke-array") {
           l.attr("stroke-dasharray", x.value);

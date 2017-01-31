@@ -315,8 +315,13 @@ function activateSlice(svg, index) {
 
   labels
     .attr("display", "none")
+    .filter(function(d,i) {
+      return slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
+     })
+    .attr("display", "inline");
+
+  labels
     .filter(function(d, f) { return f === index; })
-    .attr("display", "inline")
     .transition()
     .duration(duration)
     .attrTween("transform", function(d, i) {
@@ -341,8 +346,13 @@ function activateSlice(svg, index) {
 
   lines
     .attr("display", "none")
+    .filter(function(d,i) {
+      return slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
+     })
+    .attr("display", "inline");
+
+  lines
     .filter(function(d, f) { return f === index; })
-    .attr("display", "inline")
     .transition()
     .duration(duration)
     .attrTween("points", function(d, i) {
@@ -428,8 +438,22 @@ function deactivateSlice(svg, index) {
 
   var labels = svg.select(".labels").selectAll("text");
 
+  var anyOn = false;
+
   labels
-    .attr("display", "inline")
+    .attr("display", "none")
+    .filter(function(d,i) {
+      ret = slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
+      if (ret) anyOn = true;
+      return ret;
+     })
+    .attr("display", "inline");
+
+  if (!anyOn) {
+    labels.attr("display", "inline");
+  }
+
+  labels
     .filter(function(d, f) { return f === index; })
     .transition()
     .duration(duration)
@@ -453,8 +477,22 @@ function deactivateSlice(svg, index) {
 
   var lines = svg.select(".lines").selectAll("polyline");
 
+  anyOn = false;
+
   lines
-    .attr("display", "inline")
+    .attr("display", "none")
+    .filter(function(d,i) {
+      ret = slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
+      if (ret) anyOn = true;
+      return ret;
+     })
+    .attr("display", "inline");
+
+  if (!anyOn) {
+    lines.attr("display", "inline");
+  }
+
+  lines
     .filter(function(d, f) { return f === index; })
     .transition()
     .duration(duration)

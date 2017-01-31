@@ -160,9 +160,11 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
   var colors = symbols.filter(function(d) { return typeof(d) === 'string'; });
   var count = 0;
 
-  svg.select(".symbols")
+  var symbolsRect = svg.select(".symbols")
     .selectAll("rect")
-    .data(colors)
+    .data(colors);
+
+  symbolsRect
     .enter()
     .append("rect")
     .attr("x", function(d, i) { return padding.left + symbols.indexOf(d)*shift.horizontal; })
@@ -170,6 +172,9 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
     .attr("width", 20)
     .attr("height", 12)
     .attr("fill", function(d) { return colors[count++]; })
+
+  symbolsRect
+    .on("click", function(d, i) { if (callback) callback(i); });
 
   //handle object = arbitrary data (customizable)
   var objects = symbols.filter(function(d) { return typeof(d) === 'object'; });

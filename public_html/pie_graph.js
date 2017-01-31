@@ -289,6 +289,7 @@ function activateSlice(svg, index) {
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
 
+  //find and tweak slice 'index'
   slices
     .filter(function(d, f) { return f === index; })
     .attr("active", true)
@@ -311,8 +312,10 @@ function activateSlice(svg, index) {
       }
     });
 
+  //get the labels
   var labels = svg.select(".labels").selectAll("text");
 
+  //enable only the active labels
   labels
     .attr("display", "none")
     .filter(function(d,i) {
@@ -320,6 +323,7 @@ function activateSlice(svg, index) {
      })
     .attr("display", "inline");
 
+  //find and tweak label 'index'
   labels
     .filter(function(d, f) { return f === index; })
     .transition()
@@ -342,8 +346,10 @@ function activateSlice(svg, index) {
       };
     });
 
+  //get the lines
   var lines = svg.select(".lines").selectAll("polyline");
 
+  //enable only the active lines
   lines
     .attr("display", "none")
     .filter(function(d,i) {
@@ -351,6 +357,7 @@ function activateSlice(svg, index) {
      })
     .attr("display", "inline");
 
+  //find and tweak the line 'index'
   lines
     .filter(function(d, f) { return f === index; })
     .transition()
@@ -415,6 +422,7 @@ function deactivateSlice(svg, index) {
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
 
+  //find and tweak the slice 'index'
   slices
     .filter(function(d, f) { return f === index; })
     .attr("active", false)
@@ -436,10 +444,13 @@ function deactivateSlice(svg, index) {
       }
     });
 
+  //get the labels
   var labels = svg.select(".labels").selectAll("text");
 
+  //determine how many labels are active
   var anyOn = false;
 
+  //enable only the active labels
   labels
     .attr("display", "none")
     .filter(function(d,i) {
@@ -449,10 +460,12 @@ function deactivateSlice(svg, index) {
      })
     .attr("display", "inline");
 
+  //enable all labels if none are active
   if (!anyOn) {
     labels.attr("display", "inline");
   }
 
+  //find and tweak the label 'index'
   labels
     .filter(function(d, f) { return f === index; })
     .transition()
@@ -475,10 +488,13 @@ function deactivateSlice(svg, index) {
       };
     });
 
+  //get the lines
   var lines = svg.select(".lines").selectAll("polyline");
 
+  //determine how many lines are active
   anyOn = false;
 
+  //enable only the active lines
   lines
     .attr("display", "none")
     .filter(function(d,i) {
@@ -488,10 +504,12 @@ function deactivateSlice(svg, index) {
      })
     .attr("display", "inline");
 
+  //enable all lines if none are active
   if (!anyOn) {
     lines.attr("display", "inline");
   }
 
+  //find and tweak the line 'index'
   lines
     .filter(function(d, f) { return f === index; })
     .transition()
@@ -525,12 +543,14 @@ function toggleSlice(svg, index) {
 
   var active;
 
+  //find the state of the slice 'index'
   slices.each(function(d, i) {
     if (i === index) {
       active = d3.select(this).attr("active");
     }
   });
 
+  //flip the given slice
   if (active === "true") {
     deactivateSlice(svg, index);
   }

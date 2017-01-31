@@ -133,7 +133,7 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
 
-  //handle the labels
+  //adjust the labels
   var labelSelector = svg.select(".labels")
     .selectAll("text")
     .data(labels);

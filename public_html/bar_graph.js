@@ -163,7 +163,7 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
     .domain([0, max])
     .range([h, 1]);
 
-  //create the tooltips
+  //adjust the tooltips
   tooltips = svg.select(".tooltips")
     .selectAll("text")
     .data(dataset);
@@ -200,7 +200,7 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
     .exit()
     .remove();
 
-  //create the bars
+  //adjust the bars
   bars = svg.select(".bars")
     .selectAll("rect")
     .data(dataset);
@@ -330,8 +330,7 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
     .exit()
     .remove();
 
-  //draw the titles
-
+  //draw the titles (x & y)
   if (xTitle !== -1) {
     //x title
     svg.select(".titles").selectAll(".x-title").remove();
@@ -433,6 +432,7 @@ function activateBar(svg, index) {
   //utilities
   var colors = svg.attr("colors").split(",");
 
+  //find and tweak the bar 'index'
   bars
     .filter(function(d, f) { return index === f; })
     .attr("active", true)
@@ -447,8 +447,10 @@ function activateBar(svg, index) {
       }
     });
 
+  //get the tooltips
   var tooltips = svg.select(".tooltips").selectAll("text");
 
+  //find and tweak the tooltip 'index'
   tooltips
     .filter(function(d, f) { return f === index; })
     .attr("display", "inline");
@@ -477,6 +479,7 @@ function deactivateBar(svg, index) {
   //utilities
   var colors = svg.attr("colors").split(",");
 
+  //find and tweak the bar 'index'
   bars
     .filter(function(d, f) { return index === f; })
     .attr("active", false)
@@ -491,8 +494,10 @@ function deactivateBar(svg, index) {
       }
     });
 
+  //get the tooptips
   var tooltips = svg.select(".tooltips").selectAll("text");
 
+  //find and tweak the tooltip 'index'
   tooltips
     .filter(function(d, f) { return f === index; })
     .attr("display", "none");
@@ -506,12 +511,14 @@ function toggleBar(svg, index) {
 
   var active;
 
+  //find the state of the slice 'index'
   bars.each(function(d, i) {
     if (i === index) {
       active = d3.select(this).attr("active");
     }
   });
 
+  //flip the given slice
   if (active === "true") {
     deactivateBar(svg, index);
   }

@@ -493,7 +493,7 @@ function toggleSlice(svg, index) {
     }
   });
 
-  if (active) {
+  if (active === "true") {
     deactivateSlice(svg, index);
   }
   else {

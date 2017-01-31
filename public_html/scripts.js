@@ -129,9 +129,20 @@ function refreshDatabase(async) {
 				['#FF0000', '#0000FF', '#440000', '#000044']);
 		}
 
-		//hackety hackety hack
+		//hackety hack (sung to the theme of Yakkety Yak)
 		var average = ageGroups.reduce((a,b) => { return a+b; }) / ageGroups.length;
-		updateGraphLegend("barlegend", symbols, ['Above Average', 'Below Average', 'Average: ' + average]);
+		updateGraphLegend("barlegend", symbols,
+                  ['Above Average', 'Below Average', 'Average: ' + average],
+                  function(clicked) {
+                    var barGraphSVG = d3.select("#bargraph").select("svg");
+                    for (var i = 0; i < ageGroups.length; i++) {
+                      var group = ageGroups[i] < average;
+                      if (group == clicked) {
+                        toggleBar(barGraphSVG, i);
+                      }
+                    }
+                  }
+                );
 
 		//debugging
 		if (httpRequest.readyState === 4 && httpRequest.status !== 200) {
@@ -212,7 +223,7 @@ function initializeGraphs() {
     "left",
     symbols,
     ['Above Average', 'Below Average', 'Average'],
-    function(i) { console.log(i); }
+    function(i) { console.log("bargraph", i); }
   );
 
   drawGraphLegend("pielegend", 150, 80, {
@@ -227,6 +238,6 @@ function initializeGraphs() {
     "left",
     pieColorRange,
     ['$0 - $18,200', '$18,201 - $37,000', '$37,001 - $80,000', '$80,001+'],
-    function(i) { console.log(i); }
+    function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i); }
   );
 }

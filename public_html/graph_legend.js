@@ -146,11 +146,11 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
     .attr("font-family", "sans-serif")
     .attr("dy", "1em")
     .attr("x", function(d, i) { return padding.left + i*(shift.horizontal); })
-    .attr("y", function(d, i) { return padding.top + i*(shift.vertical); })
-    .on("click", function(d, i) { if (callback) callback(i); });
+    .attr("y", function(d, i) { return padding.top + i*(shift.vertical); });
 
   labelSelector
-    .text(function(d) { return d; });
+    .text(function(d) { return d; })
+    .on("click", function(d, i) { if (callback) callback(i); });
 
   labelSelector
     .exit()
@@ -170,7 +170,6 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
     .attr("width", 20)
     .attr("height", 12)
     .attr("fill", function(d) { return colors[count++]; })
-    .on("click", function(d, i) { if (callback) callback(i); });
 
   //handle object = arbitrary data (customizable)
   var objects = symbols.filter(function(d) { return typeof(d) === 'object'; });
@@ -190,7 +189,6 @@ function updateGraphLegend(id, symbols = [], labels = [], callback) {
           .attr("y2", function(d) { return padding.top  + symbols.indexOf(d)*shift.vertical + 7; })
           .attr("stroke", x.stroke)
           .attr("stroke-width", x.strokeWidth)
-          .on("click", function(d, i) { if (callback) callback(i); });
 
         if (x.meta === "stroke-array") {
           l.attr("stroke-dasharray", x.value);

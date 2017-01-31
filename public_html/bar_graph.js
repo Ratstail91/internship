@@ -506,13 +506,13 @@ function toggleBar(svg, index) {
 
   var active;
 
-  slices.each(function(d, i) {
+  bars.each(function(d, i) {
     if (i === index) {
       active = d3.select(this).attr("active");
     }
   });
 
-  if (active) {
+  if (active === "true") {
     deactivateBar(svg, index);
   }
   else {

@@ -44,23 +44,26 @@
 //power of d3, but as I said, updateBarGraph() can ONLY act on bar graphs
 //created by drawBarGraph(), it can’t create it’s own.
 //
-//  activateBar(svg, index)
+//  activateBar(svg, index, lock)
 //
 //This is a utility function used for manually activating a bar's mouse hover
 //animation. 'svg' is the svg created with drawBarGraph(), and 'index' is the
-//index of the slice to activate.
+//index of the bar to activate. 'lock' is whether the bar should be locked in
+//it's activated state.
 //
-//  deactivateBar(svg, index)
+//  deactivateBar(svg, index, unlock)
 //
 //Similar to activateBar(), this function is used instead to reverse that bar's
 //animation. 'svg' is the svg created with drawBarGraph(), and 'index'
-//is the index of the bar to deactivate.
+//is the index of the bar to deactivate. 'unlock' is whether the bar should be
+//forcibly unlocked from it's locked state.
 //
-//  toggleBar(svg, index)
+//  toggleBar(svg, index, lock)
 //
-//Finally, this slice will toggle a bar's activation state between on and off.
+//Finally, this bar will toggle a bar's activation state between on and off.
 //'svg' is the svg created with drawBarGraph(), and 'index' is the index of the
-//bar to toggle.
+//bar to toggle. 'lock' is passed as the third parameter to activateBar() and
+//deactivateBar().
 
 //BUGS:
 //
@@ -411,12 +414,17 @@ function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset =
 
 //PARAM: svg = SVG object created with drawBarGraph()
 //PARAM: index = index pf the bar to activate
-function activateBar(svg, index) {
+function activateBar(svg, index, lock = false) {
   //constants
   duration = 100;
 
   //get the bars
   var bars = svg.select(".bars").selectAll("rect");
+
+  //if the bar 'index' is locked, return
+  if (bars.filter(function(d, f) { return f === index; }).attr("locked") === "true") {
+    return;
+  }
 
   //calculate the average
   var count = 0;
@@ -436,6 +444,7 @@ function activateBar(svg, index) {
   bars
     .filter(function(d, f) { return index === f; })
     .attr("active", true)
+    .attr("locked", lock)
     .transition()
     .duration(duration)
     .attrTween("fill", function(d) {
@@ -458,12 +467,20 @@ function activateBar(svg, index) {
 
 //PARAM: svg = SVG object created with drawBarGraph()
 //PARAM: index = index pf the bar to deactivate
-function deactivateBar(svg, index) {
+function deactivateBar(svg, index, unlock = false) {
   //constants
   duration = 100;
 
   //get the bars
   var bars = svg.select(".bars").selectAll("rect");
+
+  //if the bar is locked, and unlock is not true, return
+  if (
+    bars.filter(function(d, f) { return f === index; }).attr("locked") === "true" &&
+    unlock != true
+    ) {
+    return;
+  }
 
   //calculate the average
   var count = 0;
@@ -483,6 +500,7 @@ function deactivateBar(svg, index) {
   bars
     .filter(function(d, f) { return index === f; })
     .attr("active", false)
+    .attr("locked", false)
     .transition()
     .duration(duration)
     .attrTween("fill", function(d) {
@@ -505,25 +523,25 @@ function deactivateBar(svg, index) {
 
 //PARAM: svg = SVG object created with drawBarGraph()
 //PARAM: index = index pf the bar to toggle
-function toggleBar(svg, index) {
+function toggleBar(svg, index, lock) {
   //get the bars
   bars = svg.select(".bars").selectAll("rect");
 
   var active;
 
-  //find the state of the slice 'index'
+  //find the state of the bar 'index'
   bars.each(function(d, i) {
     if (i === index) {
       active = d3.select(this).attr("active");
     }
   });
 
-  //flip the given slice
+  //flip the given bar
   if (active === "true") {
-    deactivateBar(svg, index);
+    deactivateBar(svg, index, lock);
   }
   else {
-    activateBar(svg, index);
+    activateBar(svg, index, lock);
   }
 }
 

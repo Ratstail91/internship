@@ -138,7 +138,7 @@ function refreshDatabase(async) {
                     for (var i = 0; i < ageGroups.length; i++) {
                       var group = ageGroups[i] < average;
                       if (group == clicked) {
-                        toggleBar(barGraphSVG, i);
+                        toggleBar(barGraphSVG, i, true);
                       }
                     }
                   }
@@ -238,6 +238,6 @@ function initializeGraphs() {
     "left",
     pieColorRange,
     ['$0 - $18,200', '$18,201 - $37,000', '$37,001 - $80,000', '$80,001+'],
-    function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i); }
+    function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i, true); }
   );
 }

@@ -37,23 +37,26 @@
 //power of d3, but as I said, updatePieGraph() can ONLY act on pie graphs
 //created by drawPieGraph(), it can’t create it’s own.
 //
-//  activateSlice(svg, index)
+//  activateSlice(svg, index, lock)
 //
 //This is a utility function used for manually activating a slice's mouse hover
 //animation. 'svg' is the svg created with drawPieGraph(), and 'index' is the
-//index of the slice to activate.
+//index of the slice to activate. 'lock' is whether the slice should be locked
+//in it's activated state.
 //
-//  deactivateSlice(svg, index)
+//  deactivateSlice(svg, index, unlock)
 //
 //Similar to activateSlice(), this function is used instead to reverse that
 //slice's animation. 'svg' is the svg created with drawPieGraph(), and 'index'
-//is the index of the slice to deactivate.
+//is the index of the slice to deactivate. 'unlock' is whether the slice should
+//be forcibly unlocked from it's locked state.
 //
-//  toggleSlice(svg, index)
+//  toggleSlice(svg, index, lock)
 //
 //Finally, this slice will toggle a slice's activation state between on and
 //off. 'svg' is the svg created with drawPieGraph(), and 'index' is the index
-//of the slice to toggle.
+//of the slice to toggle. 'lock' is passed as the third parameter to
+//activateSlice() and deactivateSlice().
 
 //TODO:
 //
@@ -252,7 +255,7 @@ function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to activate
-function activateSlice(svg, index) {
+function activateSlice(svg, index, lock = false) {
   //constants
   var duration = 300;
 
@@ -289,10 +292,16 @@ function activateSlice(svg, index) {
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
 
+  //if the slice 'index' is locked, return
+  if (slices.filter(function(d, f) { return f === index; }).attr("locked") === "true") {
+    return;
+  }
+
   //find and tweak slice 'index'
   slices
     .filter(function(d, f) { return f === index; })
     .attr("active", true)
+    .attr("locked", lock)
     .transition()
     .duration(duration)
     .attrTween("d", function(d) {
@@ -385,7 +394,7 @@ function activateSlice(svg, index) {
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to deactivate
-function deactivateSlice(svg, index) {
+function deactivateSlice(svg, index, unlock = false) {
   //constants
   var duration = 300;
 
@@ -422,10 +431,19 @@ function deactivateSlice(svg, index) {
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
 
+  //if the slice is locked, and unlock is not true, return
+  if (
+    slices.filter(function(d, f) { return f === index; }).attr("locked") === "true" &&
+    unlock != true
+  ) {
+    return;
+  }
+
   //find and tweak the slice 'index'
   slices
     .filter(function(d, f) { return f === index; })
     .attr("active", false)
+    .attr("locked", false)
     .transition()
     .duration(300)
     .attrTween("d", function(d) {
@@ -537,7 +555,7 @@ function deactivateSlice(svg, index) {
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to toggle
-function toggleSlice(svg, index) {
+function toggleSlice(svg, index, lock = false) {
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");
 
@@ -552,9 +570,9 @@ function toggleSlice(svg, index) {
 
   //flip the given slice
   if (active === "true") {
-    deactivateSlice(svg, index);
+    deactivateSlice(svg, index, lock);
   }
   else {
-    activateSlice(svg, index);
+    activateSlice(svg, index, lock);
   }
 }

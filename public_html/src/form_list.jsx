@@ -114,7 +114,7 @@ class FormList extends React.Component {
         </div>
 
         <div className="row">
-          <div className="column"></div>
+          <div className="column computer only"></div>
           <div className="column">
             <Button className="massive ui button right aligned" type="submit" onClick={this.myClick.bind(this)}>Submit</Button>
           </div>

@@ -66,7 +66,7 @@ class FormList extends React.Component {
   //render
   render() {
     return (
-      <div id="formlist" className="superleft ui two column equal width grid five wide column right aligned card">
+      <div id="formlist" className="ui two equal width grid four wide column right aligned card">
 
         <div className="row">
           <div className="column computer only">

@@ -83,10 +83,6 @@ class PieGraph extends React.Component {
       ],
       pieColorRange
     );
-
-//    updatePieLegend(
-//      d3.select("#pielegend")
-//    );
   }
 
   calcPercentage(integerArray, value) {

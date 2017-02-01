@@ -174,7 +174,6 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
   tooltips
     .enter()
     .append("text")
-    .text(function(d) { return d; })
     .attr("class", "tips")
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length - barPadding) / 2; })
       .attr("text-anchor", "middle")
@@ -182,6 +181,7 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
       .attr("dy", "1em");
 
   tooltips
+    .text(function(d) { return d; })
     .attr("fill", "white")
     .attr("display", "none")
     .attr("font-size", 12)

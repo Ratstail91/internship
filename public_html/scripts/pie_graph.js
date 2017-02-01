@@ -90,7 +90,7 @@ function drawPieGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}
     .append("g")
     //move the origin to the center of the image
     .attr("transform", "translate(" + (padding.left + (w / 2)) + "," + (padding.top + (h / 2)) + ")");
-
+console.log("MARK 1", svg);
   //add the classes (elements of the SVG)
   svg.append("g").attr("class", "slices");
   svg.append("g").attr("class", "labels");
@@ -109,7 +109,7 @@ function drawPieGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}
 //PARAM: duration = time in ms update transition takes
 function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1000) {
   var svg = d3.select("#" + id).select("svg");
-
+console.log("MARK 2: ", svg);
   //get width, height, radius and padding
   var padding = {
     top: Number(svg.attr("padding-top")),

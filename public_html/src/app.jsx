@@ -39,8 +39,10 @@ class App extends React.Component {
         <div className="ui stackable centered two column grid">
           <FormList store={store} />
           <TablePanel store={store} />
+          <PieGraph store={store} />
+          <BarGraph store={store} />
         </div>
-        <Footer copyright="Kayne Ruse" copyrightYear="2016-2017" />
+        <Footer copyright="QPS Benchmarking" copyrightYear="2016-2017" />
       </div>
     );
   }

@@ -57,21 +57,35 @@ footer {
 }
 
 /* -- FORM LIST */
+#formlist {
+	overflow: hidden;
+	margin-top: 15px;
+	margin-right: 15px;
+	margin-bottom: 0;
+	display: inline-block;
+	font-size: 24px;
+}
+
+.ui.input input {
+	min-width: 100%;
+}
 
 /* -- DATATABLE */
 .scrollable {
 	overflow-y: scroll;
-	height: 500px;
+	height: 495px;
 }
 
 .ui.table thead th {
-	border: 1px solid #000;
+	border: 0px solid #000;
 	border-bottom: 3px solid #000;
+	text-align: center;
 	margin: 0;
 }
 
 .ui.table tbody tr td {
-	padding: 0;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	margin: 0;
 }
 

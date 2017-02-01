@@ -8,6 +8,7 @@ class PieGraph extends React.Component {
   render() {
     return (
       <div id="piegraph" className="superright ui five wide column left aligned card">
+        <p>"SAMPLE TEXT"</p>
       </div>
     );
   }

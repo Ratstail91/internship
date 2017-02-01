@@ -90,7 +90,7 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
     .append("g")
     //move the origin to the center of the image
     .attr("transform", "translate(" + (padding.left + (w / 2)) + "," + (padding.top + (h / 2)) + ")");
-console.log("MARK 1", svg);
+
   //add the classes (elements of the SVG)
   svg.append("g").attr("class", "slices");
   svg.append("g").attr("class", "labels");
@@ -144,8 +144,8 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
   slices
     .enter()
     .append("path")
-    .attr("fill", (d, i) => { return colorOrdinal(i); })
     .attr("class", "slice")
+    .attr("fill", (d, i) => { return colorOrdinal(i); });
 
   slices
     .transition()
@@ -179,10 +179,10 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
     .attr("class", "label")
     .attr("dy", ".35em")
     .attr("font-size", "14px")
-    .style("fill", function(d, i) { return colorOrdinal(i); })
-    .text(function(d) { return d; });
+    .style("fill", function(d, i) { return colorOrdinal(i); });
 
   labels
+    .text(function(d) { return d; })
     .transition()
     .duration(duration)
     .attrTween("transform", function(d, i) {

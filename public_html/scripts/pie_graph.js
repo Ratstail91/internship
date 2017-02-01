@@ -75,12 +75,12 @@
 //PARAM: dataset = array of data to draw
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = array of colors to use
-function drawPieGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = [], labels = [], colors = []) {
+function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = [], labels = [], colors = []) {
   //calc radius
   r = Math.min(w, h) /2;
 
   //create the SVG object
-  var svg = d3.select("#" + id).append("svg")
+  var svg = d3.select(node).append("svg")
     .attr("width", w + padding.left + padding.right)
     .attr("height", h + padding.top + padding.bottom)
     .attr("padding-top", padding.top)
@@ -97,7 +97,7 @@ console.log("MARK 1", svg);
   svg.append("g").attr("class", "lines");
 
   //call the lower part of this process
-  updatePieGraph(id, dataset, labels, colors, 1000);
+  updatePieGraph(node, dataset, labels, colors, 1000);
 
   return svg;
 }
@@ -107,9 +107,9 @@ console.log("MARK 1", svg);
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = array of colors to use
 //PARAM: duration = time in ms update transition takes
-function updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1000) {
-  var svg = d3.select("#" + id).select("svg");
-console.log("MARK 2: ", svg);
+function updatePieGraph(node, dataset = [], labels = [], colors = [], duration = 1000) {
+  var svg = d3.select(node).select("svg");
+
   //get width, height, radius and padding
   var padding = {
     top: Number(svg.attr("padding-top")),

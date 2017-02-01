@@ -85,9 +85,9 @@
 //PARAM: symbols = colors/metadata to draw as a key
 //PARAM: labels = labels for the keys
 //PARAM: callback = the callback function used by onClick
-function drawGraphLegend(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, shift = {horizontal: 0, vertical: 0}, placement = "left", symbols = [], labels = [], callback = null) {
+function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, shift = {horizontal: 0, vertical: 0}, placement = "left", symbols = [], labels = [], callback = null) {
   //create SVG object
-  var svg = d3.select("#" + id).append("svg")
+  var svg = d3.select(node).append("svg")
     .attr("width", w + padding.left + padding.right)
     .attr("height", h + padding.top + padding.bottom)
     .attr("padding-top", padding.top)
@@ -104,7 +104,7 @@ function drawGraphLegend(id, w, h, padding = {top: 0, left: 0, right: 0, bottom:
   svg.append("g").attr("class", "labels");
   svg.append("g").attr("class", "symbols");
 
-  updateGraphLegend(id, symbols, labels, callback);
+  updateGraphLegend(node, symbols, labels, callback);
 
   return svg; 
 }
@@ -113,8 +113,8 @@ function drawGraphLegend(id, w, h, padding = {top: 0, left: 0, right: 0, bottom:
 //PARAM: symbols = colors/metadata to draw as a key
 //PARAM: labels = labels for the keys
 //PARAM: callback = the callback function used by onClick
-function updateGraphLegend(id, symbols = [], labels = [], callback) {
-  var svg = d3.select("#" + id).select("svg");
+function updateGraphLegend(node, symbols = [], labels = [], callback) {
+  var svg = d3.select(node).select("svg");
 
   //get width, height, shift, padding and placement
   var placement = svg.attr("placement");

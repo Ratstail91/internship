@@ -91,12 +91,12 @@
 //PARAM: dataset = array of data to draw
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = pair of colors to use
-function drawBarGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, barPadding = 1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = []) {
+function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, barPadding = 1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = []) {
   //constants
   titlePadding = 12;
 
   //do the stuff
-  var svg = d3.select("#" + id).append("svg")
+  var svg = d3.select(node).append("svg")
     .attr("width", w + padding.left + padding.right + titlePadding)
     .attr("height", h + padding.top + padding.bottom + titlePadding)
     .attr("padding-top", padding.top)
@@ -114,7 +114,7 @@ function drawBarGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}
   svg.append("g").attr("class", "dashline");
   svg.append("g").attr("class", "titles");
 
-  updateBarGraph(id, barPadding, xTitle, yTitle, dataset, labels, colors);
+  updateBarGraph(node, barPadding, xTitle, yTitle, dataset, labels, colors);
 
   return svg;
 }
@@ -127,11 +127,11 @@ function drawBarGraph(id, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = pair of colors to use
 //PARAM: duration = time in ms update transition takes
-function updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = [], duration = 1000) {
+function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = [], duration = 1000) {
   //constants
   titlePadding = 12;
 
-  var svg = d3.select("#" + id).select("svg");
+  var svg = d3.select(node).select("svg");
 
   //calc barpadding
   barPadding = barPadding == -1 ? Number(svg.attr("bar-padding")) : barPadding;

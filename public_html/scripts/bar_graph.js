@@ -5,11 +5,11 @@
 //with an ID somewhere in your project; this will be the container for the bar
 //graph.
 //
-//  function drawBarGraph(id, w, h, padding, barPadding = 1,
+//  function drawBarGraph(node, w, h, padding, barPadding = 1,
 //    xTitle = '', yTitle = '', dataset = [], labels = [], colors = [])
 //
 //drawBarGraph() creates a static SVG image of the bar graph, derived from the
-//given input. ‘id’ is the unique ID of the <div> object, w and h are simply
+//given input. ‘node' is the <div> element to contain the svg, w and h are simply
 //the width and height of the image canvas to create. Padding is a structure 
 //indicating how much empty space to insert along each edge of the SVG, with
 //separate fields for the top, left, right and bottom edges. barPadding
@@ -26,11 +26,11 @@
 //This function is designed to render static bar graphs, however it can be used
 //in conjunction with the following.
 //
-//  updateBarGraph(id, barPadding = -1, xTitle = '', yTitle = '',
+//  updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '',
 //    dataset = [], labels = [], colors = [], duration = 1000)
 //
 //This function is designed to act on a bar graph that was created by
-//drawBarGraph() (above). ‘id’ is the ID of the <div> element holding the SVG.
+//drawBarGraph() (above). ‘node’ is the <div> element holding the SVG.
 //'barPadding' is the amount of space to place between bars or -1 to leave as
 //is. xTitle and yTitle are drawn alongside the X & Y axes, respectfully; pass
 //-1 to leave as is. ‘dataset’ is the new data to be displayed, while ‘labels’
@@ -77,7 +77,7 @@
 
 //-----------------------------------------------------------------------------
 
-//PARAM: id = the ID of a <div> element
+//PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the bar graph
 //PARAM: h = height of the bar graph
 //PARAM: padding = table containing elements:
@@ -119,7 +119,7 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   return svg;
 }
 
-//PARAM: id = the ID of a <div> element
+//PARAM: node = the <div> element containing the svg
 //PARAM: barPadding = space between bars
 //PARAM: xTitle = name of the xAxis
 //PARAM: yTitle = name of the yAxis

@@ -5,11 +5,11 @@
 //with an ID somewhere in your project; this will be the container for the pie
 //graph.
 //
-//  function drawPieGraph(id, w, h, padding,
+//  function drawPieGraph(node, w, h, padding,
 //    dataset = [], labels = [], colors = [])
 //
 //drawPieGraph() creates a static SVG image of the pie graph, derived from the
-//given input. ‘id’ is the unique ID of the <div> object, w and h are simply
+//given input. ‘node’ <div> element to contain the svg, w and h are simply
 //the width and height of the image canvas to create. Padding is a structure 
 //indicating how much empty space to insert along each edge of the SVG, with
 //separate fields for the top, left, right and bottom edges.
@@ -23,10 +23,10 @@
 //This function is designed to render static pie graphs, however it can be used
 //in conjunction with the following.
 //
-//  updatePieGraph(id, dataset = [], labels = [], colors = [], duration = 1000)
+//  updatePieGraph(node, dataset = [], labels = [], colors = [], duration = 1000)
 //
 //This function is designed to act on a pie graph that was created by
-//drawPieGraph() (above). ‘id’ is the ID of the <div> element holding the SVG.
+//drawPieGraph() (above). ‘node’ the <div> element holding the SVG.
 //‘dataset’ is the new data to be displayed, while ‘labels’ are their
 //corresponding labels. Finally, ‘colors’ must also be passed and, as above, if
 //there are fewer colors than sectors, colors will be reused. 
@@ -64,7 +64,7 @@
 
 //-----------------------------------------------------------------------------
 
-//PARAM: id = the ID of a <div> element
+//PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the pie graph
 //PARAM: h = height of the pie graph
 //PARAM: padding = table containing elements:
@@ -102,7 +102,7 @@ console.log("MARK 1", svg);
   return svg;
 }
 
-//PARAM: id = the ID of a <div> element
+//PARAM: node = the <div> element containing the svg
 //PARAM: dataset = array of data to draw
 //PARAM: labels = labels to be drawn onto the chart
 //PARAM: colors = array of colors to use

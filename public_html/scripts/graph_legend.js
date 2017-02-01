@@ -5,11 +5,11 @@
 //with an ID somewhere in your project; this will be the container for the
 //legend.
 //
-//  function drawGraphLegend(id, w, h, padding = {}, shift = {},
+//  function drawGraphLegend(node, w, h, padding = {}, shift = {},
 //    placement = "left", symbols = [], labels = [], callback = null)
 //
 //drawGraphLegend() creates a static SVG image of the legend, derived from the
-//given input. ‘id’ is the unique ID of the <div> object, w and h are simply
+//given input. ‘node’ is the <div> element to contain the svg, w and h are simply
 //the width and height of the image canvas to create. Padding is a structure
 //indicating how much empty space to insert along each edge of the SVG, with
 //separate fields for the top, left, right and bottom edges. Shift is how much
@@ -27,11 +27,11 @@
 //This function is designed to render static legends, however it can be used in
 //conjunction with the following.
 //
-//  updateGraphLegend(id, symbols = [], labels = [], callback = null)
+//  updateGraphLegend(node, symbols = [], labels = [], callback = null)
 //
 //This function is designed to act on a legend that was created by
-//drawGraphLegend() (above). ‘id’ is the ID of the <div> element holding the
-//SVG. 'symbols', 'labels' and callback are the replacements for the arguments
+//drawGraphLegend() (above). ‘node’ is the <div> element holding the SVG.
+//'symbols', 'labels' and callback are the replacements for the arguments
 //given to drawGraphLegend(). This function, although available, is not
 //supported.
 //
@@ -70,7 +70,7 @@
 
 //-----------------------------------------------------------------------------
 
-//PARAM: id = the ID of a <div> element
+//PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the legend
 //PARAM: h = height of the legend
 //PARAM: padding = table containing elements:
@@ -109,7 +109,7 @@ function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, botto
   return svg; 
 }
 
-//PARAM: id = the ID of a <div> element
+//PARAM: node = the <div> element containing the svg
 //PARAM: symbols = colors/metadata to draw as a key
 //PARAM: labels = labels for the keys
 //PARAM: callback = the callback function used by onClick
@@ -239,6 +239,8 @@ function updateGraphLegend(node, symbols = [], labels = [], callback) {
     .attr("active", false);
 }
 
+//PARAM: svg = the svg created with drawGraphLegend()
+//PARAM: index = the index of the label to activate
 function activateBackground(svg, index) {
   //get the backgrounds
   var backgrounds = svg.select(".backgrounds").selectAll("rect");
@@ -250,6 +252,8 @@ function activateBackground(svg, index) {
     .attr("active", true);
 }
 
+//PARAM: svg = the svg created with drawGraphLegend()
+//PARAM: index = the index of the label to deactivate
 function deactivateBackground(svg, index) {
   //get the backgrounds
   var backgrounds = svg.select(".backgrounds").selectAll("rect");
@@ -261,6 +265,8 @@ function deactivateBackground(svg, index) {
     .attr("active", false);
 }
 
+//PARAM: svg = the svg created with drawGraphLegend()
+//PARAM: index = the index of the label to toggle
 function toggleBackground(svg, index) {
   //get the backgrounds
   var backgrounds = svg.select(".backgrounds").selectAll("rect");

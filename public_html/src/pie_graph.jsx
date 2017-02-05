@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { SOURCE_LOCAL } from './actions.js';
+
 var unsubscribe;
 
 class PieGraph extends React.Component {
@@ -81,7 +83,8 @@ class PieGraph extends React.Component {
         this.calcPercentage(incomeRange, incomeRange[2]) + "%",
         this.calcPercentage(incomeRange, incomeRange[3]) + "%"
       ],
-      pieColorRange
+      pieColorRange,
+      state[state.length-1].source == SOURCE_LOCAL ? 1000 : 0
     );
   }
 

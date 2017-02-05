@@ -13,7 +13,8 @@ export function reduce(state = initialState, action) {
           lname: action.lname,
           email: action.email,
           birthdate: action.birthdate,
-          income: action.income
+          income: action.income,
+          source: action.source
         }];
     break;
     case CLEAR_STORE:

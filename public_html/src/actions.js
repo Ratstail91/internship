@@ -1,14 +1,18 @@
 export const ADD_USER_LOCAL = 'ADD_USER_LOCAL';
 export const CLEAR_STORE = 'CLEAR_STORE';
 
-export function addUserLocal(fname, lname, email, birthdate, income) {
+export const SOURCE_LOCAL = 'SOURCE_LOCAL';
+export const SOURCE_FOREIGN = 'SOURCE_FOREIGN';
+
+export function addUserLocal(fname, lname, email, birthdate, income, source) {
   return {
     type: ADD_USER_LOCAL,
     fname: fname,
     lname: lname,
     email: email,
     birthdate: birthdate,
-    income: income
+    income: income,
+    source: source
   };
 }
 
@@ -30,7 +34,7 @@ export function addUser(fname, lname, email, birthdate, income) {
     httpRequest.onreadystatechange = function() {
       if (httpRequest.readyState === 4 && httpRequest.status === 200) {
         if (httpRequest.responseText === 'success') {
-          dispatch(addUserLocal(fname, lname, email, birthdate, income));
+          dispatch(addUserLocal(fname, lname, email, birthdate, income, SOURCE_LOCAL));
         }
 
         else {
@@ -56,7 +60,7 @@ export function refreshDatabase() {
         var arr = JSON.parse(request.responseText);
         for (var i = 0; i < arr.length; i++) {
           var x = arr[i];
-          dispatch(addUserLocal(x.fname, x.lname, x.email, x.birthdate, x.income));
+          dispatch(addUserLocal(x.fname, x.lname, x.email, x.birthdate, x.income, SOURCE_FOREIGN));
         };
       }
     }

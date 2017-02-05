@@ -126,6 +126,10 @@ class BarGraph extends React.Component {
     return today.getUTCFullYear() - date.getUTCFullYear();
   }
 
+  componentWillUnmount() {
+    unsubscribe();
+  }
+
   render() {
     return (
       <div className="ui five wide column left aligned centered card">

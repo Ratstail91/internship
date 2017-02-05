@@ -98,6 +98,10 @@ class PieGraph extends React.Component {
     return Math.round(value / total * 100);
   }
 
+  componentWillUnmount() {
+    unsubscribe();
+  }
+
   render() {
     var style = {
       display: "inline-block",

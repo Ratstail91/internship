@@ -27,6 +27,10 @@ class TablePanel extends React.Component {
     this.props.store.dispatch(refreshDatabase());
   }
 
+  componentWillUnmount() {
+    unsubscribe();
+  }
+
   render() {
     //build the header row
     var headrow = (

@@ -8,13 +8,21 @@ class TablePanel extends React.Component {
     super(props);
   }
 
-  //buggy
+  //fixed
   parseDate(date) {
     date = date.split('-');
     date = new Date(date[0], date[1]-1, date[2]);
 
     var today = new Date();
-    return today.getFullYear() - date.getFullYear();
+    var thisYear = 0;
+    if (today.getMonth() < date.getMonth()) {
+      thisYear = 1;
+    }
+    else if ((today.getMonth() == date.getMonth()) && today.getDate() < date.getDate()) {
+      thisYear = 1;
+    }
+
+    return today.getFullYear() - date.getFullYear() - thisYear;
   }
 
   componentWillMount() {
@@ -52,7 +60,7 @@ class TablePanel extends React.Component {
           <Table.Cell>{row.fname}</Table.Cell>
           <Table.Cell>{row.lname}</Table.Cell>
           <Table.Cell>{row.email}</Table.Cell>
-          <Table.Cell>{row.birthdate}</Table.Cell>
+          <Table.Cell>{this.parseDate(row.birthdate)}</Table.Cell>
           <Table.Cell>{row.income}</Table.Cell>
         </Table.Row>
       );

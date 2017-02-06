@@ -18,7 +18,7 @@ class FormList extends React.Component {
   }
 
   myClick() {
-    this.props.store.dispatch(addUser(
+    this.context.store.dispatch(addUser(
       this.state.fname,
       this.state.lname,
       this.state.email,
@@ -123,5 +123,9 @@ class FormList extends React.Component {
     );
   }
 }
+
+FormList.contextTypes = {
+  store: React.PropTypes.object
+};
 
 export default FormList;

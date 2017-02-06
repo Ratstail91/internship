@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
 import { SOURCE_LOCAL } from './actions.js';
 
@@ -94,12 +95,8 @@ class PieGraph extends React.Component {
     return Math.round(value / total * 100);
   }
 
-  componentWillMount() {
-    this.unsubscribe = this.context.store.subscribe(this.update.bind(this));
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+  componentWillReceiveProps() {
+    this.update();
   }
 
   render() {
@@ -120,5 +117,11 @@ class PieGraph extends React.Component {
 PieGraph.contextTypes = {
   store: React.PropTypes.object
 };
+
+function mapStateToProps(state) {
+  return {state};
+}
+
+PieGraph = connect(mapStateToProps)(PieGraph);
 
 export default PieGraph;

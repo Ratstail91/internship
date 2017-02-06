@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Table } from 'semantic-ui-react';
 
 import { refreshDatabase } from './actions.js';
@@ -26,15 +27,7 @@ class TablePanel extends React.Component {
   }
 
   componentWillMount() {
-    this.unsubscribe = this.context.store.subscribe(function() {
-      this.forceUpdate();
-    }.bind(this));
-
     this.context.store.dispatch(refreshDatabase());
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
   }
 
   render() {
@@ -84,5 +77,11 @@ class TablePanel extends React.Component {
 TablePanel.contextTypes = {
   store: React.PropTypes.object
 };
+
+function mapStateToProps(state) {
+  return {state};
+}
+
+TablePanel = connect(mapStateToProps)(TablePanel);
 
 export default TablePanel;

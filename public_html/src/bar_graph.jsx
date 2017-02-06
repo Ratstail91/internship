@@ -1,6 +1,5 @@
 import React from 'react';
-
-var unsubscribe;
+import { connect } from 'react-redux';
 
 var symbols = [
   '#0000FF',
@@ -124,12 +123,8 @@ class BarGraph extends React.Component {
     return today.getUTCFullYear() - date.getUTCFullYear();
   }
 
-  componentWillMount() {
-    this.unsubscribe = this.context.store.subscribe(this.update.bind(this));
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+  componentWillReceiveProps() {
+    this.update();
   }
 
   render() {
@@ -145,5 +140,11 @@ class BarGraph extends React.Component {
 BarGraph.contextTypes = {
   store: React.PropTypes.object
 };
+
+function mapStateToProps(state) {
+  return {state};
+}
+
+BarGraph = connect(mapStateToProps)(BarGraph);
 
 export default BarGraph;

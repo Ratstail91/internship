@@ -37,10 +37,10 @@ class App extends React.Component {
         <script type="text/javascript" src="./tsorter.js"></script>
         <Header />
         <div className="ui stackable centered two column grid">
-          <FormList store={store} />
-          <TablePanel store={store} />
-          <PieGraph store={store} />
-          <BarGraph store={store} />
+          <FormList />
+          <TablePanel />
+          <PieGraph />
+          <BarGraph />
         </div>
         <Footer copyright="QPS Benchmarking" copyrightYear="2016-2017" />
       </div>
@@ -50,7 +50,11 @@ class App extends React.Component {
 
 //start the process
 var appNode = document.createElement('DIV');
-ReactDOM.render(<App />, appNode);
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appNode);
 document.getElementById('root').appendChild(appNode);
 
 sorter = tsorter.create('entrylist');

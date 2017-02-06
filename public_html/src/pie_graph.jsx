@@ -3,13 +3,9 @@ import ReactDOM from 'react-dom';
 
 import { SOURCE_LOCAL } from './actions.js';
 
-var unsubscribe;
-
 class PieGraph extends React.Component {
   constructor(props) {
     super(props);
-
-    unsubscribe = props.store.subscribe(this.update.bind(this));
   }
 
   shouldComponentUpdate() {
@@ -56,7 +52,7 @@ class PieGraph extends React.Component {
     var incomeRange = [0,0,0,0];
     var pieColorRange = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF'];
 
-    var state = this.props.store.getState();
+    var state = this.context.store.getState();
 
     //determine the income ranges for all members of state
     state.map(function(x) {
@@ -98,8 +94,12 @@ class PieGraph extends React.Component {
     return Math.round(value / total * 100);
   }
 
+  componentWillMount() {
+    this.unsubscribe = this.context.store.subscribe(this.update.bind(this));
+  }
+
   componentWillUnmount() {
-    unsubscribe();
+    this.unsubscribe();
   }
 
   render() {
@@ -116,5 +116,9 @@ class PieGraph extends React.Component {
     );
   }
 }
+
+PieGraph.contextTypes = {
+  store: React.PropTypes.object
+};
 
 export default PieGraph;

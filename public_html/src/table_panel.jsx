@@ -3,15 +3,9 @@ import { Table } from 'semantic-ui-react';
 
 import { refreshDatabase } from './actions.js';
 
-var unsubscribe;
-
 class TablePanel extends React.Component {
   constructor(props) {
     super(props);
-
-    unsubscribe = props.store.subscribe(function() {
-      this.forceUpdate();
-    }.bind(this));
   }
 
   //buggy
@@ -24,11 +18,15 @@ class TablePanel extends React.Component {
   }
 
   componentWillMount() {
-    this.props.store.dispatch(refreshDatabase());
+    this.unsubscribe = this.context.store.subscribe(function() {
+      this.forceUpdate();
+    }.bind(this));
+
+    this.context.store.dispatch(refreshDatabase());
   }
 
   componentWillUnmount() {
-    unsubscribe();
+    this.unsubscribe();
   }
 
   render() {
@@ -47,8 +45,8 @@ class TablePanel extends React.Component {
 
     //build the body
     var arr = [];
-    for (var i = 0; i < this.props.store.getState().length; i++) {
-      var row = this.props.store.getState()[i];
+    for (var i = 0; i < this.context.store.getState().length; i++) {
+      var row = this.context.store.getState()[i];
       arr.push(
        <Table.Row className="padding small">
           <Table.Cell>{row.fname}</Table.Cell>
@@ -74,5 +72,9 @@ class TablePanel extends React.Component {
     );
   }
 }
+
+TablePanel.contextTypes = {
+  store: React.PropTypes.object
+};
 
 export default TablePanel;

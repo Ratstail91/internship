@@ -17,8 +17,6 @@ var symbols = [
 class BarGraph extends React.Component {
   constructor(props) {
     super(props);
-
-    unsubscribe = props.store.subscribe(this.update.bind(this));
   }
 
   shouldComponentUpdate() {
@@ -67,7 +65,7 @@ class BarGraph extends React.Component {
   update() {
     var ageGroups = [0,0,0,0];
 
-    var state = this.props.store.getState();
+    var state = this.context.store.getState();
 
     //determine the age ranges for all members of state
     state.map(function(x) {
@@ -126,8 +124,12 @@ class BarGraph extends React.Component {
     return today.getUTCFullYear() - date.getUTCFullYear();
   }
 
+  componentWillMount() {
+    this.unsubscribe = this.context.store.subscribe(this.update.bind(this));
+  }
+
   componentWillUnmount() {
-    unsubscribe();
+    this.unsubscribe();
   }
 
   render() {
@@ -139,5 +141,9 @@ class BarGraph extends React.Component {
     );
   }
 }
+
+BarGraph.contextTypes = {
+  store: React.PropTypes.object
+};
 
 export default BarGraph;

@@ -106,7 +106,7 @@ class PieGraph extends React.Component {
     };
 
     return (
-      <div className="ui five wide column left aligned centered card">
+      <div className="ui seven wide column centered card" style={{marginTop: 15, marginRight: -35}}>
         <div id="piegraph" style={style} ref={this.renderPieGraph}></div>
         <div id="pielegend" style={style} ref={this.renderPieLegend}></div>
       </div>

@@ -129,7 +129,7 @@ class BarGraph extends React.Component {
 
   render() {
     return (
-      <div className="ui five wide column left aligned centered card">
+      <div className="ui eight wide column centered card">
         <div id="bargraph" ref={this.renderBarGraph}></div>
         <div id="barlegend" ref={this.renderBarLegend}></div>
       </div>

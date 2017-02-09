@@ -29,9 +29,12 @@
 }
 
 /* STANDARD */
+html {
+	min-height:100vh;
+}
+
 body {
-	position: relative;
-	padding-bottom: 1rem;
+	min-height: 100vh;
 	background: #EEF;
 	margin: 0;
 }
@@ -49,6 +52,10 @@ footer {
 	font-style: italic;
 	text-align: center;
 	padding-top: 1rem;
+}
+
+#root {
+	min-height: 100vh;
 }
 
 /* -- FORM LIST */

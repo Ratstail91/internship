@@ -33,7 +33,7 @@ class App extends React.Component {
   //render
   render() {
     return (
-      <div>
+      <div style={{display: "flex", flexDirection: "column", minHeight: "100vh"}}>
         <Header />
         <div className="ui stackable centered two column grid">
           <FormList />

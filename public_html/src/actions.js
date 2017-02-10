@@ -1,4 +1,5 @@
 export const ADD_USER_LOCAL = 'ADD_USER_LOCAL';
+export const SORT_STORE = 'SORT_STORE';
 export const CLEAR_STORE = 'CLEAR_STORE';
 
 export const SOURCE_LOCAL = 'SOURCE_LOCAL';
@@ -69,6 +70,15 @@ export function refreshDatabase() {
     request.open('GET', '/refresh.cgi');
     request.send();
   }
+}
+
+export function sortStore(column, type = "text", reverse = false) {
+  return {
+    type: SORT_STORE,
+    sortColumn: column,
+    columnType: type,
+    reverse: reverse
+  };
 }
 
 export function clearStore() {

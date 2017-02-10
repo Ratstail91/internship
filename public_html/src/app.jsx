@@ -19,8 +19,6 @@ var store = createStore(
   applyMiddleware(thunk)
 );
 
-var sorter;
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -55,4 +53,3 @@ ReactDOM.render(
   </Provider>,
   appNode);
 
-sorter = tsorter.create('entrylist');

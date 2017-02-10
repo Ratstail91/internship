@@ -1,4 +1,4 @@
-import { ADD_USER_LOCAL, CLEAR_STORE } from './actions.js';
+import { ADD_USER_LOCAL, SORT_STORE, CLEAR_STORE } from './actions.js';
 
 const initialState = [];
 
@@ -17,9 +17,16 @@ export function reduce(state = initialState, action) {
           source: action.source
         }];
     break;
+
+    case SORT_STORE:
+      //TODO: return a sorted store
+console.log(action);
+    break;
+
     case CLEAR_STORE:
       return initialState;
     break;
+
     default:
       return state;
   }

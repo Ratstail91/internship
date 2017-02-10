@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'semantic-ui-react';
 
-import { refreshDatabase } from './actions.js';
+import { refreshDatabase, sortStore } from './actions.js';
 
 class TablePanel extends React.Component {
   constructor(props) {
@@ -30,16 +30,51 @@ class TablePanel extends React.Component {
     this.context.store.dispatch(refreshDatabase());
   }
 
+  headerOnClick(e) {
+    //get this first
+    var switchNames = e.target.classList.contains("ascend");
+
+    //wipe "ascend" and "descend" classes from the DOM
+    //NOTE: refs did not work, so if you have a problem with this fuck you.
+    var selection;
+    while((selection = document.querySelector(".ascend")) !== null) {
+      selection.className = "";
+    }
+    while((selection = document.querySelector(".descend")) !== null) {
+      selection.className = "";
+    }
+
+    //mark as sorted
+    if (!switchNames) {
+      e.target.className = "ascend";
+    }
+    else {
+      e.target.className = "descend";
+    }
+
+    //shortcut
+    var attr = e.target.attributes;
+
+    //call the sort function
+    this.context.store.dispatch(
+      sortStore(
+        attr.getNamedItem("data-index").value,
+        attr.getNamedItem("data-type").value,
+        !e.target.classList.contains("ascend")
+      )
+    );
+  }
+
   render() {
     //build the header row
     var headrow = (
       <Table.Header>
         <Table.Row className="padding small">
-          <Table.HeaderCell>First Name</Table.HeaderCell>
-          <Table.HeaderCell>Last Name</Table.HeaderCell>
-          <Table.HeaderCell>Email</Table.HeaderCell>
-          <Table.HeaderCell data-tsorter='numeric'>Age</Table.HeaderCell>
-          <Table.HeaderCell data-tsorter='numeric'>Income</Table.HeaderCell>
+          <Table.HeaderCell data-index={0} data-type={"text"} onClick={this.headerOnClick.bind(this)}>First Name</Table.HeaderCell>
+          <Table.HeaderCell data-index={1} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Last Name</Table.HeaderCell>
+          <Table.HeaderCell data-index={2} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Email</Table.HeaderCell>
+          <Table.HeaderCell data-index={3} data-type={"integer"} onClick={this.headerOnClick.bind(this)}>Age</Table.HeaderCell>
+          <Table.HeaderCell data-index={4} data-type={"integer"} onClick={this.headerOnClick.bind(this)}>Income</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
     );

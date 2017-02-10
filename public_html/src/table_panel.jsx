@@ -4,9 +4,25 @@ import { Table } from 'semantic-ui-react';
 
 import { refreshDatabase, sortStore } from './actions.js';
 
+//prevent an infinite loop
+var sorted = false;
+
 class TablePanel extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount() {
+    this.context.store.dispatch(refreshDatabase());
+  }
+
+  componentWillUpdate() {
+    if (!sorted) {
+      sorted = this.conditionalSort();
+    }
+    else {
+      sorted = false;
+    }
   }
 
   //fixed
@@ -24,10 +40,6 @@ class TablePanel extends React.Component {
     }
 
     return today.getFullYear() - date.getFullYear() - thisYear;
-  }
-
-  componentWillMount() {
-    this.context.store.dispatch(refreshDatabase());
   }
 
   headerOnClick(e) {
@@ -63,6 +75,31 @@ class TablePanel extends React.Component {
         !e.target.classList.contains("ascend")
       )
     );
+  }
+
+  conditionalSort() {
+    //Once again, the refs didn't work
+    var selection = document.querySelector(".ascend");
+    if (selection === null) {
+      selection = document.querySelector(".descend");
+    }
+    if (selection === null) {
+      return false;
+    }
+
+    //shortcut
+    var attr = selection.attributes;
+
+    //call the sort function
+    this.context.store.dispatch(
+      sortStore(
+        attr.getNamedItem("data-name").value,
+        attr.getNamedItem("data-type").value,
+        !selection.classList.contains("ascend")
+      )
+    );
+
+    return true;
   }
 
   render() {

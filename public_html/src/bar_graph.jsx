@@ -120,6 +120,7 @@ class BarGraph extends React.Component {
     date = new Date(date[0], date[1]-1, date[2]);
     //subtract today
     var today = new Date();
+//TODO: wrong
     return today.getUTCFullYear() - date.getUTCFullYear();
   }
 

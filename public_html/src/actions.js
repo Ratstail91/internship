@@ -72,10 +72,10 @@ export function refreshDatabase() {
   }
 }
 
-export function sortStore(column, type = "text", reverse = false) {
+export function sortStore(name, type = "text", reverse = false) {
   return {
     type: SORT_STORE,
-    sortColumn: column,
+    columnName: name,
     columnType: type,
     reverse: reverse
   };

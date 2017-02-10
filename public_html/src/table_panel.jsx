@@ -58,7 +58,7 @@ class TablePanel extends React.Component {
     //call the sort function
     this.context.store.dispatch(
       sortStore(
-        attr.getNamedItem("data-index").value,
+        attr.getNamedItem("data-name").value,
         attr.getNamedItem("data-type").value,
         !e.target.classList.contains("ascend")
       )
@@ -70,11 +70,11 @@ class TablePanel extends React.Component {
     var headrow = (
       <Table.Header>
         <Table.Row className="padding small">
-          <Table.HeaderCell data-index={0} data-type={"text"} onClick={this.headerOnClick.bind(this)}>First Name</Table.HeaderCell>
-          <Table.HeaderCell data-index={1} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Last Name</Table.HeaderCell>
-          <Table.HeaderCell data-index={2} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Email</Table.HeaderCell>
-          <Table.HeaderCell data-index={3} data-type={"integer"} onClick={this.headerOnClick.bind(this)}>Age</Table.HeaderCell>
-          <Table.HeaderCell data-index={4} data-type={"integer"} onClick={this.headerOnClick.bind(this)}>Income</Table.HeaderCell>
+          <Table.HeaderCell data-name={"fname"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>First Name</Table.HeaderCell>
+          <Table.HeaderCell data-name={"lname"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Last Name</Table.HeaderCell>
+          <Table.HeaderCell data-name={"email"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Email</Table.HeaderCell>
+          <Table.HeaderCell data-name={"birthdate"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Age</Table.HeaderCell>
+          <Table.HeaderCell data-name={"income"} data-type={"integer"} onClick={this.headerOnClick.bind(this)}>Income</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
     );

@@ -19,8 +19,27 @@ export function reduce(state = initialState, action) {
     break;
 
     case SORT_STORE:
-      //TODO: return a sorted store
-console.log(action);
+      //copy the state
+      var sortedState = [...state];
+
+      //actually sort the damn thing
+      sortedState.sort(function(a, b) {
+        switch(action.columnType) {
+          case "text":
+            var strcmp = function(l, r) { return (l<r?-1:(l>r?1:0)); };
+            var result = strcmp(a[action.columnName], b[action.columnName]);
+            return action.reverse ? -result : result;
+          break;
+
+          case "integer":
+            var result = a[action.columnName] - b[action.columnName];
+            return action.reverse ? -result : result;
+          break;
+        }
+      });
+
+      //return a sorted store
+      return sortedState;
     break;
 
     case CLEAR_STORE:

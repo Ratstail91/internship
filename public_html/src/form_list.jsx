@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { addUser } from './actions.js';
 
@@ -18,13 +19,13 @@ class FormList extends React.Component {
   }
 
   myClick() {
-    this.context.store.dispatch(addUser(
+    this.props.addUser(
       this.state.fname,
       this.state.lname,
       this.state.email,
       this.state.birthdate,
       this.state.income
-    ));
+    );
     this.clearInput();
   }
 
@@ -127,5 +128,17 @@ class FormList extends React.Component {
 FormList.contextTypes = {
   store: React.PropTypes.object
 };
+
+function mapStateToProps(state) {
+  return {state};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addUser: (fname, lname, email, birthdate, income) => { dispatch(addUser(fname, lname, email, birthdate, income)); }
+  };
+}
+
+FormList = connect(mapStateToProps, mapDispatchToProps)(FormList);
 
 export default FormList;

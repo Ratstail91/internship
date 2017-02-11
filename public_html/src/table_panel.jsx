@@ -13,7 +13,7 @@ class TablePanel extends React.Component {
   }
 
   componentWillMount() {
-    this.context.store.dispatch(refreshDatabase());
+    this.props.refreshDatabase();
   }
 
   componentWillUpdate() {
@@ -47,7 +47,7 @@ class TablePanel extends React.Component {
     var switchNames = e.target.classList.contains("ascend");
 
     //wipe "ascend" and "descend" classes from the DOM
-    //NOTE: refs did not work, so if you have a problem with this fuck you.
+    //NOTE: refs did not work, so if you have a problem with this REDACTED
     var selection;
     while((selection = document.querySelector(".ascend")) !== null) {
       selection.className = "";
@@ -68,12 +68,10 @@ class TablePanel extends React.Component {
     var attr = e.target.attributes;
 
     //call the sort function
-    this.context.store.dispatch(
-      sortStore(
-        attr.getNamedItem("data-name").value,
-        attr.getNamedItem("data-type").value,
-        !e.target.classList.contains("ascend")
-      )
+    this.props.sort(
+      attr.getNamedItem("data-name").value,
+      attr.getNamedItem("data-type").value,
+      !e.target.classList.contains("ascend")
     );
   }
 
@@ -91,12 +89,10 @@ class TablePanel extends React.Component {
     var attr = selection.attributes;
 
     //call the sort function
-    this.context.store.dispatch(
-      sortStore(
-        attr.getNamedItem("data-name").value,
-        attr.getNamedItem("data-type").value,
-        !selection.classList.contains("ascend")
-      )
+    this.props.sort(
+      attr.getNamedItem("data-name").value,
+      attr.getNamedItem("data-type").value,
+      !selection.classList.contains("ascend")
     );
 
     return true;
@@ -154,6 +150,13 @@ function mapStateToProps(state) {
   return {state};
 }
 
-TablePanel = connect(mapStateToProps)(TablePanel);
+function mapDispatchToProps(dispatch) {
+  return {
+    refreshDatabase: () => { dispatch(refreshDatabase()); },
+    sort: (name, type, reverse) => { dispatch(sortStore(name, type, reverse)); }
+  };
+}
+
+TablePanel = connect(mapStateToProps, mapDispatchToProps)(TablePanel);
 
 export default TablePanel;

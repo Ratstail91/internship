@@ -64,10 +64,8 @@ class BarGraph extends React.Component {
   update() {
     var ageGroups = [0,0,0,0];
 
-    var state = this.context.store.getState();
-
     //determine the age ranges for all members of state
-    state.map(function(x) {
+    this.props.state.map(function(x) {
       var age = this.parseDate(x.birthdate);
 
       if (age <= 20) {
@@ -143,7 +141,9 @@ BarGraph.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  return {state};
+  return {
+    state: state
+  };
 }
 
 BarGraph = connect(mapStateToProps)(BarGraph);

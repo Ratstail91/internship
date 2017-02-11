@@ -53,10 +53,8 @@ class PieGraph extends React.Component {
     var incomeRange = [0,0,0,0];
     var pieColorRange = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF'];
 
-    var state = this.context.store.getState();
-
     //determine the income ranges for all members of state
-    state.map(function(x) {
+    this.props.state.map(function(x) {
       if (x.income <= 18200) {
         incomeRange[0]++;
       }
@@ -71,6 +69,13 @@ class PieGraph extends React.Component {
       }
     });
 
+    var duration = 0;
+
+    //BUG: graphical bug when table is sorted
+    if (this.props.state.length > 0) {
+      duration = this.props.state[this.props.state.length-1].source == SOURCE_LOCAL ? 1000 : 0;
+    }
+
     updatePieGraph(
       d3.select("#piegraph").node(),
       incomeRange,
@@ -81,7 +86,7 @@ class PieGraph extends React.Component {
         this.calcPercentage(incomeRange, incomeRange[3]) + "%"
       ],
       pieColorRange,
-      state[state.length-1].source == SOURCE_LOCAL ? 1000 : 0
+      duration
     );
   }
 
@@ -119,7 +124,9 @@ PieGraph.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  return {state};
+  return {
+    state: state
+  };
 }
 
 PieGraph = connect(mapStateToProps)(PieGraph);

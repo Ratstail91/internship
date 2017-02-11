@@ -114,8 +114,8 @@ class TablePanel extends React.Component {
 
     //build the body
     var arr = [];
-    for (var i = 0; i < this.context.store.getState().length; i++) {
-      var row = this.context.store.getState()[i];
+    for (var i = 0; i < this.props.state.length; i++) {
+      var row = this.props.state[i];
       arr.push(
        <Table.Row className="padding small">
           <Table.Cell>{row.fname}</Table.Cell>
@@ -147,7 +147,9 @@ TablePanel.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  return {state};
+  return {
+    state: state
+  };
 }
 
 function mapDispatchToProps(dispatch) {

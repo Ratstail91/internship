@@ -72,10 +72,14 @@ footer {
 	min-width: 100%;
 }
 
+.ui.form .field {
+	margin: 0;
+}
+
 /* -- DATATABLE */
 .scrollable {
 	overflow-y: scroll;
-	height: 495px;
+	max-height: 500px;
 }
 
 .ui.table thead th {

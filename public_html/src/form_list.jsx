@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import { addUser } from './actions.js';
 
 class FormList extends React.Component {
@@ -67,60 +67,55 @@ class FormList extends React.Component {
   //render
   render() {
     return (
-      <div id="formlist" className="ui two equal width grid four wide column right aligned card">
+      <Form id="formlist" className="ui four wide column right aligned card" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
 
-        <div className="row">
-          <div className="column computer only">
+        <Form.Field>
+          <div className="computer only">
             <p className="left aligned">Email:</p>
           </div>
-          <div className="column ui input">
-            <input type="email" id="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
+          <div className="ui input">
+            <input type="email" name="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
           </div>
-        </div>
+        </Form.Field>
 
-        <div className="row">
-          <div className="column computer only">
+        <Form.Field>
+          <div className="computer only">
             <p className="left aligned">First Name:</p>
           </div>
-          <div className="column ui input">
-            <input type="text" id="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
+          <div className="ui input">
+            <input type="text" name="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
           </div>
-        </div>
+        </Form.Field>
 
-        <div className="row">
-          <div className="column computer only">
+        <Form.Field>
+          <div className="computer only">
             <p className="left aligned">Last Name:</p>
           </div>
-          <div className="column ui input">
-            <input type="text" id="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
+          <div className="ui input">
+            <input type="text" name="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
           </div>
-        </div>
+        </Form.Field>
 
-        <div className="row">
-          <div className="column computer only">
+        <Form.Field>
+          <div className="computer only">
             <p className="left aligned">Date of Birth:</p>
           </div>
-          <div className="column ui input">
-            <input type="date" id="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
+          <div className="ui input">
+            <input type="date" name="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
           </div>
-        </div>
+        </Form.Field>
 
-        <div className="row">
-          <div className="column computer only">
+        <Form.Field>
+          <div className="computer only">
             <p className="left aligned">Annual Income:</p>
           </div>
-          <div className="column ui input">
-            <input type="number" id="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
+          <div className="ui input">
+            <input type="number" name="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
           </div>
-        </div>
+        </Form.Field>
 
-        <div className="row">
-          <div className="column computer only"></div>
-          <div className="column">
-            <Button className="massive ui button right aligned" type="submit" onClick={this.myClick.bind(this)}>Submit</Button>
-          </div>
-        </div>
-      </div>
+        <Button className="massive ui button" style={{marginTop: "1em"}} type="submit">Submit</Button>
+      </Form>
     );
   }
 }

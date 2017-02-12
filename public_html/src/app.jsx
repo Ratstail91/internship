@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 //includes
-import Header from './header.jsx';
+import HeaderPanel from './header_panel.jsx';
 import FormList from './form_list.jsx';
 import TablePanel from './table_panel.jsx';
 import PieGraph from './pie_graph.jsx';
@@ -32,7 +32,7 @@ class App extends React.Component {
   render() {
     return (
       <div style={{display: "flex", flexDirection: "column", minHeight: "100vh"}}>
-        <Header />
+        <HeaderPanel />
         <div className="ui stackable centered two column grid">
           <FormList />
           <TablePanel />

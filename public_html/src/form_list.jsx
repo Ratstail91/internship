@@ -67,14 +67,14 @@ class FormList extends React.Component {
   //render
   render() {
     return (
-      <Form id="formlist" className="ui four wide column right aligned card">
+      <Form id="formlist" className="ui four wide column right aligned card" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
 
         <Form.Field>
           <div className="computer only">
             <p className="left aligned">Email:</p>
           </div>
           <div className="ui input">
-            <input type="email" id="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
+            <input type="email" name="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
           </div>
         </Form.Field>
 
@@ -83,7 +83,7 @@ class FormList extends React.Component {
             <p className="left aligned">First Name:</p>
           </div>
           <div className="ui input">
-            <input type="text" id="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
+            <input type="text" name="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
           </div>
         </Form.Field>
 
@@ -92,7 +92,7 @@ class FormList extends React.Component {
             <p className="left aligned">Last Name:</p>
           </div>
           <div className="ui input">
-            <input type="text" id="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
+            <input type="text" name="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
           </div>
         </Form.Field>
 
@@ -101,7 +101,7 @@ class FormList extends React.Component {
             <p className="left aligned">Date of Birth:</p>
           </div>
           <div className="ui input">
-            <input type="date" id="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
+            <input type="date" name="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
           </div>
         </Form.Field>
 
@@ -110,11 +110,11 @@ class FormList extends React.Component {
             <p className="left aligned">Annual Income:</p>
           </div>
           <div className="ui input">
-            <input type="number" id="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
+            <input type="number" name="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
           </div>
         </Form.Field>
 
-        <Button className="massive ui button" style={{marginTop: "1em"}} type="submit" onClick={this.myClick.bind(this)}>Submit</Button>
+        <Button className="massive ui button" style={{marginTop: "1em"}} type="submit">Submit</Button>
       </Form>
     );
   }

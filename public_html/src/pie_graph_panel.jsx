@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { Card } from 'semantic-ui-react';
 
 import { SOURCE_LOCAL } from './actions.js';
 
-class PieGraph extends React.Component {
+class PieGraphPanel extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -111,15 +112,19 @@ class PieGraph extends React.Component {
     };
 
     return (
-      <div className="ui seven wide column centered card" style={{marginTop: 15, marginRight: -35}}>
+      <Card>
+      <Card.Content>
+
         <div id="piegraph" style={style} ref={this.renderPieGraph}></div>
         <div id="pielegend" style={style} ref={this.renderPieLegend}></div>
-      </div>
+
+      </Card.Content>
+      </Card>
     );
   }
 }
 
-PieGraph.contextTypes = {
+PieGraphPanel.contextTypes = {
   store: React.PropTypes.object
 };
 
@@ -129,6 +134,6 @@ function mapStateToProps(state) {
   };
 }
 
-PieGraph = connect(mapStateToProps)(PieGraph);
+PieGraphPanel = connect(mapStateToProps)(PieGraphPanel);
 
-export default PieGraph;
+export default PieGraphPanel;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Card } from 'semantic-ui-react';
 
 var symbols = [
   '#0000FF',
@@ -13,7 +14,7 @@ var symbols = [
   }
 ];
 
-class BarGraph extends React.Component {
+class BarGraphPanel extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -128,15 +129,19 @@ class BarGraph extends React.Component {
 
   render() {
     return (
-      <div className="ui eight wide column centered card">
+      <Card>
+      <Card.Content>
+
         <div id="bargraph" ref={this.renderBarGraph}></div>
         <div id="barlegend" ref={this.renderBarLegend}></div>
-      </div>
+
+      </Card.Content>
+      </Card>
     );
   }
 }
 
-BarGraph.contextTypes = {
+BarGraphPanel.contextTypes = {
   store: React.PropTypes.object
 };
 
@@ -146,6 +151,6 @@ function mapStateToProps(state) {
   };
 }
 
-BarGraph = connect(mapStateToProps)(BarGraph);
+BarGraphPanel = connect(mapStateToProps)(BarGraphPanel);
 
-export default BarGraph;
+export default BarGraphPanel;

@@ -31,7 +31,7 @@ class PieGraphPanel extends React.Component {
   renderPieLegend(ref) {
     drawGraphLegend(
       ref,
-      150,
+      160,
       80,
       {
         top: 0,

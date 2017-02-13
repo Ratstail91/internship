@@ -73,37 +73,27 @@ class FormPanel extends React.Component {
       <Form className="textMedium" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
 
         <Form.Field>
-          <div className="computer only">
-            <p className="left aligned">Email:</p>
-          </div>
+          <p className="left aligned">Email:</p>
           <input type="email" name="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
         </Form.Field>
 
         <Form.Field>
-          <div className="computer only">
-            <p className="left aligned">First Name:</p>
-          </div>
+          <p className="left aligned">First Name:</p>
           <input type="text" name="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
         </Form.Field>
 
         <Form.Field>
-          <div className="computer only">
-            <p className="left aligned">Last Name:</p>
-          </div>
+          <p className="left aligned">Last Name:</p>
           <input type="text" name="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
         </Form.Field>
 
         <Form.Field>
-          <div className="computer only">
-            <p className="left aligned">Date of Birth:</p>
-          </div>
+          <p className="left aligned">Date of Birth:</p>
           <input type="date" name="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
         </Form.Field>
 
         <Form.Field>
-          <div className="computer only">
-            <p className="left aligned">Annual Income:</p>
-          </div>
+          <p className="left aligned">Annual Income:</p>
           <input type="number" name="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
         </Form.Field>
 

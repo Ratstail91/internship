@@ -216,6 +216,7 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
     .attr("y", function(d, i) { return padding.top + yScale(d); })
     .attr("width", w / dataset.length -barPadding)
     .attr("height", function(d) { return h - yScale(d); })
+    //TODO: fix the size-on-update bug here (bar version)
     .attr("fill", (d) => { return colorOrdinal(d < average); });
 
   bars

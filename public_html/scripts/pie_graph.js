@@ -155,6 +155,7 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
       var interpolate = d3.interpolate(this._current, d);
       this._current = interpolate(0);
       return function(t) {
+        //TODO: fix size-on-update bug here
         return arc(interpolate(t));
       }
     });

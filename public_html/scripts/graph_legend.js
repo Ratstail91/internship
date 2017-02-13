@@ -146,7 +146,7 @@ function updateGraphLegend(node, symbols = [], labels = [], callback) {
     .attr("active", false)
     .attr("font-size", 12)
     .attr("font-family", "sans-serif")
-    .attr("dy", "1em")
+    .attr("dy", "0.9em")
     .attr("x", function(d, i) { return padding.left + i*(shift.horizontal); })
     .attr("y", function(d, i) { return padding.top + i*(shift.vertical); });
 

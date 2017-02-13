@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 //includes
 import HeaderPanel from './header_panel.jsx';
 import FormPanel from './form_panel.jsx';
-//import TablePanel from './table_panel.jsx';
+import TablePanel from './table_panel.jsx';
 //import PieGraph from './pie_graph.jsx';
 //import BarGraph from './bar_graph.jsx';
 //import Footer from './footer.jsx';
@@ -34,6 +34,7 @@ class App extends React.Component {
       <div>
         <HeaderPanel />
         <FormPanel />
+        <TablePanel />
       </div>
     );
   }

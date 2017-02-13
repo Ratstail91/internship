@@ -67,7 +67,7 @@ class FormPanel extends React.Component {
   //render
   render() {
     return (
-      <Card>
+      <Card fluid centered={true}>
       <Card.Content>
 
       <Form className="textMedium" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>

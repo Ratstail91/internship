@@ -129,7 +129,7 @@ class TablePanel extends React.Component {
 
     //finally, compile the table
     return (
-      <Card>
+      <Card fluid centered={true} style={{height: "100%"}}>
       <Card.Content>
 
         <Header as='h2' className="textMedium">

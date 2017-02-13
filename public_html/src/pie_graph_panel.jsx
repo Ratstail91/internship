@@ -112,8 +112,8 @@ class PieGraphPanel extends React.Component {
     };
 
     return (
-      <Card>
-      <Card.Content>
+      <Card fluid centered={true}>
+      <Card.Content className="textCentered">
 
         <div id="piegraph" style={style} ref={this.renderPieGraph}></div>
         <div id="pielegend" style={style} ref={this.renderPieLegend}></div>

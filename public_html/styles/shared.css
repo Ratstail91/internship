@@ -72,7 +72,8 @@ input {
 /* -- DATATABLE */
 .scrollable {
 	overflow-y: scroll;
-	max-height: 500px;
+	max-height: 0;
+	min-height: calc(100% - 2.9rem);
 }
 
 .ui.table thead th {

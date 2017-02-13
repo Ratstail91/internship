@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { Grid } from 'semantic-ui-react';
 
 //includes
 import HeaderPanel from './header_panel.jsx';
@@ -39,10 +40,30 @@ class App extends React.Component {
     return (
       <div style={style}>
         <HeaderPanel />
-        <FormPanel />
-        <TablePanel />
-        <PieGraphPanel />
-        <BarGraphPanel />
+        <Grid centered stackable columns={2}>
+          <Grid.Row>
+
+            <Grid.Column width={4}>
+              <FormPanel />
+            </Grid.Column>
+
+            <Grid.Column width={11}>
+              <TablePanel />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row>
+
+            <Grid.Column width={8}>
+              <PieGraphPanel />
+            </Grid.Column>
+
+            <Grid.Column width={7}>
+              <BarGraphPanel />
+            </Grid.Column>
+
+          </Grid.Row>
+        </Grid>
         <FooterPanel />
       </div>
     );

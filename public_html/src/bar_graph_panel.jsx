@@ -129,8 +129,8 @@ class BarGraphPanel extends React.Component {
 
   render() {
     return (
-      <Card>
-      <Card.Content>
+      <Card fluid centered={true}>
+      <Card.Content className="textCentered">
 
         <div id="bargraph" ref={this.renderBarGraph}></div>
         <div id="barlegend" ref={this.renderBarLegend}></div>

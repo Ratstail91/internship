@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Form, Button } from 'semantic-ui-react';
+import { Card, Form, Button } from 'semantic-ui-react';
 import { addUser } from './actions.js';
 
-class FormList extends React.Component {
+class FormPanel extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -67,60 +67,56 @@ class FormList extends React.Component {
   //render
   render() {
     return (
-      <Form id="formlist" className="ui four wide column right aligned card" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
+      <Card fluid centered={true}>
+      <Card.Content>
+
+      <Form className="textMedium" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
 
         <Form.Field>
           <div className="computer only">
             <p className="left aligned">Email:</p>
           </div>
-          <div className="ui input">
-            <input type="email" name="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
-          </div>
+          <input type="email" name="email" value={this.state.email} onChange={this.updateEmail.bind(this)} placeholder="your@email.com" />
         </Form.Field>
 
         <Form.Field>
           <div className="computer only">
             <p className="left aligned">First Name:</p>
           </div>
-          <div className="ui input">
-            <input type="text" name="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
-          </div>
+          <input type="text" name="fname" value={this.state.fname} onChange={this.updateFirstName.bind(this)} placeholder="First Name" />
         </Form.Field>
 
         <Form.Field>
           <div className="computer only">
             <p className="left aligned">Last Name:</p>
           </div>
-          <div className="ui input">
-            <input type="text" name="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
-          </div>
+          <input type="text" name="lname" value={this.state.lname} onChange={this.updateLastName.bind(this)} placeholder="Last Name" />
         </Form.Field>
 
         <Form.Field>
           <div className="computer only">
             <p className="left aligned">Date of Birth:</p>
           </div>
-          <div className="ui input">
-            <input type="date" name="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
-          </div>
+          <input type="date" name="birthdate" value={this.state.birthdate} onChange={this.updateBirthdate.bind(this)} placeholder="YYYY-MM-DD" />
         </Form.Field>
 
         <Form.Field>
           <div className="computer only">
             <p className="left aligned">Annual Income:</p>
           </div>
-          <div className="ui input">
-            <input type="number" name="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
-          </div>
+          <input type="number" name="income" value={this.state.income} onChange={this.updateIncome.bind(this)} placeholder="Income" />
         </Form.Field>
 
-        <Button className="massive ui button" style={{marginTop: "1em"}} type="submit">Submit</Button>
+        <Form.Button className="textRight" size="massive" type="submit">Submit</Form.Button>
       </Form>
+
+      </Card.Content>
+      </Card>
     );
   }
 }
 
-FormList.contextTypes = {
+FormPanel.contextTypes = {
   store: React.PropTypes.object
 };
 
@@ -136,6 +132,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-FormList = connect(mapStateToProps, mapDispatchToProps)(FormList);
+FormPanel = connect(mapStateToProps, mapDispatchToProps)(FormPanel);
 
-export default FormList;
+export default FormPanel;

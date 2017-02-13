@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table } from 'semantic-ui-react';
+import { Card, Header, Table } from 'semantic-ui-react';
 
 import { refreshDatabase, sortStore } from './actions.js';
 
@@ -102,7 +102,7 @@ class TablePanel extends React.Component {
     //build the header row
     var headrow = (
       <Table.Header>
-        <Table.Row className="padding small">
+        <Table.Row className="paddingSmall">
           <Table.HeaderCell data-name={"fname"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>First Name</Table.HeaderCell>
           <Table.HeaderCell data-name={"lname"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Last Name</Table.HeaderCell>
           <Table.HeaderCell data-name={"email"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Email</Table.HeaderCell>
@@ -117,7 +117,7 @@ class TablePanel extends React.Component {
     for (var i = 0; i < this.props.state.length; i++) {
       var row = this.props.state[i];
       arr.push(
-       <Table.Row className="padding small">
+       <Table.Row className="paddingSmall">
           <Table.Cell>{row.fname}</Table.Cell>
           <Table.Cell>{row.lname}</Table.Cell>
           <Table.Cell>{row.email}</Table.Cell>
@@ -129,15 +129,22 @@ class TablePanel extends React.Component {
 
     //finally, compile the table
     return (
-      <div id="datatable" className="ui eleven wide column left aligned card">
-        <h2 id="rowcount" className="padding text medium">Number of rows Found: {arr.length}</h2>
+      <Card fluid centered={true} style={{height: "100%"}}>
+      <Card.Content>
+
+        <Header as='h2' className="textMedium">
+          <Header.Content>Number of Rows Found: {arr.length}</Header.Content>
+        </Header>
+
         <div className="scrollable">
-          <Table celled id="entrylist" className="sortable unstackable text medium">
+          <Table celled id="entrylist" unstackable={true} className="textMedium">
             {headrow}
             <Table.Body>{arr}</Table.Body>
           </Table>
         </div>
-      </div>
+
+      </Card.Content>
+      </Card>
     );
   }
 }

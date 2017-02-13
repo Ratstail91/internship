@@ -4,7 +4,7 @@ import { Header } from 'semantic-ui-react';
 class HeaderPanel extends React.Component {
   render() {
     return (
-      <Header className="textLarge textCentered paddingSmall" style={{background: "#AAF"}}>
+      <Header as='h1' className="textLarge textCentered paddingSmall" style={{background: "#AAF"}}>
         <Header.Content>Hello World!</Header.Content>
       </Header>
     );

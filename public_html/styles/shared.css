@@ -1,38 +1,54 @@
 /* -- UTILITIES -- */
+.textLeft {
+	text-align: left !important;
+}
+
 .textCentered {
-	text-align: center;
+	text-align: center !important;
+}
+
+.textRight {
+	text-align: right !important;
 }
 
 .textLarge {
-	font-size: 42px;
+	font-size: 42px !important;
 }
 
 .textMedium {
-	font-size: 24px;
+	font-size: 24px !important;
 }
 
 .textSmall {
-	font-size: 14px;
+	font-size: 14px !important;
 }
 
 .paddingLarge {
-	padding: 50px;
+	padding: 50px !important;
 }
 
 .paddingMedium {
-	padding: 0.8rem 0.4rem;
+	padding: 0.8rem 0.4rem !important;
 }
 
 .paddingSmall {
-	padding: 0.8rem 0.4rem;
+	padding: 0.8rem 0.4rem !important;
 }
 
 .bordered {
-	border-style: solid;
-	border-width: 3px;
+	border-style: solid !important;
+	border-width: 3px !important;
 }
 
 /* STANDARD */
+*,
+*:before,
+*:after {
+	font-size: inherit;
+	padding: 0;
+	margin: 0;
+}
+
 html {
 	min-height:100vh;
 }
@@ -40,10 +56,6 @@ html {
 body {
 	min-height: 100vh;
 	background: #EEF;
-	margin: 0;
-}
-
-h1, h2 {
 	margin: 0;
 }
 
@@ -58,21 +70,9 @@ footer {
 }
 
 /* -- FORM LIST */
-#formlist {
-	overflow: hidden;
-	margin-top: 15px;
-	margin-right: 15px;
-	margin-bottom: 0;
-	display: inline-block;
-	font-size: 24px;
-}
-
-.ui.input input {
+input {
 	min-width: 100%;
-}
-
-.ui.form .field {
-	margin: 0;
+	font-size: inherit;
 }
 
 /* -- DATATABLE */

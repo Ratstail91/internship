@@ -6,11 +6,11 @@ import thunk from 'redux-thunk';
 
 //includes
 import HeaderPanel from './header_panel.jsx';
-import FormList from './form_list.jsx';
-import TablePanel from './table_panel.jsx';
-import PieGraph from './pie_graph.jsx';
-import BarGraph from './bar_graph.jsx';
-import Footer from './footer.jsx';
+import FormPanel from './form_panel.jsx';
+//import TablePanel from './table_panel.jsx';
+//import PieGraph from './pie_graph.jsx';
+//import BarGraph from './bar_graph.jsx';
+//import Footer from './footer.jsx';
 
 import { reduce } from './reducer.js';
 
@@ -31,25 +31,18 @@ class App extends React.Component {
   //render
   render() {
     return (
-      <div style={{display: "flex", flexDirection: "column", minHeight: "100vh"}}>
+      <div>
         <HeaderPanel />
-        <div className="ui stackable centered two column grid">
-          <FormList />
-          <TablePanel />
-          <PieGraph />
-          <BarGraph />
-        </div>
-        <Footer copyright="QPS Benchmarking" copyrightYear="2016-2017" />
+        <FormPanel />
       </div>
     );
   }
 };
 
 //start the process
-var appNode = document.querySelector('#root');
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  appNode);
+  document.querySelector("#root"));
 

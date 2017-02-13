@@ -59,12 +59,6 @@ body {
 	margin: 0;
 }
 
-footer {
-	font-style: italic;
-	text-align: center;
-	padding-top: 1rem;
-}
-
 #root {
 	min-height: 100vh;
 }

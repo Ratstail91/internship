@@ -10,7 +10,7 @@ import FormPanel from './form_panel.jsx';
 import TablePanel from './table_panel.jsx';
 import PieGraphPanel from './pie_graph_panel.jsx';
 import BarGraphPanel from './bar_graph_panel.jsx';
-//import Footer from './footer.jsx';
+import FooterPanel from './footer_panel.jsx';
 
 import { reduce } from './reducer.js';
 
@@ -30,13 +30,20 @@ class App extends React.Component {
 
   //render
   render() {
+    var style = {
+      display: "flex",
+      flexDirection: "column",
+      minHeight: "100vh"
+    };
+
     return (
-      <div>
+      <div style={style}>
         <HeaderPanel />
         <FormPanel />
         <TablePanel />
         <PieGraphPanel />
         <BarGraphPanel />
+        <FooterPanel />
       </div>
     );
   }

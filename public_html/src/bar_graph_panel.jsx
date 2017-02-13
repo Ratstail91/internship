@@ -113,14 +113,21 @@ class BarGraphPanel extends React.Component {
     );
   }
 
+  //fixed
   parseDate(date) {
-    //tricky
-    date = date.split("-");
+    date = date.split('-');
     date = new Date(date[0], date[1]-1, date[2]);
-    //subtract today
+
     var today = new Date();
-//TODO: wrong
-    return today.getUTCFullYear() - date.getUTCFullYear();
+    var thisYear = 0;
+    if (today.getMonth() < date.getMonth()) {
+      thisYear = 1;
+    }
+    else if ((today.getMonth() == date.getMonth()) && today.getDate() < date.getDate()) {
+      thisYear = 1;
+    }
+
+    return today.getFullYear() - date.getFullYear() - thisYear;
   }
 
   componentWillReceiveProps() {

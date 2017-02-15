@@ -51,24 +51,34 @@ class PieGraphPanel extends React.Component {
   }
 
   update() {
-    var incomeRange = [0,0,0,0];
-    var pieColorRange = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF'];
+    var dataset = [
+      { value: 0, label: '', color: '#FF0000' },
+      { value: 0, label: '', color: '#00FF00' },
+      { value: 0, label: '', color: '#0000FF' },
+      { value: 0, label: '', color: '#FF00FF' }
+    ];
 
     //determine the income ranges for all members of state
     this.props.state.map(function(x) {
       if (x.income <= 18200) {
-        incomeRange[0]++;
+        dataset[0].value++;
       }
       else if (x.income <= 37000) {
-        incomeRange[1]++;
+        dataset[1].value++;
       }
       else if (x.income <= 80000) {
-        incomeRange[2]++;
+        dataset[2].value++;
       }
       else {
-        incomeRange[3]++;
+        dataset[3].value++;
       }
     });
+
+    //generate the labels (percentages)
+    var total = dataset.reduce(function(a,b) { return a + b.value; }, 0);
+    for (var i = 0; i < dataset.length; i++) {
+      dataset[i].label = '' + Math.round(dataset[i].value / total * 100) + '%'
+    }
 
     var duration = 0;
 
@@ -77,28 +87,7 @@ class PieGraphPanel extends React.Component {
       duration = this.props.state[this.props.state.length-1].source == SOURCE_LOCAL ? 1000 : 0;
     }
 
-    updatePieGraph(
-      d3.select("#piegraph").node(),
-      incomeRange,
-      [
-        this.calcPercentage(incomeRange, incomeRange[0]) + "%",
-        this.calcPercentage(incomeRange, incomeRange[1]) + "%",
-        this.calcPercentage(incomeRange, incomeRange[2]) + "%",
-        this.calcPercentage(incomeRange, incomeRange[3]) + "%"
-      ],
-      pieColorRange,
-      duration
-    );
-  }
-
-  calcPercentage(integerArray, value) {
-    if (integerArray.length === 0) {
-      return -1;
-    }
-
-    var total = integerArray.reduce(function(a,b) { return a+b; });
-
-    return Math.round(value / total * 100);
+    updatePieGraph(d3.select("#piegraph").node(), dataset,  duration);
   }
 
   componentWillReceiveProps() {

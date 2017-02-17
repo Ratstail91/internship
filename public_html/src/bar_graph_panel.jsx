@@ -32,11 +32,15 @@ class BarGraphPanel extends React.Component {
         top: 10,
         left: 30,
         right: 20,
-        bottom: 20
+        bottom: 20,
+        bar: 1
       },
-      10,
-      "Age Ranges",
-      "Number of People in Each Range"
+      {
+        x: "Age Ranges",
+        y: "Number of People in Each Range"
+      },
+      [],
+      ['#FF0000', '#0000FF', '#440000', '#000044']
     );
   }
 
@@ -63,37 +67,37 @@ class BarGraphPanel extends React.Component {
   }
 
   update() {
-    var ageGroups = [0,0,0,0];
+    var dataset = [
+      { value: 0, label: '<20' },
+      { value: 0, label: '21-40' },
+      { value: 0, label: '41-60' },
+      { value: 0, label: '61+' }
+    ];
 
     //determine the age ranges for all members of state
     this.props.state.map(function(x) {
       var age = this.parseDate(x.birthdate);
 
       if (age <= 20) {
-        ageGroups[0]++;
+        dataset[0].value++;
       }
       else if (age <= 40) {
-        ageGroups[1]++;
+        dataset[1].value++;
       }
       else if (age <= 60) {
-        ageGroups[2]++;
+        dataset[2].value++;
       }
       else {
-        ageGroups[3]++;
+        dataset[3].value++;
       }
     }.bind(this));
 
-    var average = ageGroups.reduce((a,b) => { return a+b; }) / ageGroups.length;
+    var average = dataset.reduce((a,b) => { return a+b.value; }, 0) / dataset.length;
 
     //update the graph
     updateBarGraph(
       d3.select("#bargraph").node(),
-      -1,
-      -1,
-      -1,
-      ageGroups,
-      ['<20', '21-40', '41-60', '61+'],
-      ['#FF0000', '#0000FF', '#440000', '#000044']
+      dataset
     );
 
     //update the legend
@@ -103,8 +107,8 @@ class BarGraphPanel extends React.Component {
       ['Above Average', 'Below Average', 'Average: ' + average],
       function(clicked) {
         var barGraphSVG = d3.select("#bargraph").select("svg");
-        for (var i = 0; i < ageGroups.length; i++) {
-          var group = ageGroups[i] < average;
+        for (var i = 0; i < dataset.length; i++) {
+          var group = dataset[i].value < average;
           if (group == clicked) {
             toggleBar(barGraphSVG, i, true);
           }

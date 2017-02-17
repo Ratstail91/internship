@@ -6,10 +6,7 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   var svg = d3.select(node).append("svg")
     .attr("width", w + padding.left + padding.right)
     .attr("height", h + padding.top + padding.bottom)
-    .attr("padding-top", padding.top)
-    .attr("padding-left", padding.left)
-    .attr("padding-right", padding.right)
-    .attr("padding-bottom", padding.bottom)
+    .attr("padding", JSON.stringify(padding))
     .append("g")
     //move the origin to the center of the image
     .attr("transform", "translate(" + (padding.left + (w / 2)) + "," + (padding.top + (h / 2)) + ")");
@@ -29,12 +26,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
   var svg = d3.select(node).select("svg");
 
   //get width, height, radius and padding
-  var padding = {
-    top: Number(svg.attr("padding-top")),
-    left: Number(svg.attr("padding-left")),
-    right: Number(svg.attr("padding-right")),
-    bottom: Number(svg.attr("padding-bottom"))
-  }
+  var padding = JSON.parse(svg.attr("padding"));
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
   var r = Math.min(w, h) /2;
@@ -177,12 +169,7 @@ function activateSlice(svg, index, lock = false) {
   var duration = 300;
 
   //get width, height, radius and padding
-  var padding = {
-    top: Number(svg.attr("padding-top")),
-    left: Number(svg.attr("padding-left")),
-    right: Number(svg.attr("padding-right")),
-    bottom: Number(svg.attr("padding-bottom"))
-  }
+  var padding = JSON.parse(svg.attr("padding"));
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
   var r = Math.min(w, h) /2;
@@ -316,12 +303,7 @@ function deactivateSlice(svg, index, unlock = false) {
   var duration = 300;
 
   //get width, height, radius and padding
-  var padding = {
-    top: Number(svg.attr("padding-top")),
-    left: Number(svg.attr("padding-left")),
-    right: Number(svg.attr("padding-right")),
-    bottom: Number(svg.attr("padding-bottom"))
-  }
+  var padding = JSON.parse(svg.attr("padding"));
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
   var r = Math.min(w, h) /2;

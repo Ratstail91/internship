@@ -58,11 +58,7 @@ class BarGraphPanel extends React.Component {
       {
         horizontal: 150,
         vertical: 0
-      },
-      "left",
-      symbols,
-      ['Above Average', 'Below Average', 'Average'],
-      function(i) { console.log("bargraph connective tissue"); }
+      }
     );
   }
 
@@ -101,19 +97,24 @@ class BarGraphPanel extends React.Component {
     );
 
     //update the legend
-    updateGraphLegend(
-      d3.select("#barlegend").node(),
-      symbols,
-      ['Above Average', 'Below Average', 'Average: ' + average],
-      function(clicked) {
-        var barGraphSVG = d3.select("#bargraph").select("svg");
-        for (var i = 0; i < dataset.length; i++) {
-          var group = dataset[i].value < average;
-          if (group == clicked) {
-            toggleBar(barGraphSVG, i, true);
-          }
+    var callback = function(clicked) {
+      var barGraphSVG = d3.select("#bargraph").select("svg");
+      for (var i = 0; i < dataset.length; i++) {
+        var group = dataset[i].value < average;
+        if (group == clicked) {
+          toggleBar(barGraphSVG, i, true);
         }
       }
+      return true;
+    };
+
+    updateGraphLegend(
+      d3.select("#barlegend").node(),
+      [
+        { symbol: symbols[0], label: 'Above Average', callback: callback },
+        { symbol: symbols[1], label: 'Below Average', callback: callback },
+        { symbol: symbols[2], label: 'Average: ' + average, callback: () => { ; } },
+      ]
     );
   }
 

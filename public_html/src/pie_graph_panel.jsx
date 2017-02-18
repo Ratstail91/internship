@@ -29,6 +29,8 @@ class PieGraphPanel extends React.Component {
   }
 
   renderPieLegend(ref) {
+    var callback = function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i, true); return true; };
+
     drawGraphLegend(
       ref,
       160,
@@ -43,10 +45,12 @@ class PieGraphPanel extends React.Component {
         horizontal: 0,
         vertical: 14
       },
-      "left",
-      ['#FF0000', '#00FF00', '#0000FF', '#FF00FF'],
-      ['$0 - $18,200', '$18,201 - $37,000', '$37,001 - $80,000', '$80,001+'],
-      function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i, true); }
+      [
+        { symbol: '#FF0000', label: '$0 - $18,200', callback: callback },
+        { symbol: '#00FF00', label: '$18,201 - $37,000', callback: callback },
+        { symbol: '#0000FF', label: '$37,001 - $80,000', callback: callback },
+        { symbol: '#FF00FF', label: '$80,001+', callback: callback }
+      ]
     );
   }
 

@@ -75,10 +75,10 @@ function updatePieGraph(node, dataset, duration = 1000) {
   slices
     .enter()
     .append("path")
-    .attr("class", "slice")
-    .attr("fill", (d, i) => { return d.data.color; });
+    .attr("class", "slice");
 
   slices
+    .attr("fill", (d, i) => { return d.data.color; })
     .transition()
     .duration(duration)
     .attrTween("d", function(d) {
@@ -110,10 +110,10 @@ function updatePieGraph(node, dataset, duration = 1000) {
     .append("text")
     .attr("class", "label")
     .attr("dy", ".35em")
-    .attr("font-size", "14px")
-    .style("fill", function(d, i) { return d.color; });
+    .attr("font-size", "14px");
 
   labels
+    .style("fill", function(d, i) { return d.color; })
     .text(function(d) { return d.label; })
     .transition()
     .duration(duration)

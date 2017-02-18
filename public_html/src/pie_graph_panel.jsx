@@ -15,7 +15,7 @@ class PieGraphPanel extends React.Component {
   }
 
   renderPieGraph(ref) {
-    var margins = 70; //leave margins for the card borders, etc.`
+    var margins = 70; //leave margins for the card borders, etc.
     var width = window.innerWidth > 340 + 60 + margins ? 340 : window.innerWidth - 60 - margins;
 
     drawPieGraph(
@@ -32,8 +32,6 @@ class PieGraphPanel extends React.Component {
   }
 
   renderPieLegend(ref) {
-    var callback = function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i, true); return true; };
-
     drawGraphLegend(
       ref,
       160,
@@ -47,23 +45,24 @@ class PieGraphPanel extends React.Component {
       {
         horizontal: 0,
         vertical: 14
-      },
-      [
-        { symbol: '#FF0000', label: '$0 - $18,200', callback: callback },
-        { symbol: '#00FF00', label: '$18,201 - $37,000', callback: callback },
-        { symbol: '#0000FF', label: '$37,001 - $80,000', callback: callback },
-        { symbol: '#FF00FF', label: '$80,001+', callback: callback }
-      ]
+      }
     );
   }
 
   update() {
+    //the callback used to activate the slices
+    var callback = function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i, true); return true; };
+
+    //build the given fields
     var dataset = [
-      { value: 0, label: '', color: '#FF0000' },
-      { value: 0, label: '', color: '#00FF00' },
-      { value: 0, label: '', color: '#0000FF' },
-      { value: 0, label: '', color: '#FF00FF' }
+      { value: 0, label: '', color: '#FF0000', symbol: '', legendLabel: '$0 - $18,200', callback: callback },
+      { value: 0, label: '', color: '#00FF00', symbol: '', legendLabel: '$18,201 - $37,000', callback: callback },
+      { value: 0, label: '', color: '#0000FF', symbol: '', legendLabel: '$37,001 - $80,000', callback: callback },
+      { value: 0, label: '', color: '#FF00FF', symbol: '', legendLabel: '$80,000+', callback: callback },
     ];
+
+    //color and symbol are the same
+    dataset.map(function(x) { x.symbol = x.color; });
 
     //determine the income ranges for all members of state
     this.props.state.map(function(x) {
@@ -94,7 +93,17 @@ class PieGraphPanel extends React.Component {
       duration = this.props.state[this.props.state.length-1].source == SOURCE_LOCAL ? 1000 : 0;
     }
 
+    //remove empty entries
+    dataset = dataset.filter(function(x) { return x.value != 0; });
+
+    //update pie graph
     updatePieGraph(d3.select("#piegraph").node(), dataset,  duration);
+
+    //move the legendLabel field to label
+    dataset.map(function(x) { x.label = x.legendLabel; });
+
+    //update the graph legend
+    updateGraphLegend(d3.select("#pielegend").node(), dataset);
   }
 
   componentWillReceiveProps() {

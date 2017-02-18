@@ -105,11 +105,11 @@ class BarGraphPanel extends React.Component {
 
     var average = dataset.reduce((a,b) => { return a+b.value; }, 0) / dataset.length;
 
+    //remove entries with no members
+    dataset = dataset.filter(function(x) { return x.value != 0; });
+
     //update the graph
-    updateBarGraph(
-      d3.select("#bargraph").node(),
-      dataset
-    );
+    updateBarGraph(d3.select("#bargraph").node(), dataset);
 
     //update the legend
     var callback = function(clicked) {

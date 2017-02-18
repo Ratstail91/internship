@@ -89,7 +89,9 @@ function updateGraphLegend(node, dataset) {
 
   symbolsRect
     .enter()
-    .append("rect")
+    .append("rect");
+
+  symbolsRect
     .attr("x", function(d, i) { return padding.left + dataset.indexOf(d)*shift.horizontal; })
     .attr("y", function(d, i) { return padding.top + dataset.indexOf(d)*shift.vertical +1; })
     .attr("width", 20)

@@ -96,7 +96,9 @@ function updateBarGraph(node, dataset, duration = 1000) {
   tooltips
     .enter()
     .append("text")
-    .attr("class", "tips")
+    .attr("class", "tips");
+
+  tooltips
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length - padding.bar) / 2; })
       .attr("text-anchor", "middle")
     .attr("y", function(d, i) { return padding.top + yScale(d.value); })
@@ -133,7 +135,9 @@ function updateBarGraph(node, dataset, duration = 1000) {
   bars
     .enter()
     .append("rect")
-    .attr("class", "bar")
+    .attr("class", "bar");
+
+  bars
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w / dataset.length); })
     .attr("y", function(d, i) { return padding.top + yScale(d.value); })
     .attr("width", w / dataset.length -padding.bar)
@@ -182,11 +186,15 @@ function updateBarGraph(node, dataset, duration = 1000) {
     .remove();
 
   //create and place the labels
-  svg.select(".labels").selectAll("text")
-    .data(dataset)
+  var labels = svg.select(".labels").selectAll("text")
+    .data(dataset);
+
+  labels
     .enter()
     .append("text")
-    .attr("class", "label")
+    .attr("class", "label");
+
+  labels
     .text(function(d) { return d.label; })
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length -padding.bar) / 2; })
       .attr("text-anchor", "middle")
@@ -195,6 +203,10 @@ function updateBarGraph(node, dataset, duration = 1000) {
     .attr("fill", "black")
     .attr("font-size", 12)
     .attr("font-family", "sans-serif");
+
+  labels
+    .exit()
+    .remove();
 
   //draw the axis
   var yAxis = d3.svg.axis()

@@ -15,9 +15,12 @@ class PieGraphPanel extends React.Component {
   }
 
   renderPieGraph(ref) {
+    var margins = 70; //leave margins for the card borders, etc.`
+    var width = window.innerWidth > 340 + 60 + margins ? 340 : window.innerWidth - 60 - margins;
+
     drawPieGraph(
       ref,
-      340,
+      width,
       300,
       {
         top: 30,

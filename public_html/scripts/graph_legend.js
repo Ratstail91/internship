@@ -145,7 +145,7 @@ function updateGraphLegend(node, dataset) {
     .append("rect")
     .attr("x", function(d, i) { return padding.left + i*(shift.horizontal) + 22; })
     .attr("y", function(d, i) { return padding.top + i*(shift.vertical) + 1; })
-    .attr("width", w - 24) //BUG: width tends to be buggy
+    .attr("width", shift.horizontal ? shift.horizontal - 24 : w - 24)
     .attr("height", shift.vertical ? shift.vertical - 2 : h - 2)
     .attr("fill", function(d) { return '#888888'; })
     .attr("rx", 6)

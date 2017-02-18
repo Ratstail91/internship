@@ -24,9 +24,12 @@ class BarGraphPanel extends React.Component {
   }
 
   renderBarGraph(ref) {
+    var margins = 70; //leave margins for the card borders, etc.
+    var width = window.innerWidth > 500 + 50 + margins ? 500 : window.innerWidth - 50 - margins;
+
     drawBarGraph(
       ref,
-      500,
+      width,
       300,
       {
         top: 10,
@@ -45,20 +48,32 @@ class BarGraphPanel extends React.Component {
   }
 
   renderBarLegend(ref) {
+    var shift;
+    var width;
+    var height;
+
+    if (window.innerWidth < 550) {
+      shift = { horizontal: 0, vertical: 20 };
+      width = 150;
+      height = 60;
+    }
+    else {
+      shift = { horizontal: 150, vertical: 0 };
+      width = 450;
+      height = 16;
+    }
+
     drawGraphLegend(
       ref,
-      150,
-      16,
+      width,
+      height,
       {
         top: 0,
         left: 0,
-        right: 150 * 2,
+        right: 0,
         bottom: 0
       },
-      {
-        horizontal: 150,
-        vertical: 0
-      }
+      shift
     );
   }
 

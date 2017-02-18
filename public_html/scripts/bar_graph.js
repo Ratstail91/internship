@@ -1,3 +1,23 @@
+//PARAM: node = the <div> element to contain the svg
+//PARAM: w = width of the bar graph
+//PARAM: h = height of the bar graph
+//PARAM: padding = structure containing elements:
+//  top = padding on the top
+//  left = padding on the left
+//  right = padding on the right
+//  bottom = padding on the bottom
+//  bar = space between bars
+//PARAM: titles = structure containing elements
+//  x = name of the xAxis
+//  y = name of the yAxis
+//PARAM: dataset = array of structures containing data to draw:
+//  value = the value to be drawn
+//  label = the label to be drawn
+//PARAM: colors = an array of colors to be used:
+//  [0]: below average, normal
+//  [1]: above average, normal
+//  [2]: below average, highlighted
+//  [3]: above average, highlighted
 function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0, bar: 1}, titles = {x: '', y: ''}, dataset = [], colors = []) {
   //constants
   titlePadding = 12;
@@ -24,6 +44,11 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   return svg;
 }
 
+//PARAM: node = the <div> element to contain the svg
+//PARAM: dataset = array of structures containing data to draw:
+//  value = the value to be drawn
+//  label = the label to be drawn
+//PARAM: duration = time that the transition should take
 function updateBarGraph(node, dataset, duration = 1000) {
   //constants
   titlePadding = 12;
@@ -311,7 +336,8 @@ function updateBarGraph(node, dataset, duration = 1000) {
 }
 
 //PARAM: svg = SVG object created with drawBarGraph()
-//PARAM: index = index pf the bar to activate
+//PARAM: index = index of the bar to activate
+//PARAM: lock = whether to lock the bar in this state
 function activateBar(svg, index, lock = false) {
   //constants
   duration = 100;
@@ -365,6 +391,7 @@ function activateBar(svg, index, lock = false) {
 
 //PARAM: svg = SVG object created with drawBarGraph()
 //PARAM: index = index pf the bar to deactivate
+//PARAM: unlock = whether to unlock the bar if locked
 function deactivateBar(svg, index, unlock = false) {
   //constants
   duration = 100;
@@ -421,6 +448,7 @@ function deactivateBar(svg, index, unlock = false) {
 
 //PARAM: svg = SVG object created with drawBarGraph()
 //PARAM: index = index pf the bar to toggle
+//PARAM: lock = whether to lock/unlock the bar
 function toggleBar(svg, index, lock) {
   //get the bars
   bars = svg.select(".bars").selectAll("rect");

@@ -1,3 +1,19 @@
+//PARAM: node = the <div> element to contain the svg
+//PARAM: w = width of the legend
+//PARAM: h = height of the legend
+//PARAM: padding = table containing elements:
+//  top = padding on the top
+//  left = padding on the left
+//  right = padding on the right
+//  bottom = padding on the bottom
+//PARAM: shift = amount to move elements, commulative:
+//  horizontal = horizontal direction
+//  vertical = vertical direction
+//PARAM: dataset = data to be drawn:
+//  symbol = colors/metadata to draw as a key
+//  label = labels for the keys
+//  callback = the callback function used by onClick;
+//    this returns true to toggle the background
 function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, shift = {horizontal: 0, vertical: 0}, dataset = []) {
   //create SVG object
   var svg = d3.select(node).append("svg")
@@ -17,6 +33,12 @@ function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, botto
   return svg; 
 }
 
+//PARAM: node = the <div> element to contain the svg
+//PARAM: dataset = data to be drawn:
+//  symbol = colors/metadata to draw as a key
+//  label = labels for the keys
+//  callback = the callback function used by onClick;
+//    this returns true to toggle the background
 function updateGraphLegend(node, dataset) {
   var svg = d3.select(node).select("svg");
 

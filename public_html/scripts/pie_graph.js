@@ -1,3 +1,15 @@
+//PARAM: node = the <div> element to contain the svg
+//PARAM: w = width of the pie graph
+//PARAM: h = height of the pie graph
+//PARAM: padding = table containing elements:
+//  top = padding on the top
+//  left = padding on the left
+//  right = padding on the right
+//  bottom = padding on the bottom
+//PARAM: dataset = array structures containing data to draw:
+//  value = the value to be drawn
+//  label = label to be drawn
+//  color = colors to use for the slice
 function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = []) {
   //calc radius
   r = Math.min(w, h) /2;
@@ -22,6 +34,17 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   return svg;
 }
 
+//PARAM: node = the <div> element to contain the svg
+//PARAM: padding = table containing elements:
+//  top = padding on the top
+//  left = padding on the left
+//  right = padding on the right
+//  bottom = padding on the bottom
+//PARAM: dataset = array structures containing data to draw:
+//  value = the value to be drawn
+//  label = label to be drawn
+//  color = colors to use for the slice
+//PARAM: duration = time that the transition should take
 function updatePieGraph(node, dataset, duration = 1000) {
   var svg = d3.select(node).select("svg");
 
@@ -164,6 +187,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to activate
+//PARAM: lock = whether to lock the slice in this state
 function activateSlice(svg, index, lock = false) {
   //constants
   var duration = 300;
@@ -298,6 +322,7 @@ function activateSlice(svg, index, lock = false) {
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to deactivate
+//PARAM: unlock = whether to unlock the slice if locked
 function deactivateSlice(svg, index, unlock = false) {
   //constants
   var duration = 300;
@@ -454,6 +479,7 @@ function deactivateSlice(svg, index, unlock = false) {
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to toggle
+//PARAM: lock = whether to lock/unlock the slice
 function toggleSlice(svg, index, lock = false) {
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");

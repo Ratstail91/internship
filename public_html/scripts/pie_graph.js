@@ -1,69 +1,3 @@
-//DOCS: pie_graph.js
-//
-//There are five functions in this file, which utilize d3 to draw a pie graph.
-//First, before calling either, you must ensure that there is a <div> object
-//with an ID somewhere in your project; this will be the container for the pie
-//graph.
-//
-//  function drawPieGraph(node, w, h, padding,
-//    dataset = [], labels = [], colors = [])
-//
-//drawPieGraph() creates a static SVG image of the pie graph, derived from the
-//given input. ‘node’ <div> element to contain the svg, w and h are simply
-//the width and height of the image canvas to create. Padding is a structure 
-//indicating how much empty space to insert along each edge of the SVG, with
-//separate fields for the top, left, right and bottom edges.
-//
-//‘dataset’ is the array of integers representing different sectors (or
-//“slices”) of the graph. ‘labels’ is an array of strings containing each
-//sector’s label. Finally, ‘color’ is an array of color codes (i.e. #FF0000;
-//other formats may work, but are unsupported) for each sector. If there are
-//fewer colors than sectors, the system will simply reuse colors.
-//
-//This function is designed to render static pie graphs, however it can be used
-//in conjunction with the following.
-//
-//  updatePieGraph(node, dataset = [], labels = [], colors = [], duration = 1000)
-//
-//This function is designed to act on a pie graph that was created by
-//drawPieGraph() (above). ‘node’ the <div> element holding the SVG.
-//‘dataset’ is the new data to be displayed, while ‘labels’ are their
-//corresponding labels. Finally, ‘colors’ must also be passed and, as above, if
-//there are fewer colors than sectors, colors will be reused. 
-//
-//There is an extra parameter here, “duration”. This allows you to set, in
-//milliseconds, the amount of time the transition between the previous graph
-//state and the new one should take. This transition is animated thanks to the
-//power of d3, but as I said, updatePieGraph() can ONLY act on pie graphs
-//created by drawPieGraph(), it can’t create it’s own.
-//
-//  activateSlice(svg, index, lock)
-//
-//This is a utility function used for manually activating a slice's mouse hover
-//animation. 'svg' is the svg created with drawPieGraph(), and 'index' is the
-//index of the slice to activate. 'lock' is whether the slice should be locked
-//in it's activated state.
-//
-//  deactivateSlice(svg, index, unlock)
-//
-//Similar to activateSlice(), this function is used instead to reverse that
-//slice's animation. 'svg' is the svg created with drawPieGraph(), and 'index'
-//is the index of the slice to deactivate. 'unlock' is whether the slice should
-//be forcibly unlocked from it's locked state.
-//
-//  toggleSlice(svg, index, lock)
-//
-//Finally, this slice will toggle a slice's activation state between on and
-//off. 'svg' is the svg created with drawPieGraph(), and 'index' is the index
-//of the slice to toggle. 'lock' is passed as the third parameter to
-//activateSlice() and deactivateSlice().
-
-//TODO:
-//
-//All non-essential parameters to update*() can be -1 to keep as is.
-
-//-----------------------------------------------------------------------------
-
 //PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the pie graph
 //PARAM: h = height of the pie graph
@@ -72,10 +6,11 @@
 //  left = padding on the left
 //  right = padding on the right
 //  bottom = padding on the bottom
-//PARAM: dataset = array of data to draw
-//PARAM: labels = labels to be drawn onto the chart
-//PARAM: colors = array of colors to use
-function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = [], labels = [], colors = []) {
+//PARAM: dataset = array structures containing data to draw:
+//  value = the value to be drawn
+//  label = label to be drawn
+//  color = colors to use for the slice
+function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = []) {
   //calc radius
   r = Math.min(w, h) /2;
 
@@ -83,10 +18,7 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   var svg = d3.select(node).append("svg")
     .attr("width", w + padding.left + padding.right)
     .attr("height", h + padding.top + padding.bottom)
-    .attr("padding-top", padding.top)
-    .attr("padding-left", padding.left)
-    .attr("padding-right", padding.right)
-    .attr("padding-bottom", padding.bottom)
+    .attr("padding", JSON.stringify(padding))
     .append("g")
     //move the origin to the center of the image
     .attr("transform", "translate(" + (padding.left + (w / 2)) + "," + (padding.top + (h / 2)) + ")");
@@ -97,33 +29,32 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   svg.append("g").attr("class", "lines");
 
   //call the lower part of this process
-  updatePieGraph(node, dataset, labels, colors, 1000);
+  updatePieGraph(node, dataset, 1000);
 
   return svg;
 }
 
-//PARAM: node = the <div> element containing the svg
-//PARAM: dataset = array of data to draw
-//PARAM: labels = labels to be drawn onto the chart
-//PARAM: colors = array of colors to use
-//PARAM: duration = time in ms update transition takes
-function updatePieGraph(node, dataset = [], labels = [], colors = [], duration = 1000) {
+//PARAM: node = the <div> element to contain the svg
+//PARAM: padding = table containing elements:
+//  top = padding on the top
+//  left = padding on the left
+//  right = padding on the right
+//  bottom = padding on the bottom
+//PARAM: dataset = array structures containing data to draw:
+//  value = the value to be drawn
+//  label = label to be drawn
+//  color = colors to use for the slice
+//PARAM: duration = time that the transition should take
+function updatePieGraph(node, dataset, duration = 1000) {
   var svg = d3.select(node).select("svg");
 
   //get width, height, radius and padding
-  var padding = {
-    top: Number(svg.attr("padding-top")),
-    left: Number(svg.attr("padding-left")),
-    right: Number(svg.attr("padding-right")),
-    bottom: Number(svg.attr("padding-bottom"))
-  }
+  var padding = JSON.parse(svg.attr("padding"));
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
   var r = Math.min(w, h) /2;
 
   //utilities
-  colorOrdinal = d3.scale.ordinal().range([...colors]);
-
   var arc = d3.svg.arc()
     .innerRadius(0)
     .outerRadius(r);
@@ -133,7 +64,7 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
     .outerRadius(r * 1.1);
 
   var pie = d3.layout.pie()
-    .value((d) => { return d; })
+    .value((d) => { return d.value; })
     .sort(null);
 
   //adjust the slices
@@ -145,7 +76,7 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
     .enter()
     .append("path")
     .attr("class", "slice")
-    .attr("fill", (d, i) => { return colorOrdinal(i); });
+    .attr("fill", (d, i) => { return d.data.color; });
 
   slices
     .transition()
@@ -172,7 +103,7 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
 
   labels = svg.select(".labels")
     .selectAll("text")
-    .data(labels);
+    .data(dataset);
 
   labels
     .enter()
@@ -180,10 +111,10 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
     .attr("class", "label")
     .attr("dy", ".35em")
     .attr("font-size", "14px")
-    .style("fill", function(d, i) { return colorOrdinal(i); });
+    .style("fill", function(d, i) { return d.color; });
 
   labels
-    .text(function(d) { return d; })
+    .text(function(d) { return d.label; })
     .transition()
     .duration(duration)
     .attrTween("transform", function(d, i) {
@@ -256,17 +187,13 @@ function updatePieGraph(node, dataset = [], labels = [], colors = [], duration =
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to activate
+//PARAM: lock = whether to lock the slice in this state
 function activateSlice(svg, index, lock = false) {
   //constants
   var duration = 300;
 
   //get width, height, radius and padding
-  var padding = {
-    top: Number(svg.attr("padding-top")),
-    left: Number(svg.attr("padding-left")),
-    right: Number(svg.attr("padding-right")),
-    bottom: Number(svg.attr("padding-bottom"))
-  }
+  var padding = JSON.parse(svg.attr("padding"));
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
   var r = Math.min(w, h) /2;
@@ -395,17 +322,13 @@ function activateSlice(svg, index, lock = false) {
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to deactivate
+//PARAM: unlock = whether to unlock the slice if locked
 function deactivateSlice(svg, index, unlock = false) {
   //constants
   var duration = 300;
 
   //get width, height, radius and padding
-  var padding = {
-    top: Number(svg.attr("padding-top")),
-    left: Number(svg.attr("padding-left")),
-    right: Number(svg.attr("padding-right")),
-    bottom: Number(svg.attr("padding-bottom"))
-  }
+  var padding = JSON.parse(svg.attr("padding"));
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
   var r = Math.min(w, h) /2;
@@ -556,6 +479,7 @@ function deactivateSlice(svg, index, unlock = false) {
 
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to toggle
+//PARAM: lock = whether to lock/unlock the slice
 function toggleSlice(svg, index, lock = false) {
   //get the slices
   var slices = svg.select(".slices").selectAll("path.slice");

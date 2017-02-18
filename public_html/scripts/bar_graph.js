@@ -1,97 +1,24 @@
-//DOCS: bar_graph.js
-//
-//There are two functions in this file, which utilize d3 to draw a bar graph.
-//First, before calling either, you must ensure that there is a <div> object
-//with an ID somewhere in your project; this will be the container for the bar
-//graph.
-//
-//  function drawBarGraph(node, w, h, padding, barPadding = 1,
-//    xTitle = '', yTitle = '', dataset = [], labels = [], colors = [])
-//
-//drawBarGraph() creates a static SVG image of the bar graph, derived from the
-//given input. ‘node' is the <div> element to contain the svg, w and h are simply
-//the width and height of the image canvas to create. Padding is a structure 
-//indicating how much empty space to insert along each edge of the SVG, with
-//separate fields for the top, left, right and bottom edges. barPadding
-//indicates how much space should be between each bar. xTitle and yTitle are
-//drawn along the X and Y axes, respectfully.
-//
-//‘dataset’ is the array of integers representing different bars of the graph.
-//‘labels’ is an array of strings containing each bar’s label. Finally, ‘color’
-//is a array of color codes (i.e. #FF0000; other formats may work, but are
-//unsupported). The first two colors are used to color bars that are below and
-//above the average bar, respectively; the second two color the bars while they
-//are 'activated' (i.e. on mouse hover).
-//
-//This function is designed to render static bar graphs, however it can be used
-//in conjunction with the following.
-//
-//  updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '',
-//    dataset = [], labels = [], colors = [], duration = 1000)
-//
-//This function is designed to act on a bar graph that was created by
-//drawBarGraph() (above). ‘node’ is the <div> element holding the SVG.
-//'barPadding' is the amount of space to place between bars or -1 to leave as
-//is. xTitle and yTitle are drawn alongside the X & Y axes, respectfully; pass
-//-1 to leave as is. ‘dataset’ is the new data to be displayed, while ‘labels’
-//are their corresponding labels. Finally, ‘colors’ must also be passed and, as
-//above, these are used to distinguish bars below or above the average, both in
-//inactive and active states.
-//
-//There is an extra parameter here, “duration”. This allows you to set, in
-//milliseconds, the amount of time the transition between the previous graph
-//state and the new one should take. This transition is animated thanks to the
-//power of d3, but as I said, updateBarGraph() can ONLY act on bar graphs
-//created by drawBarGraph(), it can’t create it’s own.
-//
-//  activateBar(svg, index, lock)
-//
-//This is a utility function used for manually activating a bar's mouse hover
-//animation. 'svg' is the svg created with drawBarGraph(), and 'index' is the
-//index of the bar to activate. 'lock' is whether the bar should be locked in
-//it's activated state.
-//
-//  deactivateBar(svg, index, unlock)
-//
-//Similar to activateBar(), this function is used instead to reverse that bar's
-//animation. 'svg' is the svg created with drawBarGraph(), and 'index'
-//is the index of the bar to deactivate. 'unlock' is whether the bar should be
-//forcibly unlocked from it's locked state.
-//
-//  toggleBar(svg, index, lock)
-//
-//Finally, this bar will toggle a bar's activation state between on and off.
-//'svg' is the svg created with drawBarGraph(), and 'index' is the index of the
-//bar to toggle. 'lock' is passed as the third parameter to activateBar() and
-//deactivateBar().
-
-//BUGS:
-//
-//There is a graphical bug that occurs when adding to the tallest bar. This is
-//because the entire graph must shrink before the animation takes place, so a
-//jarring jump is present.
-
-//TODO:
-//
-//All non-essential parameters to update*() can be -1 to keep as is.
-
-//-----------------------------------------------------------------------------
-
 //PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the bar graph
 //PARAM: h = height of the bar graph
-//PARAM: padding = table containing elements:
+//PARAM: padding = structure containing elements:
 //  top = padding on the top
 //  left = padding on the left
 //  right = padding on the right
 //  bottom = padding on the bottom
-//PARAM: barPadding = space between bars
-//PARAM: xTitle = name of the xAxis
-//PARAM: yTitle = name of the yAxis
-//PARAM: dataset = array of data to draw
-//PARAM: labels = labels to be drawn onto the chart
-//PARAM: colors = pair of colors to use
-function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, barPadding = 1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = []) {
+//  bar = space between bars
+//PARAM: titles = structure containing elements
+//  x = name of the xAxis
+//  y = name of the yAxis
+//PARAM: dataset = array of structures containing data to draw:
+//  value = the value to be drawn
+//  label = the label to be drawn
+//PARAM: colors = an array of colors to be used:
+//  [0]: below average, normal
+//  [1]: above average, normal
+//  [2]: below average, highlighted
+//  [3]: above average, highlighted
+function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0, bar: 1}, titles = {x: '', y: ''}, dataset = [], colors = []) {
   //constants
   titlePadding = 12;
 
@@ -99,11 +26,9 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   var svg = d3.select(node).append("svg")
     .attr("width", w + padding.left + padding.right + titlePadding)
     .attr("height", h + padding.top + padding.bottom + titlePadding)
-    .attr("padding-top", padding.top)
-    .attr("padding-left", padding.left)
-    .attr("padding-right", padding.right)
-    .attr("padding-bottom", padding.bottom)
-    .attr("bar-padding", barPadding)
+    .attr("padding", JSON.stringify(padding))
+    .attr("titles", JSON.stringify(titles))
+    .attr("colors", JSON.stringify(colors))
     .append("g");
 
   //add the classes (elements of the SVG)
@@ -114,52 +39,49 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   svg.append("g").attr("class", "dashline");
   svg.append("g").attr("class", "titles");
 
-  updateBarGraph(node, barPadding, xTitle, yTitle, dataset, labels, colors);
+  updateBarGraph(node, dataset, 1000);
 
   return svg;
 }
 
-//PARAM: node = the <div> element containing the svg
-//PARAM: barPadding = space between bars
-//PARAM: xTitle = name of the xAxis
-//PARAM: yTitle = name of the yAxis
-//PARAM: dataset = array of data to draw
-//PARAM: labels = labels to be drawn onto the chart
-//PARAM: colors = pair of colors to use
-//PARAM: duration = time in ms update transition takes
-function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset = [], labels = [], colors = [], duration = 1000) {
+//PARAM: node = the <div> element to contain the svg
+//PARAM: dataset = array of structures containing data to draw:
+//  value = the value to be drawn
+//  label = the label to be drawn
+//PARAM: duration = time that the transition should take
+function updateBarGraph(node, dataset, duration = 1000) {
   //constants
   titlePadding = 12;
 
   var svg = d3.select(node).select("svg");
 
-  //calc barpadding
-  barPadding = barPadding == -1 ? Number(svg.attr("bar-padding")) : barPadding;
-
   //get width, height and padding
-  var padding = {
-    top: Number(svg.attr("padding-top")),
-    left: Number(svg.attr("padding-left")),
-    right: Number(svg.attr("padding-right")),
-    bottom: Number(svg.attr("padding-bottom"))
-  }
+  var padding = JSON.parse(svg.attr("padding"));
 
   var w = svg.attr("width") - padding.left - padding.right - titlePadding;
   var h = svg.attr("height") - padding.top - padding.bottom - titlePadding;
 
-  //store the given colors
-  svg.attr("colors", colors);
+  //get the other stuff
+  var titles = JSON.parse(svg.attr("titles"));
+  var colors = JSON.parse(svg.attr("colors"));
 
-  //utilities
-  var colorOrdinal = d3.scale.ordinal().range([...colors]);
-  var max = Math.max(...dataset);
+  //get the average
   var average;
 
   if(dataset.length != 0) {
-    average = dataset.reduce(function(a, b) { return a+b; }) / dataset.length;
+    average = dataset.reduce(function(a, b) { return a+b.value; }, 0) / dataset.length;
   }
   else {
     average = 0;
+  }
+
+  //calc the scale
+  var max = 0;
+  dataset.map(function(x) { max = max > x.value ? max : x.value; });
+
+  //check for an empty set
+  if (typeof(max) !== 'number' || max === 0) {
+    return;
   }
 
   var yScale = d3.scale.linear()
@@ -175,13 +97,13 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
     .enter()
     .append("text")
     .attr("class", "tips")
-    .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length - barPadding) / 2; })
+    .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length - padding.bar) / 2; })
       .attr("text-anchor", "middle")
-    .attr("y", function(d, i) { return padding.top + yScale(d); })
+    .attr("y", function(d, i) { return padding.top + yScale(d.value); })
       .attr("dy", "1em");
 
   tooltips
-    .text(function(d) { return d; })
+    .text(function(d) { return d.value; })
     .attr("fill", "white")
     .attr("display", "none")
     .attr("font-size", 12)
@@ -191,8 +113,8 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
     .transition()
     .duration(duration)
     .attrTween("y", function(d, i) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
+      this._current = this._current || d.value;
+      var interpolate = d3.interpolate(this._current, d.value);
       this._current = interpolate(0);
       return function(t) {
         return padding.top + yScale(interpolate(t));
@@ -213,11 +135,11 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
     .append("rect")
     .attr("class", "bar")
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w / dataset.length); })
-    .attr("y", function(d, i) { return padding.top + yScale(d); })
-    .attr("width", w / dataset.length -barPadding)
-    .attr("height", function(d) { return h - yScale(d); })
+    .attr("y", function(d, i) { return padding.top + yScale(d.value); })
+    .attr("width", w / dataset.length -padding.bar)
+    .attr("height", function(d) { return h - yScale(d.value); })
     //TODO: fix the size-on-update bug here (bar version)
-    .attr("fill", (d) => { return colorOrdinal(d < average); });
+    .attr("fill", (d) => { return colors[d.value < average]; });
 
   bars
     .on("mouseover", function(d, i) {
@@ -231,27 +153,27 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
     .transition()
     .duration(duration)
     .attrTween("y", function(d, i) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
+      this._current = this._current || d.value;
+      var interpolate = d3.interpolate(this._current, d.value);
       this._current = interpolate(0);
       return function(t) {
         return padding.top + yScale(interpolate(t));
       }
     })
     .attrTween("height", function(d, i) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
+      this._current = this._current || d.value;
+      var interpolate = d3.interpolate(this._current, d.value);
       this._current = interpolate(0);
       return function(t) {
         return h - yScale(interpolate(t));
       }
     })
     .attrTween("fill", function(d, i) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
+      this._current = this._current || d.value;
+      var interpolate = d3.interpolate(this._current, d.value);
       this._current = interpolate(0);
       return function(t) {
-        return colorOrdinal(interpolate(t) < average);
+        return colors[interpolate(t) < average ? 0:1];
       }
     })
 
@@ -261,12 +183,12 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
 
   //create and place the labels
   svg.select(".labels").selectAll("text")
-    .data(labels)
+    .data(dataset)
     .enter()
     .append("text")
     .attr("class", "label")
-    .text(function(d) { return d; })
-    .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length -barPadding) / 2; })
+    .text(function(d) { return d.label; })
+    .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length -padding.bar) / 2; })
       .attr("text-anchor", "middle")
     .attr("y", function(d, i) { return padding.top + h; })
       .attr("dy", "1em")
@@ -335,13 +257,13 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
     .remove();
 
   //draw the titles (x & y)
-  if (xTitle !== -1) {
+  if (titles != -1 && titles.x !== '') {
     //x title
     svg.select(".titles").selectAll(".x-title").remove();
 
     var xTitleSelector = svg.select(".titles")
       .selectAll("x-title")
-      .data([xTitle]);
+      .data([titles.x]);
 
     xTitleSelector
       .enter()
@@ -364,13 +286,13 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
       .remove();
   }
 
-  if (yTitle !== -1) {
+  if (titles != -1 && titles.y !== '') {
     //y title
     svg.select(".titles").selectAll(".y-title").remove();
 
     var yTitleSelector = svg.select(".titles")
       .selectAll("y-title")
-      .data([yTitle]);
+      .data([titles.y]);
 
     yTitleSelector
       .enter()
@@ -414,7 +336,8 @@ function updateBarGraph(node, barPadding = -1, xTitle = '', yTitle = '', dataset
 }
 
 //PARAM: svg = SVG object created with drawBarGraph()
-//PARAM: index = index pf the bar to activate
+//PARAM: index = index of the bar to activate
+//PARAM: lock = whether to lock the bar in this state
 function activateBar(svg, index, lock = false) {
   //constants
   duration = 100;
@@ -432,14 +355,14 @@ function activateBar(svg, index, lock = false) {
   var total = 0;
 
   bars.each(function(d) {
-    total = total + d;
+    total = total + d.value;
     count = count + 1;
   });
 
   var average = total / count;
 
   //utilities
-  var colors = svg.attr("colors").split(",");
+  var colors = JSON.parse(svg.attr("colors"));
 
   //find and tweak the bar 'index'
   bars
@@ -449,8 +372,8 @@ function activateBar(svg, index, lock = false) {
     .transition()
     .duration(duration)
     .attrTween("fill", function(d) {
-      var lower = colors[(d<average) ? 0:1];
-      var upper = colors[(d<average) ? 2:3];
+      var lower = colors[(d.value<average) ? 0:1];
+      var upper = colors[(d.value<average) ? 2:3];
       var interpolate = d3.interpolate(lower, upper);
       return function(t) {
         return interpolate(t);
@@ -468,6 +391,7 @@ function activateBar(svg, index, lock = false) {
 
 //PARAM: svg = SVG object created with drawBarGraph()
 //PARAM: index = index pf the bar to deactivate
+//PARAM: unlock = whether to unlock the bar if locked
 function deactivateBar(svg, index, unlock = false) {
   //constants
   duration = 100;
@@ -488,14 +412,14 @@ function deactivateBar(svg, index, unlock = false) {
   var total = 0;
 
   bars.each(function(d) {
-    total = total + d;
+    total = total + d.value;
     count = count + 1;
   });
 
   var average = total / count;
 
   //utilities
-  var colors = svg.attr("colors").split(",");
+  var colors = JSON.parse(svg.attr("colors"));
 
   //find and tweak the bar 'index'
   bars
@@ -505,8 +429,8 @@ function deactivateBar(svg, index, unlock = false) {
     .transition()
     .duration(duration)
     .attrTween("fill", function(d) {
-      var lower = colors[(d<average) ? 0:1];
-      var upper = colors[(d<average) ? 2:3];
+      var lower = colors[(d.value<average) ? 0:1];
+      var upper = colors[(d.value<average) ? 2:3];
       var interpolate = d3.interpolate(upper, lower);
       return function(t) {
         return interpolate(t);
@@ -524,6 +448,7 @@ function deactivateBar(svg, index, unlock = false) {
 
 //PARAM: svg = SVG object created with drawBarGraph()
 //PARAM: index = index pf the bar to toggle
+//PARAM: lock = whether to lock/unlock the bar
 function toggleBar(svg, index, lock) {
   //get the bars
   bars = svg.select(".bars").selectAll("rect");

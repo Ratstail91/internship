@@ -73,6 +73,7 @@ class TablePanel extends React.Component {
       attr.getNamedItem("data-type").value,
       !e.target.classList.contains("ascend")
     );
+    sorted = true;
   }
 
   conditionalSort() {

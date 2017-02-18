@@ -3,9 +3,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { Grid } from 'semantic-ui-react';
+import DevTools from './dev_tools.jsx';
 
 //includes
 import HeaderPanel from './header_panel.jsx';
@@ -19,7 +20,10 @@ import { reduce } from './reducer.js';
 
 var store = createStore(
   reduce,
-  applyMiddleware(thunk)
+  compose(
+    applyMiddleware(thunk),
+    DevTools.instrument()
+  )
 );
 
 class App extends React.Component {
@@ -75,7 +79,10 @@ class App extends React.Component {
 //start the process
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <div>
+      <App />
+      <DevTools />
+    </div>
   </Provider>,
   document.querySelector("#root"));
 

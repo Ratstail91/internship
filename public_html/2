@@ -109,24 +109,25 @@ function updateGraphLegend(node, dataset) {
 
   //handle object = arbitrary data (customizable)
   var objectSymbols = dataset.filter(function(d) { return typeof(d.symbol) === 'object'; });
+  alert("hello");
 
   objectSymbols.map(function(x) {
-    switch(x.symbol.symbol) {
+    switch(x.symbol) {
       case 'line':
         var l = svg.select(".symbols")
           .selectAll("line")
           .data([x])
           .enter()
           .append("line")
-          .attr("x1", function(d) { return padding.left + dataset.indexOf(d)*shift.horizontal; })
-          .attr("y1", function(d) { return padding.top  + dataset.indexOf(d)*shift.vertical + 7; })
-          .attr("x2", function(d) { return padding.left + dataset.indexOf(d)*shift.horizontal + 20; })
-          .attr("y2", function(d) { return padding.top  + dataset.indexOf(d)*shift.vertical + 7; })
-          .attr("stroke", x.symbol.stroke)
-          .attr("stroke-width", x.symbol.strokeWidth)
+          .attr("x1", function(d) { return padding.left + dataset.indexOf(x)*shift.horizontal; })
+          .attr("y1", function(d) { return padding.top  + dataset.indexOf(x)*shift.vertical + 7; })
+          .attr("x2", function(d) { return padding.left + dataset.indexOf(x)*shift.horizontal + 20; })
+          .attr("y2", function(d) { return padding.top  + dataset.indexOf(x)*shift.vertical + 7; })
+          .attr("stroke", x.stroke)
+          .attr("stroke-width", x.strokeWidth)
 
-        if (x.symbol.meta === "stroke-array") {
-          l.attr("stroke-dasharray", x.symbol.value);
+        if (x.meta === "stroke-array") {
+          l.attr("stroke-dasharray", x.value);
         }
       break;
     }

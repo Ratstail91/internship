@@ -158,7 +158,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
   });
 
   labels
-    //reenable only active slices
+    //reenable only active labels
     .filter(function(d,i) { return d.data.active; })
     .attr("display", "inline");
 
@@ -166,17 +166,13 @@ function updatePieGraph(node, dataset, duration = 1000) {
   labels
     .exit()
     .remove();
-/*
-  labels
 
-  //enable only the active labels
-
-
-  //adjust the polylines
+  //initialize the polylines
   var lines = svg.select(".lines")
     .selectAll("polyline")
     .data(pie(dataset));
 
+  //create new lines
   lines
     .enter()
     .append("polyline")
@@ -186,190 +182,46 @@ function updatePieGraph(node, dataset, duration = 1000) {
     .attr("fill", "none")
     .style("pointer-events", "none");
 
+  //static components that every line needs
   lines
     .transition()
     .duration(duration)
-    .attrTween("points", function(d, i) {
-      //store the derivation of the dataset instead
-      newD = pie(dataset)[i];
-      this._current = this._current || newD;
-      var interpolate = d3.interpolate(this._current, newD);
-      this._current = interpolate(0);
-      return function(t) {
-        var d2 = interpolate(t);
-        var pos = arc.centroid(d2);
-        var outerPos = outerArc.centroid(d2);
-        shift = midAngle(d2) < Math.PI ? (w/2) : (-w/2);
-        return "" + pos + " " + outerPos + " " + [shift, outerPos[1]];
-      } 
+    .attr("points", function(d, i) {
+      var pos;
+      var outerPos;
+      if (d.data.active) {
+        pos = buffArc.centroid(d);
+        outerPos = buffOuterArc.centroid(d);
+      }
+      else {
+        pos = arc.centroid(d);
+        outerPos = outerArc.centroid(d);
+      }
+      shift = midAngle(d) < Math.PI ? (w/2) : (-w/2);
+      return "" + pos + " " + outerPos + " " + [shift, outerPos[1]];
     });
 
+  //display only active lines
+  lines
+    //set all lines to visible
+    .attr("display", "inline");
+
+  dataset.map(function(x) {
+    //if any slices are active, set all lines to invisible
+    if (x.active) {
+      lines.attr("display", "none");
+    }
+  });
+
+  lines
+    //reenable only active lines
+    .filter(function(d,i) { return d.data.active; })
+    .attr("display", "inline");
+
+  //remove old lines
   lines
     .exit()
     .remove();
-*/
+
   return svg;
 }
-/*
-//PARAM: svg = SVG object created with drawPieGraph()
-//PARAM: index = index of the slice to activate
-//PARAM: lock = whether to lock the slice in this state
-function activateSlice(svg, index, lock = false) {
-
-
-  //find and tweak label 'index'
-  labels
-    .filter(function(d, f) { return f === index; })
-    .transition()
-    .duration(duration)
-    .attrTween("transform", function(d, i) {
-      //interpolate between the two positions (of the slices)
-      var interpolate;
-
-      slices
-        .each(function(d, i) {
-          if (i === index) {
-            interpolate = d3.interpolate(outerArc.centroid(d), buffOuterArc.centroid(d));
-          }
-      });
-
-      return function(t) {
-        var interCenter = interpolate(t);
-        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
-        return "translate(" + [shift, interCenter[1]] + ")";
-      };
-    });
-
-  //get the lines
-  var lines = svg.select(".lines").selectAll("polyline");
-
-  //enable only the active lines
-  lines
-    .attr("display", "none")
-    .filter(function(d,i) {
-      return slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
-     })
-    .attr("display", "inline");
-
-  //find and tweak the line 'index'
-  lines
-    .filter(function(d, f) { return f === index; })
-    .transition()
-    .duration(duration)
-    .attrTween("points", function(d, i) {
-      //interpolate between the two positions (of the slices)
-      var interpolate;
-      var pos;
-
-      slices
-        .each(function(d, i) {
-          if (i === index) {
-            interpolate = d3.interpolate(outerArc.centroid(d), buffOuterArc.centroid(d));
-            pos = arc.centroid(d);
-          }
-      });
-
-      return function(t) {
-        var interCenter = interpolate(t);
-        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
-        return "" + pos + " " + interCenter + " " + [shift, interCenter[1]];
-      };
-    });
-}
-
-//PARAM: svg = SVG object created with drawPieGraph()
-//PARAM: index = index of the slice to deactivate
-//PARAM: unlock = whether to unlock the slice if locked
-function deactivateSlice(svg, index, unlock = false) {
-
-  //get the labels
-  var labels = svg.select(".labels").selectAll("text");
-
-  //determine how many labels are active
-  var anyOn = false;
-
-  //enable only the active labels
-  labels
-    .attr("display", "none")
-    .filter(function(d,i) {
-      ret = slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
-      if (ret) anyOn = true;
-      return ret;
-     })
-    .attr("display", "inline");
-
-  //enable all labels if none are active
-  if (!anyOn) {
-    labels.attr("display", "inline");
-  }
-
-  //find and tweak the label 'index'
-  labels
-    .filter(function(d, f) { return f === index; })
-    .transition()
-    .duration(duration)
-    .attrTween("transform", function(d, i) {
-      //interpolate between the two positions (of the slices)
-      var interpolate;
-
-      slices
-        .each(function(d, i) {
-          if (i === index) {
-            interpolate = d3.interpolate(buffOuterArc.centroid(d), outerArc.centroid(d));
-          }
-      });
-
-      return function(t) {
-        var interCenter = interpolate(t);
-        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
-        return "translate(" + [shift, interCenter[1]] + ")";
-      };
-    });
-
-  //get the lines
-  var lines = svg.select(".lines").selectAll("polyline");
-
-  //determine how many lines are active
-  anyOn = false;
-
-  //enable only the active lines
-  lines
-    .attr("display", "none")
-    .filter(function(d,i) {
-      ret = slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
-      if (ret) anyOn = true;
-      return ret;
-     })
-    .attr("display", "inline");
-
-  //enable all lines if none are active
-  if (!anyOn) {
-    lines.attr("display", "inline");
-  }
-
-  //find and tweak the line 'index'
-  lines
-    .filter(function(d, f) { return f === index; })
-    .transition()
-    .duration(duration)
-    .attrTween("points", function(d, i) {
-      //interpolate between the two positions (of the slices)
-      var interpolate;
-      var pos;
-
-      slices
-        .each(function(d, i) {
-          if (i === index) {
-            interpolate = d3.interpolate(buffOuterArc.centroid(d), outerArc.centroid(d));
-            pos = arc.centroid(d);
-          }
-      });
-
-      return function(t) {
-        var interCenter = interpolate(t);
-        var shift = interCenter[0] > 0 ? (w/2) : (-w/2);
-        return "" + pos + " " + interCenter + " " + [shift, interCenter[1]];
-      };
-    });
-}
-*/

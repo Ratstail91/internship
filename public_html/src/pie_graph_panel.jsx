@@ -49,7 +49,7 @@ class PieGraphPanel extends React.Component {
     );
   }
 
-  update() {
+  update(nextProps) {
     //the callback used to activate the slices
     var callback = function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i, true); return true; };
 
@@ -65,7 +65,7 @@ class PieGraphPanel extends React.Component {
     dataset.map(function(x) { x.symbol = x.color; });
 
     //determine the income ranges for all members of state
-    this.props.state.map(function(x) {
+    nextProps.state.map(function(x) {
       if (x.income <= 18200) {
         dataset[0].value++;
       }
@@ -89,6 +89,7 @@ class PieGraphPanel extends React.Component {
     var duration = 0;
 
     //BUG: graphical bug when table is sorted
+    //BUG: graphical bug when a new catagory is created
     if (this.props.state.length > 0) {
       duration = this.props.state[this.props.state.length-1].source == SOURCE_LOCAL ? 1000 : 0;
     }
@@ -106,8 +107,8 @@ class PieGraphPanel extends React.Component {
     updateGraphLegend(d3.select("#pielegend").node(), dataset);
   }
 
-  componentWillReceiveProps() {
-    this.update();
+  componentWillReceiveProps(nextProps) {
+    this.update(nextProps);
   }
 
   render() {

@@ -43,6 +43,7 @@ class TablePanel extends React.Component {
   }
 
   headerOnClick(e) {
+    //BUG: the age field is sorted backwards, since it uses text
     //get this first
     var switchNames = e.target.classList.contains("ascend");
 

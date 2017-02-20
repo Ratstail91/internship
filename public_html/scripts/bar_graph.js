@@ -39,9 +39,7 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   svg.append("g").attr("class", "dashline");
   svg.append("g").attr("class", "titles");
 
-  updateBarGraph(node, dataset, 1000);
-
-  return svg;
+  return updateBarGraph(node, dataset, 1000);
 }
 
 //PARAM: node = the <div> element to contain the svg
@@ -142,7 +140,7 @@ function updateBarGraph(node, dataset, duration = 1000) {
     .attr("y", function(d, i) { return padding.top + yScale(d.value); })
     .attr("width", w / dataset.length -padding.bar)
     .attr("height", function(d) { return h - yScale(d.value); })
-    //TODO: fix the size-on-update bug here (bar version)
+    //BUG: fix the size-on-update bug here (bar version)
     .attr("fill", (d) => { return colors[d.value < average]; });
 
   bars

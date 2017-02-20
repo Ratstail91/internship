@@ -51,7 +51,10 @@ class PieGraphPanel extends React.Component {
 
   update(nextProps) {
     //the callback used to activate the slices
-    var callback = function(i) { toggleSlice(d3.select("#piegraph").select("svg"), i, true); return true; };
+    var callback = function(i) {
+      toggleSlice(d3.select("#piegraph").select("svg"), i, true);
+      return true;
+    };
 
     //build the given fields
     var dataset = [
@@ -83,16 +86,17 @@ class PieGraphPanel extends React.Component {
     //generate the labels (percentages)
     var total = dataset.reduce(function(a,b) { return a + b.value; }, 0);
     for (var i = 0; i < dataset.length; i++) {
-      dataset[i].label = '' + Math.round(dataset[i].value / total * 100) + '%'
+      dataset[i].label = '' + Math.round(dataset[i].value / total * 100) + '%';
     }
 
     var duration = 0;
 
-    //BUG: graphical bug when table is sorted
     //BUG: graphical bug when a new catagory is created
-    if (this.props.state.length > 0) {
-      duration = this.props.state[this.props.state.length-1].source == SOURCE_LOCAL ? 1000 : 0;
-    }
+    nextProps.state.map(function(x) {
+      if (x.source == SOURCE_LOCAL) {
+        duration = 1000;
+      }
+    });
 
     //remove empty entries
     dataset = dataset.filter(function(x) { return x.value != 0; });

@@ -11,9 +11,6 @@
 //  label = label to be drawn
 //  color = colors to use for the slice
 function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = []) {
-  //calc radius
-  r = Math.min(w, h) /2;
-
   //create the SVG object
   var svg = d3.select(node).append("svg")
     .attr("width", w + padding.left + padding.right)
@@ -29,17 +26,10 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   svg.append("g").attr("class", "lines");
 
   //call the lower part of this process
-  updatePieGraph(node, dataset, 1000);
-
-  return svg;
+  return updatePieGraph(node, dataset, 1000);
 }
 
 //PARAM: node = the <div> element to contain the svg
-//PARAM: padding = table containing elements:
-//  top = padding on the top
-//  left = padding on the left
-//  right = padding on the right
-//  bottom = padding on the bottom
 //PARAM: dataset = array structures containing data to draw:
 //  value = the value to be drawn
 //  label = label to be drawn
@@ -86,7 +76,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
       var interpolate = d3.interpolate(this._current, d);
       this._current = interpolate(0);
       return function(t) {
-        //TODO: fix size-on-update bug here
+        //BUG: fix size-on-update bug here
         return arc(interpolate(t));
       }
     });

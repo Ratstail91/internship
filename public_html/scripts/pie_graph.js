@@ -36,6 +36,7 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
 //  color = colors to use for the slice
 //PARAM: duration = time that the transition should take
 function updatePieGraph(node, dataset, duration = 1000) {
+  //get the SVG
   var svg = d3.select(node).select("svg");
 
   //get width, height, radius and padding
@@ -51,50 +52,69 @@ function updatePieGraph(node, dataset, duration = 1000) {
 
   var outerArc = d3.svg.arc()
     .innerRadius(r)
-    .outerRadius(r * 1.1);
+    .outerRadius(r*1.1);
+
+  var buffArc = d3.svg.arc()
+    .innerRadius(0)
+    .outerRadius(r*1.1);
+
+  var buffOuterArc = d3.svg.arc()
+    .innerRadius(r*1.1)
+    .outerRadius(r*1.2);
 
   var pie = d3.layout.pie()
-    .value((d) => { return d.value; })
+    .value(function(d) { return d.value; })
     .sort(null);
 
-  //adjust the slices
+  function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle)/2; };
+
+  //initialize the slices
   var slices = svg.select(".slices")
     .selectAll("path.slice")
     .data(pie(dataset));
 
+  //create new slices
   slices
     .enter()
     .append("path")
     .attr("class", "slice");
 
+  //static components that every slice needs
   slices
     .attr("fill", (d, i) => { return d.data.color; })
+    .on("mouseover", function(d, i) { if (d.data.mouseOver) d.data.mouseOver(d.data.id); })
+    .on("mouseout", function(d, i) { if (d.data.mouseOut) d.data.mouseOut(d.data.id); })
+
     .transition()
     .duration(duration)
-    .attrTween("d", function(d) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        //BUG: fix size-on-update bug here
-        return arc(interpolate(t));
+    .attr("d", function(d) {
+      if (d.data.active) {
+        return buffArc(d);
+      }
+      else {
+        return arc(d);
+      }
+    })
+    .attr("transform", function(d) {
+      if(d.data.active) {
+        return "translate(" + Math.cos(Math.PI/2-(midAngle(d))) * 5 + "," + -Math.sin(Math.PI/2-(midAngle(d))) * 5 + ")";
+      }
+      else {
+        return "translate(0,0)";
       }
     });
 
-  slices.on("mouseover", function(d, i) { activateSlice(svg, i); });
-  slices.on("mouseout", function(d, i) { deactivateSlice(svg, i); });
-
+  //remove old slices
   slices
     .exit()
     .remove();
-
-  //adjust text labels
-  function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle)/2; };
-
+/*
+  //initialize text labels
   labels = svg.select(".labels")
     .selectAll("text")
     .data(dataset);
 
+  //create new labels
   labels
     .enter()
     .append("text")
@@ -132,6 +152,15 @@ function updatePieGraph(node, dataset, duration = 1000) {
       }
     });
 
+  //enable only the active labels
+  labels
+    .attr("display", "none")
+    .filter(function(d,i) {
+      return slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
+     })
+    .attr("display", "inline");
+
+  //remove old labels
   labels
     .exit()
     .remove();
@@ -171,84 +200,15 @@ function updatePieGraph(node, dataset, duration = 1000) {
   lines
     .exit()
     .remove();
-
+*/
   return svg;
 }
-
+/*
 //PARAM: svg = SVG object created with drawPieGraph()
 //PARAM: index = index of the slice to activate
 //PARAM: lock = whether to lock the slice in this state
 function activateSlice(svg, index, lock = false) {
-  //constants
-  var duration = 300;
 
-  //get width, height, radius and padding
-  var padding = JSON.parse(svg.attr("padding"));
-  var w = svg.attr("width") - padding.left - padding.right;
-  var h = svg.attr("height") - padding.top - padding.bottom;
-  var r = Math.min(w, h) /2;
-
-  //utilities
-  var arc = d3.svg.arc()
-    .innerRadius(0)
-    .outerRadius(r);
-
-  var outerArc = d3.svg.arc()
-    .innerRadius(r)
-    .outerRadius(r*1.1);
-
-  var buffArc = d3.svg.arc()
-    .innerRadius(0)
-    .outerRadius(r*1.1);
-
-  var buffOuterArc = d3.svg.arc()
-    .innerRadius(r*1.1)
-    .outerRadius(r*1.2)
-
-  function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle)/2; };
-
-  //get the slices
-  var slices = svg.select(".slices").selectAll("path.slice");
-
-  //if the slice 'index' is locked, return
-  if (slices.filter(function(d, f) { return f === index; }).attr("locked") === "true") {
-    return;
-  }
-
-  //find and tweak slice 'index'
-  slices
-    .filter(function(d, f) { return f === index; })
-    .attr("active", true)
-    .attr("locked", lock)
-    .transition()
-    .duration(duration)
-    .attrTween("d", function(d) {
-      //interpolate between the two positions
-      var interpolate = d3.interpolate(arc(d), buffArc(d));
-      return function(t) {
-        return interpolate(t);
-      }
-    })
-    .attrTween("transform", function(d) {
-      var interpolate = d3.interpolate([0,0], [
-        Math.cos(Math.PI/2-(midAngle(d))) * 5,
-        -Math.sin(Math.PI/2-(midAngle(d))) * 5
-      ]);
-      return function(t) {
-        return "translate(" + interpolate(t) + ")";
-      }
-    });
-
-  //get the labels
-  var labels = svg.select(".labels").selectAll("text");
-
-  //enable only the active labels
-  labels
-    .attr("display", "none")
-    .filter(function(d,i) {
-      return slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
-     })
-    .attr("display", "inline");
 
   //find and tweak label 'index'
   labels
@@ -314,67 +274,6 @@ function activateSlice(svg, index, lock = false) {
 //PARAM: index = index of the slice to deactivate
 //PARAM: unlock = whether to unlock the slice if locked
 function deactivateSlice(svg, index, unlock = false) {
-  //constants
-  var duration = 300;
-
-  //get width, height, radius and padding
-  var padding = JSON.parse(svg.attr("padding"));
-  var w = svg.attr("width") - padding.left - padding.right;
-  var h = svg.attr("height") - padding.top - padding.bottom;
-  var r = Math.min(w, h) /2;
-
-  //utilities
-  var arc = d3.svg.arc()
-    .innerRadius(0)
-    .outerRadius(r);
-
-  var outerArc = d3.svg.arc()
-    .innerRadius(r)
-    .outerRadius(r*1.1);
-
-  var buffArc = d3.svg.arc()
-    .innerRadius(0)
-    .outerRadius(r*1.1);
-
-  var buffOuterArc = d3.svg.arc()
-    .innerRadius(r*1.1)
-    .outerRadius(r*1.2)
-
-  function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle)/2; };
-
-  //get the slices
-  var slices = svg.select(".slices").selectAll("path.slice");
-
-  //if the slice is locked, and unlock is not true, return
-  if (
-    slices.filter(function(d, f) { return f === index; }).attr("locked") === "true" &&
-    unlock != true
-  ) {
-    return;
-  }
-
-  //find and tweak the slice 'index'
-  slices
-    .filter(function(d, f) { return f === index; })
-    .attr("active", false)
-    .attr("locked", false)
-    .transition()
-    .duration(300)
-    .attrTween("d", function(d) {
-      var interpolate = d3.interpolate(buffArc(d), arc(d));
-      return function(t) {
-        return interpolate(t);
-      }
-    })
-    .attrTween("transform", function(d) {
-      var interpolate = d3.interpolate([
-        Math.cos(Math.PI/2-(midAngle(d))) * 5,
-        -Math.sin(Math.PI/2-(midAngle(d))) * 5
-      ], [0,0]);
-      return function(t) {
-        return "translate(" + interpolate(t) + ")";
-      }
-    });
 
   //get the labels
   var labels = svg.select(".labels").selectAll("text");
@@ -466,28 +365,4 @@ function deactivateSlice(svg, index, unlock = false) {
       };
     });
 }
-
-//PARAM: svg = SVG object created with drawPieGraph()
-//PARAM: index = index of the slice to toggle
-//PARAM: lock = whether to lock/unlock the slice
-function toggleSlice(svg, index, lock = false) {
-  //get the slices
-  var slices = svg.select(".slices").selectAll("path.slice");
-
-  var active;
-
-  //find the state of the slice 'index'
-  slices.each(function(d, i) {
-    if (i === index) {
-      active = d3.select(this).attr("active");
-    }
-  });
-
-  //flip the given slice
-  if (active === "true") {
-    deactivateSlice(svg, index, lock);
-  }
-  else {
-    activateSlice(svg, index, lock);
-  }
-}
+*/

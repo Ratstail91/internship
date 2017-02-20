@@ -112,7 +112,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
   //initialize text labels
   labels = svg.select(".labels")
     .selectAll("text")
-    .data(dataset);
+    .data(pie(dataset));
 
   //create new labels
   labels
@@ -124,35 +124,44 @@ function updatePieGraph(node, dataset, duration = 1000) {
 
   //static aspects that all labels need
   labels
-    .style("fill", function(d, i) { return d.color; })
-    .text(function(d) { return d.label; })
-/*    .transition()
+    .style("fill", function(d, i) { return d.data.color; })
+    .text(function(d) { return d.data.label; })
+    .transition()
     .duration(duration)
-    .attrTween("transform", function(d, i) {
-      //store the derivation of the dataset instead
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        var d2 = interpolate(t);
-        var outerCenter = d.active ? buffOuterArc.centroid(d2) : outerArc.centroid(d2);
-        var shift = midAngle(d2) < Math.PI ? (w/2) : (-w/2);
-if (d.id == 0)
-console.log(t, outerCenter);
-        return "translate(" + [shift, outerCenter[1]] + ")";
-      };
-    })
-    .styleTween("text-anchor", function(d, i) {
-      //store the derivation of the dataset instead
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        var d2 = interpolate(t);
-        return midAngle(d2) < Math.PI ? "start" : "end";
+    .attr("transform", function(d, i) {
+      //place the text on the sides of the SVG
+      var shift = midAngle(d) < Math.PI ? (w/2) : (-w/2);
+      var pos;
+      if (d.data.active) {
+        pos = buffOuterArc.centroid(d);
       }
+      else {
+        pos = outerArc.centroid(d);
+      }
+      return "translate(" + shift + "," + pos[1] + ")";
+    })
+    .style("text-anchor", function(d, i) {
+      //anchor the text at the correct position
+      return midAngle(d) < Math.PI ? "start" : "end";
     });
-*/
+
+  //display only active labels
+  labels
+    //set all labels to visible
+    .attr("display", "inline");
+
+  dataset.map(function(x) {
+    //if any slices are active, set all labels to invisible
+    if (x.active) {
+      labels.attr("display", "none");
+    }
+  });
+
+  labels
+    //reenable only active slices
+    .filter(function(d,i) { return d.data.active; })
+    .attr("display", "inline");
+
   //remove old labels
   labels
     .exit()
@@ -161,12 +170,6 @@ console.log(t, outerCenter);
   labels
 
   //enable only the active labels
-  labels
-    .attr("display", "none")
-    .filter(function(d,i) {
-      return slices.filter(function(d, f) { return f === i; }).attr("active") === "true";
-     })
-    .attr("display", "inline");
 
 
   //adjust the polylines

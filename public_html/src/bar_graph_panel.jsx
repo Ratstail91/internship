@@ -77,7 +77,7 @@ class BarGraphPanel extends React.Component {
     );
   }
 
-  update() {
+  update(nextProps) {
     var dataset = [
       { value: 0, label: '<20' },
       { value: 0, label: '21-40' },
@@ -86,7 +86,7 @@ class BarGraphPanel extends React.Component {
     ];
 
     //determine the age ranges for all members of state
-    this.props.state.map(function(x) {
+    nextProps.state.map(function(x) {
       var age = this.parseDate(x.birthdate);
 
       if (age <= 20) {
@@ -150,8 +150,8 @@ class BarGraphPanel extends React.Component {
     return today.getFullYear() - date.getFullYear() - thisYear;
   }
 
-  componentWillReceiveProps() {
-    this.update();
+  componentWillReceiveProps(nextProps) {
+    this.update(nextProps);
   }
 
   render() {

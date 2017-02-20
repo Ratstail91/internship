@@ -1,5 +1,3 @@
-//BUG: The webpage as a whole (and the graphs in particular) seems to ignore the latest entry on the table until the table is sorted. This is likely due to requiring an update to register it.
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

@@ -6,10 +6,14 @@
 //  left = padding on the left
 //  right = padding on the right
 //  bottom = padding on the bottom
-//PARAM: dataset = array structures containing data to draw:
+//PARAM: dataset = array of structures passed to updatePieGraph():
 //  value = the value to be drawn
 //  label = label to be drawn
-//  color = colors to use for the slice
+//  color = colors to use
+//  active = whether the slice is active or not
+//  mouseOver (optional) = called when a mouseOver event occurs, takes id as a parameter
+//  mouseOut (optional) = called when a mouseOut event occurs, takes id as a parameter
+//  id (optional) = passed to mouseOver and mouseOut
 function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, dataset = []) {
   //create the SVG object
   var svg = d3.select(node).append("svg")
@@ -29,11 +33,15 @@ function drawPieGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   return updatePieGraph(node, dataset, 1000);
 }
 
-//PARAM: node = the <div> element to contain the svg
-//PARAM: dataset = array structures containing data to draw:
+//PARAM: node = the <div> element that contains the svg created by drawPieGraph
+//PARAM: dataset = array of structures containing data to draw:
 //  value = the value to be drawn
 //  label = label to be drawn
-//  color = colors to use for the slice
+//  color = colors to use
+//  active = whether the slice is active or not
+//  mouseOver (optional) = called when a mouseOver event occurs, takes id as a parameter
+//  mouseOut (optional) = called when a mouseOut event occurs, takes id as a parameter
+//  id (optional) = passed to mouseOver and mouseOut
 //PARAM: duration = time that the transition should take
 function updatePieGraph(node, dataset, duration = 1000) {
   //get the SVG

@@ -70,7 +70,7 @@ class PieGraphPanel extends React.Component {
       { id: 0, value: 0, label: '', color: '#FF0000', legendLabel: '$0 - $18,200' },
       { id: 1, value: 0, label: '', color: '#00FF00', legendLabel: '$18,201 - $37,000' },
       { id: 2, value: 0, label: '', color: '#0000FF', legendLabel: '$37,001 - $80,000' },
-      { id: 3, value: 0, label: '', color: '#FF00FF', legendLabel: '$80,000+' },
+      { id: 3, value: 0, label: '', color: '#FF00FF', legendLabel: '$80,001+' },
     ];
 
     //"construct" the state, if needed

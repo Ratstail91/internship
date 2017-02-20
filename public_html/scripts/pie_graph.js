@@ -108,7 +108,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
   slices
     .exit()
     .remove();
-/*
+
   //initialize text labels
   labels = svg.select(".labels")
     .selectAll("text")
@@ -122,35 +122,43 @@ function updatePieGraph(node, dataset, duration = 1000) {
     .attr("dy", ".35em")
     .attr("font-size", "14px");
 
+  //static aspects that all labels need
   labels
     .style("fill", function(d, i) { return d.color; })
     .text(function(d) { return d.label; })
-    .transition()
+/*    .transition()
     .duration(duration)
     .attrTween("transform", function(d, i) {
       //store the derivation of the dataset instead
-      newD = pie(dataset)[i];
-      this._current = this._current || newD;
-      var interpolate = d3.interpolate(this._current, newD);
+      this._current = this._current || d;
+      var interpolate = d3.interpolate(this._current, d);
       this._current = interpolate(0);
       return function(t) {
         var d2 = interpolate(t);
-        var outerCenter = outerArc.centroid(d2);
+        var outerCenter = d.active ? buffOuterArc.centroid(d2) : outerArc.centroid(d2);
         var shift = midAngle(d2) < Math.PI ? (w/2) : (-w/2);
+if (d.id == 0)
+console.log(t, outerCenter);
         return "translate(" + [shift, outerCenter[1]] + ")";
       };
     })
     .styleTween("text-anchor", function(d, i) {
       //store the derivation of the dataset instead
-      newD = pie(dataset)[i];
-      this._current = this._current || newD;
-      var interpolate = d3.interpolate(this._current, newD);
+      this._current = this._current || d;
+      var interpolate = d3.interpolate(this._current, d);
       this._current = interpolate(0);
       return function(t) {
         var d2 = interpolate(t);
         return midAngle(d2) < Math.PI ? "start" : "end";
       }
     });
+*/
+  //remove old labels
+  labels
+    .exit()
+    .remove();
+/*
+  labels
 
   //enable only the active labels
   labels
@@ -160,10 +168,6 @@ function updatePieGraph(node, dataset, duration = 1000) {
      })
     .attr("display", "inline");
 
-  //remove old labels
-  labels
-    .exit()
-    .remove();
 
   //adjust the polylines
   var lines = svg.select(".lines")

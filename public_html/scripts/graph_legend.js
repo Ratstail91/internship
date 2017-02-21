@@ -39,6 +39,7 @@ function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, botto
 //  label = labels for the keys
 //  callback = the callback function used by onClick;
 //    this returns true to toggle the background
+//TODO: re-add the placement feature
 function updateGraphLegend(node, dataset) {
   var svg = d3.select(node).select("svg");
 
@@ -49,32 +50,28 @@ function updateGraphLegend(node, dataset) {
   var w = svg.attr("width") - padding.left - padding.right;
   var h = svg.attr("height") - padding.top - padding.bottom;
 
-  //adjust the labels
+  //initialize the labels
   var labelSelector = svg.select(".labels")
     .selectAll("text")
     .data(dataset);
 
+  //create new labels
   labelSelector
     .enter()
     .append("text")
     .attr("class", "label")
-    .attr("active", false)
     .attr("font-size", 12)
     .attr("font-family", "sans-serif")
     .attr("dy", "0.9em")
     .attr("x", function(d, i) { return padding.left + i*(shift.horizontal); })
     .attr("y", function(d, i) { return padding.top + i*(shift.vertical); });
 
+  //static members that all labels need
   labelSelector
     .text(function(d) { return d.label; })
-    .on("click", function(d, i) {
-      if (d.callback) {
-        if(d.callback(i)) {
-          toggleBackground(svg, i);
-        }
-      }
-    });
+    .on("click", function(d, i) { if (d.callback) d.callback(d.id); });
 
+  //remove unneeded labels
   labelSelector
     .exit()
     .remove();
@@ -83,29 +80,24 @@ function updateGraphLegend(node, dataset) {
   var colorSymbols = dataset.filter(function(d) { return typeof(d.symbol) === 'string'; });
   var count = 0;
 
+  //initialize symbolsRect
   var symbolsRect = svg.select(".symbols")
     .selectAll("rect")
     .data(colorSymbols);
 
+  //create new color symbols
   symbolsRect
     .enter()
     .append("rect");
 
+  //static attributes that all rect symbols need
   symbolsRect
     .attr("x", function(d, i) { return padding.left + dataset.indexOf(d)*shift.horizontal; })
     .attr("y", function(d, i) { return padding.top + dataset.indexOf(d)*shift.vertical +1; })
     .attr("width", 20)
     .attr("height", 12)
     .attr("fill", function(d) { return colorSymbols[count++].symbol; })
-
-  symbolsRect
-    .on("click", function(d, i) {
-      if (d.callback) {
-        if(d.callback(i)) {
-          toggleBackground(svg, i);
-        }
-      }
-    });
+    .on("click", function(d, i) { if (d.callback) d.callback(d.id); });
 
   //handle object = arbitrary data (customizable)
   var objectSymbols = dataset.filter(function(d) { return typeof(d.symbol) === 'object'; });
@@ -129,6 +121,8 @@ function updateGraphLegend(node, dataset) {
           l.attr("stroke-dasharray", x.symbol.value);
         }
       break;
+
+      //TODO: more symbol features
     }
   });
 
@@ -141,9 +135,13 @@ function updateGraphLegend(node, dataset) {
     .selectAll("rect")
     .data(dataset);
 
+  //new backgrounds
   backgrounds
     .enter()
-    .append("rect")
+    .append("rect");
+
+  //static attributes that all backgrounds need
+  backgrounds
     .attr("x", function(d, i) { return padding.left + i*(shift.horizontal) + 22; })
     .attr("y", function(d, i) { return padding.top + i*(shift.vertical) + 1; })
     .attr("width", shift.horizontal ? shift.horizontal - 24 : w - 24)
@@ -151,57 +149,12 @@ function updateGraphLegend(node, dataset) {
     .attr("fill", function(d) { return '#888888'; })
     .attr("rx", 6)
     .attr("ry", 6)
-    .attr("display", "none")
-    .attr("active", false);
-}
+    //the magic
+    .attr("display", function(d) { return d.locked ? "inline" :"none"; });
 
-//PARAM: svg = the svg created with drawGraphLegend()
-//PARAM: index = the index of the label to activate
-function activateBackground(svg, index) {
-  //get the backgrounds
-  var backgrounds = svg.select(".backgrounds").selectAll("rect");
-
-  //change the background
+  //remove unneeded backgrounds
   backgrounds
-    .filter(function(d, f) { return index === f; })
-    .attr("display", "inline")
-    .attr("active", true);
-}
-
-//PARAM: svg = the svg created with drawGraphLegend()
-//PARAM: index = the index of the label to deactivate
-function deactivateBackground(svg, index) {
-  //get the backgrounds
-  var backgrounds = svg.select(".backgrounds").selectAll("rect");
-
-  //change the background
-  backgrounds
-    .filter(function(d, f) { return index === f; })
-    .attr("display", "none")
-    .attr("active", false);
-}
-
-//PARAM: svg = the svg created with drawGraphLegend()
-//PARAM: index = the index of the label to toggle
-function toggleBackground(svg, index) {
-  //get the backgrounds
-  var backgrounds = svg.select(".backgrounds").selectAll("rect");
-
-  var active;
-
-  //find the state of the background 'index'
-  backgrounds.each(function(d, i) {
-    if (i === index) {
-      active = d3.select(this).attr("active");
-    }
-  });
-
-  //flip the given label
-  if (active === "true") {
-    deactivateBackground(svg, index);
-  }
-  else {
-    activateBackground(svg, index);
-  }
+    .exit()
+    .remove();
 }
 

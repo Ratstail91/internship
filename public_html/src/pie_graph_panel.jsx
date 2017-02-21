@@ -52,15 +52,26 @@ class PieGraphPanel extends React.Component {
     );
   }
 
-  mouseOverSlice(i) {
+  mouseOverSlice(id) {
     var slices = JSON.parse(JSON.stringify(this.state.slices));
-    slices[i].active = true;
+    if (!slices[id].locked) {
+      slices[id].active = true;
+    }
     this.setState({ slices: slices, duration: 300, hoverTrigger: true });
   }
 
-  mouseOutSlice(i) {
+  mouseOutSlice(id) {
     var slices = JSON.parse(JSON.stringify(this.state.slices));
-    slices[i].active = false;
+    if (!slices[id].locked) {
+      slices[id].active = false;
+    }
+    this.setState({ slices: slices, duration: 300, hoverTrigger: true });
+  }
+
+  legendCallback(id) {
+    var slices = JSON.parse(JSON.stringify(this.state.slices));
+    slices[id].locked = !slices[id].locked;
+    slices[id].active = slices[id].locked;
     this.setState({ slices: slices, duration: 300, hoverTrigger: true });
   }
 
@@ -75,20 +86,24 @@ class PieGraphPanel extends React.Component {
 
     //"construct" the state, if needed
     while(nextState.slices.length < dataset.length) {
-      nextState.slices.push({ active: false });
+      nextState.slices.push({ active: false, locked: false });
     }
 
     //inject the callbacks
     dataset.map(function(x) {
       x.mouseOver = this.mouseOverSlice.bind(this);
       x.mouseOut = this.mouseOutSlice.bind(this);
+      x.callback = this.legendCallback.bind(this);
     }.bind(this));
 
     //color and symbol are the same
     dataset.map(function(x) { x.symbol = x.color; });
 
-    //insert the active value
-    dataset.map(function(x) { x.active = nextState.slices[dataset.indexOf(x)].active; }.bind(this));
+    //insert the active and locked values
+    dataset.map(function(x) {
+      x.active = nextState.slices[dataset.indexOf(x)].active;
+      x.locked = nextState.slices[dataset.indexOf(x)].locked;
+    }.bind(this));
 
     //determine the income ranges for all members of nextProps.state
     nextProps.state.map(function(x) {

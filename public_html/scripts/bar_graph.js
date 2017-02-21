@@ -10,14 +10,18 @@
 //PARAM: titles = structure containing elements
 //  x = name of the xAxis
 //  y = name of the yAxis
-//PARAM: dataset = array of structures containing data to draw:
+//PARAM: dataset = array of structures passed to updateBarGraph():
 //  value = the value to be drawn
 //  label = the label to be drawn
+//  active = whether the bar is active or not
+//  mouseOver (optional) = called when a mouseOver event occurs, takes id as a parameter
+//  mouseOut (optional) = called when a mouseOut event occurs, takes id as a parameter
+//  id (optional) = passed to mouseOver and mouseOut
 //PARAM: colors = an array of colors to be used:
 //  [0]: below average, normal
 //  [1]: above average, normal
-//  [2]: below average, highlighted
-//  [3]: above average, highlighted
+//  [2]: below average, active
+//  [3]: above average, active
 function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0, bar: 1}, titles = {x: '', y: ''}, dataset = [], colors = []) {
   //constants
   var titlePadding  = 12;
@@ -42,10 +46,14 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   return updateBarGraph(node, dataset, 1000);
 }
 
-//PARAM: node = the <div> element to contain the svg
+//PARAM: node = the <div> element that contains the svg created by drawBarGraph
 //PARAM: dataset = array of structures containing data to draw:
 //  value = the value to be drawn
 //  label = the label to be drawn
+//  active = whether the bar is active or not
+//  mouseOver (optional) = called when a mouseOver event occurs, takes id as a parameter
+//  mouseOut (optional) = called when a mouseOut event occurs, takes id as a parameter
+//  id (optional) = passed to mouseOver and mouseOut
 //PARAM: duration = time that the transition should take
 function updateBarGraph(node, dataset, duration = 1000) {
   //constants

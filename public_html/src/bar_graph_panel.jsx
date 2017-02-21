@@ -20,7 +20,7 @@ class BarGraphPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { bars: [], duration: 0 };
+    this.state = { bars: [], catagories: [false, false], duration: 0 };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -105,7 +105,7 @@ class BarGraphPanel extends React.Component {
 
     //"construct" the state, if needed
     while(nextState.bars.length < dataset.length) {
-      nextState.bars.push({ active: false });
+      nextState.bars.push({ active: false, locked: false });
     }
 
     //inject the callbacks
@@ -137,17 +137,36 @@ class BarGraphPanel extends React.Component {
 
     //remove entries with no members
     dataset = dataset.filter(function(x) { return x.value != 0; });
-    //update the graph
-    updateBarGraph(d3.select("#bargraph").node(), dataset, nextState.duration);
-    //update the legend
+
+    //calc the average
     var average = dataset.reduce((a,b) => { return a+b.value; }, 0) / dataset.length;
 
+    //callback for the legend
+    var callback = function(id) {
+      var cats = JSON.parse(JSON.stringify(nextState.catagories));
+      var bars = JSON.parse(JSON.stringify(nextState.bars));
+
+      //toggle
+      cats[id] = !cats[id];
+
+      //change the bars
+      dataset.map(function(x) {
+        bars[dataset.indexOf(x)].active = x.value < average;
+      });
+
+      this.setState({ bars: bars, catagories: cats });
+    }.bind(this);
+
+    //update the graph
+    updateBarGraph(d3.select("#bargraph").node(), dataset, nextState.duration);
+
+    //update the legend
     updateGraphLegend(
       d3.select("#barlegend").node(),
       [
-        { symbol: symbols[0], label: 'Above Average' },
-        { symbol: symbols[1], label: 'Below Average' },
-        { symbol: symbols[2], label: 'Average: ' + average },
+        { id: 0, symbol: symbols[0], label: 'Above Average', callback: callback, locked: nextState.catagories[0]},
+        { id: 1, symbol: symbols[1], label: 'Below Average', callback: callback, locked: nextState.catagories[1]},
+        { id: 2, symbol: symbols[2], label: 'Average: ' + average },
       ]
     );
   }

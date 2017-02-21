@@ -28,9 +28,7 @@ function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, botto
   svg.append("g").attr("class", "labels");
   svg.append("g").attr("class", "symbols");
 
-  updateGraphLegend(node, dataset);
-
-  return svg; 
+  return updateGraphLegend(node, dataset);
 }
 
 //PARAM: node = the <div> element to contain the svg
@@ -156,5 +154,7 @@ function updateGraphLegend(node, dataset) {
   backgrounds
     .exit()
     .remove();
+
+  return svg;
 }
 

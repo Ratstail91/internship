@@ -42,6 +42,91 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   svg.append("g").attr("class", "axis");
   svg.append("g").attr("class", "dashline");
   svg.append("g").attr("class", "titles");
+  svg.append("g").attr("class", "xaxis")
+
+  //draw the titles (x & y)
+  if (titles != null && titles.x !== '') {
+    //x title
+    var xTitleSelector = svg.select(".titles")
+      .selectAll("x-title")
+      .data([titles.x]);
+
+    xTitleSelector
+      .enter()
+      .append("text")
+      .text(function(d) { return d; })
+      .attr("class", "x-title")
+      .attr("x", function(d) { return padding.left + (w/2); } )
+      .attr("y", function(d) { return padding.top + h; } )
+      .attr("dy", "2em")
+      .attr("text-anchor", "middle");
+
+    xTitleSelector
+      .attr("fill", "black")
+      .attr("display", "inline")
+      .attr("font-size", 12)
+      .attr("font-family", "sans-serif");
+
+    xTitleSelector
+      .exit()
+      .remove();
+  }
+  else {
+    svg.select(".titles").selectAll(".x-title").remove();
+  }
+
+
+  if (titles != null && titles.y !== '') {
+    //y title
+    var yTitleSelector = svg.select(".titles")
+      .selectAll("y-title")
+      .data([titles.y]);
+
+    yTitleSelector
+      .enter()
+      .append("text")
+      .text(function(d) { return d; })
+      .attr("class", "y-title")
+      .attr("x", function(d) { return -padding.top - (h/2); } )
+      .attr("y", function(d) { return 0; } )
+      .attr("dy", titlePadding)
+      .attr("text-anchor", "middle");
+
+    yTitleSelector
+      .attr("fill", "black")
+      .attr("display", "inline")
+      .attr("font-size", 12)
+      .attr("font-family", "sans-serif")
+      .attr("transform", "rotate(270)");
+
+    yTitleSelector
+      .exit()
+      .remove();
+  }
+  else {
+    svg.select(".titles").selectAll(".y-title").remove();
+  }
+
+  //draw the X-axis line
+  var xAxis = svg.select(".xaxis")
+    .selectAll("line")
+    .data([[0, h, w, h]]);
+
+  xAxis
+    .enter()
+    .append("line");
+
+  xAxis
+    .attr("x1", (d) => { return padding.left + titlePadding + d[0]; })
+    .attr("y1", (d) => { return padding.top + d[1]; })
+    .attr("x2", (d) => { return padding.left + titlePadding + d[2]; })
+    .attr("y2", (d) => { return padding.top + d[3]; })
+    .style("stroke", "black")
+    .style("stroke-width", "2");
+
+  xAxis
+    .exit()
+    .remove();
 
   return updateBarGraph(node, dataset, 1000);
 }
@@ -69,7 +154,6 @@ function updateBarGraph(node, dataset, duration = 1000) {
   var h = svg.attr("height") - padding.top - padding.bottom - titlePadding;
 
   //get the other metadata
-  var titles = JSON.parse(svg.attr("titles"));
   var colors = JSON.parse(svg.attr("colors"));
 
   //get the average
@@ -106,11 +190,8 @@ function updateBarGraph(node, dataset, duration = 1000) {
   //static attributes that all tooltips need
   tooltips
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length - padding.bar) / 2; })
-      .attr("text-anchor", "middle")
-    .attr("y", function(d, i) { return padding.top + yScale(d.value); })
-      .attr("dy", "1em");
-
-  tooltips
+    .attr("text-anchor", "middle")
+    .attr("dy", "1em")
     .text(function(d) { return d.value; })
     .attr("fill", "white")
     .attr("display", function(d) { return d.active ? "inline" : "none"; })
@@ -251,82 +332,6 @@ function updateBarGraph(node, dataset, duration = 1000) {
   dashline
     .exit()
     .remove();
-
-  //draw the titles (x & y)
-  if (titles != -1 && titles.x !== '') {
-    //x title
-    svg.select(".titles").selectAll(".x-title").remove();
-
-    var xTitleSelector = svg.select(".titles")
-      .selectAll("x-title")
-      .data([titles.x]);
-
-    xTitleSelector
-      .enter()
-      .append("text")
-      .text(function(d) { return d; })
-      .attr("class", "x-title")
-      .attr("x", function(d) { return padding.left + (w/2); } )
-      .attr("y", function(d) { return padding.top + h; } )
-      .attr("dy", "2em")
-      .attr("text-anchor", "middle");
-
-    xTitleSelector
-      .attr("fill", "black")
-      .attr("display", "inline")
-      .attr("font-size", 12)
-      .attr("font-family", "sans-serif");
-
-    xTitleSelector
-      .exit()
-      .remove();
-  }
-
-  if (titles != -1 && titles.y !== '') {
-    //y title
-    svg.select(".titles").selectAll(".y-title").remove();
-
-    var yTitleSelector = svg.select(".titles")
-      .selectAll("y-title")
-      .data([titles.y]);
-
-    yTitleSelector
-      .enter()
-      .append("text")
-      .text(function(d) { return d; })
-      .attr("class", "y-title")
-      .attr("x", function(d) { return -padding.top - (h/2); } )
-      .attr("y", function(d) { return 0; } )
-      .attr("dy", titlePadding)
-      .attr("text-anchor", "middle");
-
-    yTitleSelector
-      .attr("fill", "black")
-      .attr("display", "inline")
-      .attr("font-size", 12)
-      .attr("font-family", "sans-serif")
-      .attr("transform", "rotate(270)");
-
-    yTitleSelector
-      .exit()
-      .remove();
-  }
-
-  //draw the X-axis line
-  svg.select(".xaxis").remove();
-
-  svg.append("g")
-    .attr("class", "xaxis")
-    .selectAll("line")
-    .data([[0, h, w, h]])
-    .enter()
-    .append("line")
-    .attr("x1", (d) => { return padding.left + titlePadding + d[0]; })
-    .attr("y1", (d) => { return padding.top + d[1]; })
-    .attr("x2", (d) => { return padding.left + titlePadding + d[2]; })
-    .attr("y2", (d) => { return padding.top + d[3]; })
-    .style("stroke", "black")
-    .style("stroke-width", "2");
 
   return svg;
 }

@@ -9,11 +9,14 @@
 //PARAM: shift = amount to move elements, commulative:
 //  horizontal = horizontal direction
 //  vertical = vertical direction
-//PARAM: dataset = data to be drawn:
+//PARAM: dataset = array of structures containing data to draw:
 //  symbol = colors/metadata to draw as a key
+//   typeof('string') = a color code to use
+//   typeof('object') = a structure to use, see implementation
 //  label = labels for the keys
-//  callback = the callback function used by onClick;
-//    this returns true to toggle the background
+//  active = whether the label is active or not
+//  callback (optional) = called when an onclick event occurs. takes id as a parameter
+//  id (optional) = passed to callback
 function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0}, shift = {horizontal: 0, vertical: 0}, dataset = []) {
   //create SVG object
   var svg = d3.select(node).append("svg")
@@ -31,12 +34,15 @@ function drawGraphLegend(node, w, h, padding = {top: 0, left: 0, right: 0, botto
   return updateGraphLegend(node, dataset);
 }
 
-//PARAM: node = the <div> element to contain the svg
-//PARAM: dataset = data to be drawn:
+//PARAM: node = the <div> element that contains the svg created by drawGraphLegend
+//PARAM: dataset = array of structures containing data to draw:
 //  symbol = colors/metadata to draw as a key
+//   typeof('string') = a color code to use
+//   typeof('object') = a structure to use, see implementation
 //  label = labels for the keys
-//  callback = the callback function used by onClick;
-//    this returns true to toggle the background
+//  active = whether the label is active or not
+//  callback (optional) = called when an onclick event occurs. takes id as a parameter
+//  id (optional) = passed to callback
 //TODO: re-add the placement feature
 function updateGraphLegend(node, dataset) {
   var svg = d3.select(node).select("svg");

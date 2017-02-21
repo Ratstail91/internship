@@ -20,7 +20,7 @@ class BarGraphPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { bars: [], catagories: [false, false], duration: 0 };
+    this.state = { bars: [], legend: [false, false], duration: 0 };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -82,15 +82,19 @@ class BarGraphPanel extends React.Component {
     );
   }
 
-  mouseOverBar(i) {
+  mouseOverBar(id) {
     var bars = JSON.parse(JSON.stringify(this.state.bars));
-    bars[i].active = true;
+    if (!bars[id].locked) {
+      bars[id].active = true;
+    }
     this.setState({ bars: bars, duration: 300 });
   }
 
-  mouseOutBar(i) {
+  mouseOutBar(id) {
     var bars = JSON.parse(JSON.stringify(this.state.bars));
-    bars[i].active = false;
+    if (!bars[id].locked) {
+      bars[id].active = false;
+    }
     this.setState({ bars: bars, duration: 300 });
   }
 
@@ -105,7 +109,7 @@ class BarGraphPanel extends React.Component {
 
     //"construct" the state, if needed
     while(nextState.bars.length < dataset.length) {
-      nextState.bars.push({ active: false, locked: false });
+      nextState.bars.push({ active: false, locked: false, value: 0 });
     }
 
     //inject the callbacks
@@ -114,8 +118,8 @@ class BarGraphPanel extends React.Component {
       x.mouseOut = this.mouseOutBar.bind(this);
     }.bind(this));
 
-    //insert the active value
-    dataset.map(function(x) { x.active = nextState.bars[dataset.indexOf(x)].active; }.bind(this));
+    //insert the active value (from state to dataset)
+    dataset.map(function(x) { x.active = nextState.bars[dataset.indexOf(x)].active; });
 
     //determine the age ranges for all members of state
     nextProps.state.map(function(x) {
@@ -135,6 +139,9 @@ class BarGraphPanel extends React.Component {
       }
     }.bind(this));
 
+    //insert the value (from dataset to state)
+    nextState.bars.map(function(x) { x.value = dataset[nextState.bars.indexOf(x)].value; });
+
     //remove entries with no members
     dataset = dataset.filter(function(x) { return x.value != 0; });
 
@@ -143,18 +150,20 @@ class BarGraphPanel extends React.Component {
 
     //callback for the legend
     var callback = function(id) {
-      var cats = JSON.parse(JSON.stringify(nextState.catagories));
+      var legend = JSON.parse(JSON.stringify(nextState.legend));
       var bars = JSON.parse(JSON.stringify(nextState.bars));
 
       //toggle
-      cats[id] = !cats[id];
+      legend[id] = !legend[id];
 
-      //change the bars
-      dataset.map(function(x) {
-        bars[dataset.indexOf(x)].active = x.value < average;
+      bars.map(function(x) {
+        if ( (average > x.value) == id) {
+          x.active = !x.active;
+          x.locked = x.active;
+        }
       });
 
-      this.setState({ bars: bars, catagories: cats });
+      this.setState({ bars: bars, legend: legend });
     }.bind(this);
 
     //update the graph
@@ -164,8 +173,8 @@ class BarGraphPanel extends React.Component {
     updateGraphLegend(
       d3.select("#barlegend").node(),
       [
-        { id: 0, symbol: symbols[0], label: 'Above Average', callback: callback, locked: nextState.catagories[0]},
-        { id: 1, symbol: symbols[1], label: 'Below Average', callback: callback, locked: nextState.catagories[1]},
+        { id: 0, symbol: symbols[0], label: 'Above Average', callback: callback, locked: nextState.legend[0]},
+        { id: 1, symbol: symbols[1], label: 'Below Average', callback: callback, locked: nextState.legend[1]},
         { id: 2, symbol: symbols[2], label: 'Average: ' + average },
       ]
     );

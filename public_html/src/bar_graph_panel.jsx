@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 
+import { SOURCE_LOCAL } from './actions.js';
+
 var symbols = [
   '#0000FF',
   '#FF0000',
@@ -17,9 +19,12 @@ var symbols = [
 class BarGraphPanel extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = { bars: [], duration: 0 };
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps, nextState) {
+    this.update(nextProps, nextState);
     return false;
   }
 
@@ -77,13 +82,40 @@ class BarGraphPanel extends React.Component {
     );
   }
 
-  update(nextProps) {
+  mouseOverBar(i) {
+    var bars = JSON.parse(JSON.stringify(this.state.bars));
+    bars[i].active = true;
+    this.setState({ bars: bars, duration: 300 });
+  }
+
+  mouseOutBar(i) {
+    var bars = JSON.parse(JSON.stringify(this.state.bars));
+    bars[i].active = false;
+    this.setState({ bars: bars, duration: 300 });
+  }
+
+  update(nextProps, nextState) {
+    //build the given fields
     var dataset = [
-      { value: 0, label: '<20' },
-      { value: 0, label: '21-40' },
-      { value: 0, label: '41-60' },
-      { value: 0, label: '61+' }
+      { id: 0, value: 0, label: '<20' },
+      { id: 1, value: 0, label: '21-40' },
+      { id: 2, value: 0, label: '41-60' },
+      { id: 3, value: 0, label: '61+' }
     ];
+
+    //"construct" the state, if needed
+    while(nextState.bars.length < dataset.length) {
+      nextState.bars.push({ active: false });
+    }
+
+    //inject the callbacks
+    dataset.map(function(x) {
+      x.mouseOver = this.mouseOverBar.bind(this);
+      x.mouseOut = this.mouseOutBar.bind(this);
+    }.bind(this));
+
+    //insert the active value
+    dataset.map(function(x) { x.active = nextState.bars[dataset.indexOf(x)].active; }.bind(this));
 
     //determine the age ranges for all members of state
     nextProps.state.map(function(x) {
@@ -105,30 +137,17 @@ class BarGraphPanel extends React.Component {
 
     //remove entries with no members
     dataset = dataset.filter(function(x) { return x.value != 0; });
-
     //update the graph
-    updateBarGraph(d3.select("#bargraph").node(), dataset);
-
+    updateBarGraph(d3.select("#bargraph").node(), dataset, nextState.duration);
     //update the legend
     var average = dataset.reduce((a,b) => { return a+b.value; }, 0) / dataset.length;
-
-    var callback = function(clicked) {
-      var barGraphSVG = d3.select("#bargraph").select("svg");
-      for (var i = 0; i < dataset.length; i++) {
-        var group = dataset[i].value < average;
-        if (group == clicked) {
-          toggleBar(barGraphSVG, i, true);
-        }
-      }
-      return true;
-    };
 
     updateGraphLegend(
       d3.select("#barlegend").node(),
       [
-        { symbol: symbols[0], label: 'Above Average', callback: callback },
-        { symbol: symbols[1], label: 'Below Average', callback: callback },
-        { symbol: symbols[2], label: 'Average: ' + average, callback: () => { ; } },
+        { symbol: symbols[0], label: 'Above Average' },
+        { symbol: symbols[1], label: 'Below Average' },
+        { symbol: symbols[2], label: 'Average: ' + average },
       ]
     );
   }
@@ -151,7 +170,13 @@ class BarGraphPanel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.update(nextProps);
+    nextProps.state.map(function(x) {
+      if (x.source == SOURCE_LOCAL) {
+        this.setState({ duration: 300 });
+      }
+    }.bind(this));
+    //update via props
+    this.update(nextProps, this.state);
   }
 
   render() {

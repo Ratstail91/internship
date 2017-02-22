@@ -14,7 +14,7 @@ import PieGraphPanel from './pie_graph_panel.jsx';
 import BarGraphPanel from './bar_graph_panel.jsx';
 import FooterPanel from './footer_panel.jsx';
 
-import { reduce } from './reducer.js';
+import { reduce } from './reducer.jsx';
 
 var store = createStore(
   reduce,

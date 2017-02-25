@@ -14,9 +14,23 @@ require("scripts/pie_graph.js");
 require("scripts/bar_graph.js");
 require("scripts/graph_legend.js");
 
-if (typeof(window.console.log) === 'undefined') {
-  window.console.log = function(msg) { alert(msg); };
-}
+//hack
+window.console.log = function(msg) { alert(msg); };
+
+//create the store
+console.log("MARK 1");
+console.log(createStore);
+console.log("MARK 2");
+var store = createStore(
+  reduce,
+  compose(
+    applyMiddleware(thunk),
+    DevTools.instrument()
+  )
+);
+console.log("MARK 3");
+console.log(store);
+console.log("MARK 4");
 
 describe("intergration test", function() {
   it("check createStore", function() {

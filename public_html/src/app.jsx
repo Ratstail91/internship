@@ -1,10 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
 import { Grid } from 'semantic-ui-react';
-import DevTools from './dev_tools.jsx';
 
 //includes
 import HeaderPanel from './header_panel.jsx';
@@ -13,16 +8,6 @@ import TablePanel from './table_panel.jsx';
 import PieGraphPanel from './pie_graph_panel.jsx';
 import BarGraphPanel from './bar_graph_panel.jsx';
 import FooterPanel from './footer_panel.jsx';
-
-import { reduce } from './reducer.jsx';
-
-var store = createStore(
-  reduce,
-  compose(
-    applyMiddleware(thunk),
-    DevTools.instrument()
-  )
-);
 
 class App extends React.Component {
   constructor(props) {
@@ -74,13 +59,4 @@ class App extends React.Component {
   }
 };
 
-//start the process
-ReactDOM.render(
-  <Provider store={store}>
-    <div>
-      <App />
-      <DevTools />
-    </div>
-  </Provider>,
-  document.querySelector("#root"));
-
+export default App;

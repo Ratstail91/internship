@@ -1,4 +1,4 @@
-import { ADD_USER_LOCAL, SORT_STORE, CLEAR_STORE } from './actions.jsx';
+import { ADD_USER_LOCAL, SORT_STORE, CLEAR_STORE } from './actions.js';
 
 const initialState = [];
 

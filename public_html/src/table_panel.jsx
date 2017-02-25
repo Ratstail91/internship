@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Header, Table } from 'semantic-ui-react';
 
-import { refreshDatabase, sortStore } from './actions.jsx';
+import { refreshDatabase, sortStore } from './actions.js';
 
 //prevent an infinite loop
 var sorted = false;

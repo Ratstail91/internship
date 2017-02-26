@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 
+import { drawBarGraph, updateBarGraph } from '../scripts/bar_graph.js';
+import { drawGraphLegend, updateGraphLegend } from '../scripts/graph_legend.js';
 import { SOURCE_LOCAL } from './actions.js';
 
 var symbols = [

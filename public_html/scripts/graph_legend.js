@@ -164,3 +164,4 @@ function updateGraphLegend(node, dataset) {
   return svg;
 }
 
+export { drawGraphLegend, updateGraphLegend };

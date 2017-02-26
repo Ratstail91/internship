@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 
+import { drawPieGraph, updatePieGraph } from '../scripts/pie_graph.js';
+import { drawGraphLegend, updateGraphLegend } from '../scripts/graph_legend.js';
 import { SOURCE_LOCAL } from './actions.js';
 
 class PieGraphPanel extends React.Component {

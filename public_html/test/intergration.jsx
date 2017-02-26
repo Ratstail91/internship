@@ -10,9 +10,10 @@ import App from '../src/app.jsx';
 import { reduce } from '../src/reducer.js';
 
 require("../scripts/d3.v3.js");
-require('../scripts/pie_graph.js');
-require("../scripts/bar_graph.js");
-require("../scripts/graph_legend.js");
+
+import { drawPieGraph, updatePieGraph } from '../scripts/pie_graph.js';
+import { drawBarGraph, updateBarGraph } from '../scripts/bar_graph.js';
+import { drawGraphLegend, updateGraphLegend } from '../scripts/graph_legend.js';
 
 describe("intergration test", function() {
   it("Imports", function() {
@@ -23,9 +24,17 @@ describe("intergration test", function() {
     expect(applyMiddleware).toBeDefined();
     expect(compose).toBeDefined();
     expect(thunk).toBeDefined();
+
     expect(DevTools).toBeDefined();
     expect(App).toBeDefined();
     expect(reduce).toBeDefined();
+
+    expect(drawPieGraph).toBeDefined();
+    expect(updatePieGraph).toBeDefined();
+    expect(drawBarGraph).toBeDefined();
+    expect(updateBarGraph).toBeDefined();
+    expect(drawGraphLegend).toBeDefined();
+    expect(updateGraphLegend).toBeDefined();
   });
 
   it("Create A Store", function() {
@@ -67,6 +76,6 @@ describe("intergration test", function() {
       document.querySelector("#root"));
 
     //dump the output
-    console.log(document.querySelector('body'));
+//    console.log(document.querySelector('body'));
   });
 });

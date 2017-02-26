@@ -335,3 +335,5 @@ function updateBarGraph(node, dataset, duration = 1000) {
 
   return svg;
 }
+
+export { drawBarGraph, updateBarGraph };

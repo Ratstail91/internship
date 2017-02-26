@@ -8,9 +8,12 @@ import { SOURCE_LOCAL } from './actions.js';
 class PieGraphPanel extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = { slices: [], duration: 0, hoverTrigger: false };
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps, nextState) {
+    this.update(nextProps, nextState);
     return false;
   }
 
@@ -49,25 +52,60 @@ class PieGraphPanel extends React.Component {
     );
   }
 
-  update(nextProps) {
-    //the callback used to activate the slices
-    var callback = function(i) {
-      toggleSlice(d3.select("#piegraph").select("svg"), i, true);
-      return true;
-    };
+  mouseOverSlice(id) {
+    var slices = JSON.parse(JSON.stringify(this.state.slices));
+    if (!slices[id].locked) {
+      slices[id].active = true;
+    }
+    this.setState({ slices: slices, duration: 300, hoverTrigger: true });
+  }
 
+  mouseOutSlice(id) {
+    var slices = JSON.parse(JSON.stringify(this.state.slices));
+    if (!slices[id].locked) {
+      slices[id].active = false;
+    }
+    this.setState({ slices: slices, duration: 300, hoverTrigger: true });
+  }
+
+  legendCallback(id) {
+    var slices = JSON.parse(JSON.stringify(this.state.slices));
+    slices[id].locked = !slices[id].locked;
+    slices[id].active = slices[id].locked;
+    this.setState({ slices: slices, duration: 300, hoverTrigger: true });
+  }
+
+  update(nextProps, nextState) {
     //build the given fields
     var dataset = [
-      { value: 0, label: '', color: '#FF0000', symbol: '', legendLabel: '$0 - $18,200', callback: callback },
-      { value: 0, label: '', color: '#00FF00', symbol: '', legendLabel: '$18,201 - $37,000', callback: callback },
-      { value: 0, label: '', color: '#0000FF', symbol: '', legendLabel: '$37,001 - $80,000', callback: callback },
-      { value: 0, label: '', color: '#FF00FF', symbol: '', legendLabel: '$80,000+', callback: callback },
+      { id: 0, value: 0, label: '', color: '#FF0000', legendLabel: '$0 - $18,200' },
+      { id: 1, value: 0, label: '', color: '#00FF00', legendLabel: '$18,201 - $37,000' },
+      { id: 2, value: 0, label: '', color: '#0000FF', legendLabel: '$37,001 - $80,000' },
+      { id: 3, value: 0, label: '', color: '#FF00FF', legendLabel: '$80,001+' },
     ];
+
+    //"construct" the state, if needed
+    while(nextState.slices.length < dataset.length) {
+      nextState.slices.push({ active: false, locked: false });
+    }
+
+    //inject the callbacks
+    dataset.map(function(x) {
+      x.mouseOver = this.mouseOverSlice.bind(this);
+      x.mouseOut = this.mouseOutSlice.bind(this);
+      x.callback = this.legendCallback.bind(this);
+    }.bind(this));
 
     //color and symbol are the same
     dataset.map(function(x) { x.symbol = x.color; });
 
-    //determine the income ranges for all members of state
+    //insert the active and locked values
+    dataset.map(function(x) {
+      x.active = nextState.slices[dataset.indexOf(x)].active;
+      x.locked = nextState.slices[dataset.indexOf(x)].locked;
+    }.bind(this));
+
+    //determine the income ranges for all members of nextProps.state
     nextProps.state.map(function(x) {
       if (x.income <= 18200) {
         dataset[0].value++;
@@ -89,20 +127,11 @@ class PieGraphPanel extends React.Component {
       dataset[i].label = '' + Math.round(dataset[i].value / total * 100) + '%';
     }
 
-    var duration = 0;
-
-    //BUG: graphical bug when a new catagory is created
-    nextProps.state.map(function(x) {
-      if (x.source == SOURCE_LOCAL) {
-        duration = 1000;
-      }
-    });
-
     //remove empty entries
     dataset = dataset.filter(function(x) { return x.value != 0; });
 
     //update pie graph
-    updatePieGraph(d3.select("#piegraph").node(), dataset,  duration);
+    updatePieGraph(d3.select("#piegraph").node(), dataset, nextState.duration);
 
     //move the legendLabel field to label
     dataset.map(function(x) { x.label = x.legendLabel; });
@@ -112,7 +141,10 @@ class PieGraphPanel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.update(nextProps);
+    if (this.state.hoverTrigger) {
+      this.setState({ duration: 1000, hoverTrigger: false });
+    }
+    this.update(nextProps, this.state);
   }
 
   render() {

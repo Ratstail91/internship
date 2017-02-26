@@ -10,17 +10,21 @@
 //PARAM: titles = structure containing elements
 //  x = name of the xAxis
 //  y = name of the yAxis
-//PARAM: dataset = array of structures containing data to draw:
+//PARAM: dataset = array of structures passed to updateBarGraph():
 //  value = the value to be drawn
 //  label = the label to be drawn
+//  active = whether the bar is active or not
+//  mouseOver (optional) = called when a mouseOver event occurs, takes id as a parameter
+//  mouseOut (optional) = called when a mouseOut event occurs, takes id as a parameter
+//  id (optional) = passed to mouseOver and mouseOut
 //PARAM: colors = an array of colors to be used:
 //  [0]: below average, normal
 //  [1]: above average, normal
-//  [2]: below average, highlighted
-//  [3]: above average, highlighted
+//  [2]: below average, active
+//  [3]: above average, active
 function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 0, bar: 1}, titles = {x: '', y: ''}, dataset = [], colors = []) {
   //constants
-  titlePadding = 12;
+  var titlePadding  = 12;
 
   //do the stuff
   var svg = d3.select(node).append("svg")
@@ -38,19 +42,109 @@ function drawBarGraph(node, w, h, padding = {top: 0, left: 0, right: 0, bottom: 
   svg.append("g").attr("class", "axis");
   svg.append("g").attr("class", "dashline");
   svg.append("g").attr("class", "titles");
+  svg.append("g").attr("class", "xaxis")
+
+  //draw the titles (x & y)
+  if (titles != null && titles.x !== '') {
+    //x title
+    var xTitleSelector = svg.select(".titles")
+      .selectAll("x-title")
+      .data([titles.x]);
+
+    xTitleSelector
+      .enter()
+      .append("text")
+      .text(function(d) { return d; })
+      .attr("class", "x-title")
+      .attr("x", function(d) { return padding.left + (w/2); } )
+      .attr("y", function(d) { return padding.top + h; } )
+      .attr("dy", "2em")
+      .attr("text-anchor", "middle");
+
+    xTitleSelector
+      .attr("fill", "black")
+      .attr("display", "inline")
+      .attr("font-size", 12)
+      .attr("font-family", "sans-serif");
+
+    xTitleSelector
+      .exit()
+      .remove();
+  }
+  else {
+    svg.select(".titles").selectAll(".x-title").remove();
+  }
+
+
+  if (titles != null && titles.y !== '') {
+    //y title
+    var yTitleSelector = svg.select(".titles")
+      .selectAll("y-title")
+      .data([titles.y]);
+
+    yTitleSelector
+      .enter()
+      .append("text")
+      .text(function(d) { return d; })
+      .attr("class", "y-title")
+      .attr("x", function(d) { return -padding.top - (h/2); } )
+      .attr("y", function(d) { return 0; } )
+      .attr("dy", titlePadding)
+      .attr("text-anchor", "middle");
+
+    yTitleSelector
+      .attr("fill", "black")
+      .attr("display", "inline")
+      .attr("font-size", 12)
+      .attr("font-family", "sans-serif")
+      .attr("transform", "rotate(270)");
+
+    yTitleSelector
+      .exit()
+      .remove();
+  }
+  else {
+    svg.select(".titles").selectAll(".y-title").remove();
+  }
+
+  //draw the X-axis line
+  var xAxis = svg.select(".xaxis")
+    .selectAll("line")
+    .data([[0, h, w, h]]);
+
+  xAxis
+    .enter()
+    .append("line");
+
+  xAxis
+    .attr("x1", (d) => { return padding.left + titlePadding + d[0]; })
+    .attr("y1", (d) => { return padding.top + d[1]; })
+    .attr("x2", (d) => { return padding.left + titlePadding + d[2]; })
+    .attr("y2", (d) => { return padding.top + d[3]; })
+    .style("stroke", "black")
+    .style("stroke-width", "2");
+
+  xAxis
+    .exit()
+    .remove();
 
   return updateBarGraph(node, dataset, 1000);
 }
 
-//PARAM: node = the <div> element to contain the svg
+//PARAM: node = the <div> element that contains the svg created by drawBarGraph
 //PARAM: dataset = array of structures containing data to draw:
 //  value = the value to be drawn
 //  label = the label to be drawn
+//  active = whether the bar is active or not
+//  mouseOver (optional) = called when a mouseOver event occurs, takes id as a parameter
+//  mouseOut (optional) = called when a mouseOut event occurs, takes id as a parameter
+//  id (optional) = passed to mouseOver and mouseOut
 //PARAM: duration = time that the transition should take
 function updateBarGraph(node, dataset, duration = 1000) {
   //constants
-  titlePadding = 12;
+  var titlePadding = 12;
 
+  //get the SVG
   var svg = d3.select(node).select("svg");
 
   //get width, height and padding
@@ -59,18 +153,14 @@ function updateBarGraph(node, dataset, duration = 1000) {
   var w = svg.attr("width") - padding.left - padding.right - titlePadding;
   var h = svg.attr("height") - padding.top - padding.bottom - titlePadding;
 
-  //get the other stuff
-  var titles = JSON.parse(svg.attr("titles"));
+  //get the other metadata
   var colors = JSON.parse(svg.attr("colors"));
 
   //get the average
-  var average;
+  var average = 0;
 
   if(dataset.length != 0) {
     average = dataset.reduce(function(a, b) { return a+b.value; }, 0) / dataset.length;
-  }
-  else {
-    average = 0;
   }
 
   //calc the scale
@@ -86,112 +176,98 @@ function updateBarGraph(node, dataset, duration = 1000) {
     .domain([0, max])
     .range([h, 1]);
 
-  //adjust the tooltips
-  tooltips = svg.select(".tooltips")
+  //initialize the tooltips
+  var tooltips = svg.select(".tooltips")
     .selectAll("text")
     .data(dataset);
 
+  //create new tooltips
   tooltips
     .enter()
     .append("text")
     .attr("class", "tips");
 
+  //static attributes that all tooltips need
   tooltips
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length - padding.bar) / 2; })
-      .attr("text-anchor", "middle")
-    .attr("y", function(d, i) { return padding.top + yScale(d.value); })
-      .attr("dy", "1em");
-
-  tooltips
+    .attr("text-anchor", "middle")
+    .attr("dy", "1em")
     .text(function(d) { return d.value; })
     .attr("fill", "white")
-    .attr("display", "none")
+    .attr("display", function(d) { return d.active ? "inline" : "none"; })
     .attr("font-size", 12)
     .attr("font-family", "sans-serif");
 
+  //move the tooltips into place
   tooltips
     .transition()
     .duration(duration)
-    .attrTween("y", function(d, i) {
-      this._current = this._current || d.value;
-      var interpolate = d3.interpolate(this._current, d.value);
-      this._current = interpolate(0);
-      return function(t) {
-        return padding.top + yScale(interpolate(t));
-      }
+    .attr("y", function(d, i) {
+      return padding.top + yScale(d.value);
     });
 
+  //remove the unneeded tooltips
   tooltips
     .exit()
     .remove();
 
-  //adjust the bars
-  bars = svg.select(".bars")
+  //initialize the bars
+  var bars = svg.select(".bars")
     .selectAll("rect")
     .data(dataset);
 
+  //create new bars
   bars
     .enter()
     .append("rect")
     .attr("class", "bar");
 
+  //static components that all bars need
   bars
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w / dataset.length); })
-    .attr("y", function(d, i) { return padding.top + yScale(d.value); })
     .attr("width", w / dataset.length -padding.bar)
-    .attr("height", function(d) { return h - yScale(d.value); })
-    //BUG: fix the size-on-update bug here (bar version)
-    .attr("fill", (d) => { return colors[d.value < average]; });
 
+  //hover
   bars
-    .on("mouseover", function(d, i) {
-      activateBar(svg, i);
-    })
-    .on("mouseout", function(d, i) {
-      deactivateBar(svg, i);
-    });
+    .on("mouseover", function(d, i) { if (d.mouseOver) d.mouseOver(d.id); })
+    .on("mouseout", function(d, i) { if (d.mouseOut) d.mouseOut(d.id); });
 
+  //bars changing value
   bars
     .transition()
     .duration(duration)
-    .attrTween("y", function(d, i) {
-      this._current = this._current || d.value;
-      var interpolate = d3.interpolate(this._current, d.value);
-      this._current = interpolate(0);
-      return function(t) {
-        return padding.top + yScale(interpolate(t));
-      }
+    .attr("y", function(d, i) {
+      return padding.top + yScale(d.value);
     })
-    .attrTween("height", function(d, i) {
-      this._current = this._current || d.value;
-      var interpolate = d3.interpolate(this._current, d.value);
-      this._current = interpolate(0);
-      return function(t) {
-        return h - yScale(interpolate(t));
-      }
+    .attr("height", function(d, i) {
+      return h - yScale(d.value);
     })
-    .attrTween("fill", function(d, i) {
-      this._current = this._current || d.value;
-      var interpolate = d3.interpolate(this._current, d.value);
-      this._current = interpolate(0);
-      return function(t) {
-        return colors[interpolate(t) < average ? 0:1];
+    .style("fill", function(d, i) {
+      if (d.active) {
+        return colors[d.value < average ? 2:3];
+      }
+      else {
+        return colors[d.value < average ? 0:1];
       }
     })
 
+  //remove the unneeded bars
   bars
     .exit()
     .remove();
 
-  //create and place the labels
-  var labels = svg.select(".labels").selectAll("text")
+  //initialize the labels
+  var labels = svg.select(".labels")
+    .selectAll("text")
     .data(dataset);
 
+  //create new labels
   labels
     .enter()
     .append("text")
     .attr("class", "label");
 
+  //static components that every label needs
   labels
     .text(function(d) { return d.label; })
     .attr("x", function(d, i) { return padding.left + titlePadding + i * (w/dataset.length) + (w/dataset.length -padding.bar) / 2; })
@@ -202,11 +278,12 @@ function updateBarGraph(node, dataset, duration = 1000) {
     .attr("font-size", 12)
     .attr("font-family", "sans-serif");
 
+  //remove unneeded labels
   labels
     .exit()
     .remove();
 
-  //draw the axis
+  //draw the fancy axis
   var yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left");
@@ -245,239 +322,16 @@ function updateBarGraph(node, dataset, duration = 1000) {
   dashline
     .transition()
     .duration(duration)
-    .attrTween("y1", function(d, i) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        return padding.top + yScale(interpolate(t));
-      }
+    .attr("y1", function(d, i) {
+      return padding.top + yScale(d);
     })
-    .attrTween("y2", function(d, i) {
-      this._current = this._current || d;
-      var interpolate = d3.interpolate(this._current, d);
-      this._current = interpolate(0);
-      return function(t) {
-        return padding.top + yScale(interpolate(t));
-      }
+    .attr("y2", function(d, i) {
+      return padding.top + yScale(d);
     });
 
   dashline
     .exit()
     .remove();
 
-  //draw the titles (x & y)
-  if (titles != -1 && titles.x !== '') {
-    //x title
-    svg.select(".titles").selectAll(".x-title").remove();
-
-    var xTitleSelector = svg.select(".titles")
-      .selectAll("x-title")
-      .data([titles.x]);
-
-    xTitleSelector
-      .enter()
-      .append("text")
-      .text(function(d) { return d; })
-      .attr("class", "x-title")
-      .attr("x", function(d) { return padding.left + (w/2); } )
-      .attr("y", function(d) { return padding.top + h; } )
-      .attr("dy", "2em")
-      .attr("text-anchor", "middle");
-
-    xTitleSelector
-      .attr("fill", "black")
-      .attr("display", "inline")
-      .attr("font-size", 12)
-      .attr("font-family", "sans-serif");
-
-    xTitleSelector
-      .exit()
-      .remove();
-  }
-
-  if (titles != -1 && titles.y !== '') {
-    //y title
-    svg.select(".titles").selectAll(".y-title").remove();
-
-    var yTitleSelector = svg.select(".titles")
-      .selectAll("y-title")
-      .data([titles.y]);
-
-    yTitleSelector
-      .enter()
-      .append("text")
-      .text(function(d) { return d; })
-      .attr("class", "y-title")
-      .attr("x", function(d) { return -padding.top - (h/2); } )
-      .attr("y", function(d) { return 0; } )
-      .attr("dy", titlePadding)
-      .attr("text-anchor", "middle");
-
-    yTitleSelector
-      .attr("fill", "black")
-      .attr("display", "inline")
-      .attr("font-size", 12)
-      .attr("font-family", "sans-serif")
-      .attr("transform", "rotate(270)");
-
-    yTitleSelector
-      .exit()
-      .remove();
-  }
-
-  //draw the X-axis line
-  svg.select(".xaxis").remove();
-
-  svg.append("g")
-    .attr("class", "xaxis")
-    .selectAll("line")
-    .data([[0, h, w, h]])
-    .enter()
-    .append("line")
-    .attr("x1", (d) => { return padding.left + titlePadding + d[0]; })
-    .attr("y1", (d) => { return padding.top + d[1]; })
-    .attr("x2", (d) => { return padding.left + titlePadding + d[2]; })
-    .attr("y2", (d) => { return padding.top + d[3]; })
-    .style("stroke", "black")
-    .style("stroke-width", "2");
-
   return svg;
 }
-
-//PARAM: svg = SVG object created with drawBarGraph()
-//PARAM: index = index of the bar to activate
-//PARAM: lock = whether to lock the bar in this state
-function activateBar(svg, index, lock = false) {
-  //constants
-  duration = 100;
-
-  //get the bars
-  var bars = svg.select(".bars").selectAll("rect");
-
-  //if the bar 'index' is locked, return
-  if (bars.filter(function(d, f) { return f === index; }).attr("locked") === "true") {
-    return;
-  }
-
-  //calculate the average
-  var count = 0;
-  var total = 0;
-
-  bars.each(function(d) {
-    total = total + d.value;
-    count = count + 1;
-  });
-
-  var average = total / count;
-
-  //utilities
-  var colors = JSON.parse(svg.attr("colors"));
-
-  //find and tweak the bar 'index'
-  bars
-    .filter(function(d, f) { return index === f; })
-    .attr("active", true)
-    .attr("locked", lock)
-    .transition()
-    .duration(duration)
-    .attrTween("fill", function(d) {
-      var lower = colors[(d.value<average) ? 0:1];
-      var upper = colors[(d.value<average) ? 2:3];
-      var interpolate = d3.interpolate(lower, upper);
-      return function(t) {
-        return interpolate(t);
-      }
-    });
-
-  //get the tooltips
-  var tooltips = svg.select(".tooltips").selectAll("text");
-
-  //find and tweak the tooltip 'index'
-  tooltips
-    .filter(function(d, f) { return f === index; })
-    .attr("display", "inline");
-}
-
-//PARAM: svg = SVG object created with drawBarGraph()
-//PARAM: index = index pf the bar to deactivate
-//PARAM: unlock = whether to unlock the bar if locked
-function deactivateBar(svg, index, unlock = false) {
-  //constants
-  duration = 100;
-
-  //get the bars
-  var bars = svg.select(".bars").selectAll("rect");
-
-  //if the bar is locked, and unlock is not true, return
-  if (
-    bars.filter(function(d, f) { return f === index; }).attr("locked") === "true" &&
-    unlock != true
-    ) {
-    return;
-  }
-
-  //calculate the average
-  var count = 0;
-  var total = 0;
-
-  bars.each(function(d) {
-    total = total + d.value;
-    count = count + 1;
-  });
-
-  var average = total / count;
-
-  //utilities
-  var colors = JSON.parse(svg.attr("colors"));
-
-  //find and tweak the bar 'index'
-  bars
-    .filter(function(d, f) { return index === f; })
-    .attr("active", false)
-    .attr("locked", false)
-    .transition()
-    .duration(duration)
-    .attrTween("fill", function(d) {
-      var lower = colors[(d.value<average) ? 0:1];
-      var upper = colors[(d.value<average) ? 2:3];
-      var interpolate = d3.interpolate(upper, lower);
-      return function(t) {
-        return interpolate(t);
-      }
-    });
-
-  //get the tooptips
-  var tooltips = svg.select(".tooltips").selectAll("text");
-
-  //find and tweak the tooltip 'index'
-  tooltips
-    .filter(function(d, f) { return f === index; })
-    .attr("display", "none");
-}
-
-//PARAM: svg = SVG object created with drawBarGraph()
-//PARAM: index = index pf the bar to toggle
-//PARAM: lock = whether to lock/unlock the bar
-function toggleBar(svg, index, lock) {
-  //get the bars
-  bars = svg.select(".bars").selectAll("rect");
-
-  var active;
-
-  //find the state of the bar 'index'
-  bars.each(function(d, i) {
-    if (i === index) {
-      active = d3.select(this).attr("active");
-    }
-  });
-
-  //flip the given bar
-  if (active === "true") {
-    deactivateBar(svg, index, lock);
-  }
-  else {
-    activateBar(svg, index, lock);
-  }
-}
-

@@ -1,3 +1,5 @@
+import d3 from './d3.v3.js';
+
 //PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the pie graph
 //PARAM: h = height of the pie graph

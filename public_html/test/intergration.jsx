@@ -9,8 +9,6 @@ import App from '../src/app.jsx';
 
 import { reduce } from '../src/reducer.js';
 
-require("../scripts/d3.v3.js");
-
 import { drawPieGraph, updatePieGraph } from '../scripts/pie_graph.js';
 import { drawBarGraph, updateBarGraph } from '../scripts/bar_graph.js';
 import { drawGraphLegend, updateGraphLegend } from '../scripts/graph_legend.js';

@@ -73,7 +73,6 @@ describe("intergration test", function() {
       </Provider>,
       document.querySelector("#root"));
 
-    //dump the output
-//    console.log(document.querySelector('body'));
+    //TODO: examine the output of App
   });
 });

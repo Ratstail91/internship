@@ -26,6 +26,17 @@ module.exports = function(config) {
     exclude: [
     ],
 
+    proxies: {
+      '/refresh.cgi': {
+        'target': 'http://island.krgamestudios.com/refresh.cgi',
+        changeOrigin: true
+      },
+      '/entry.cgi': {
+        'target': 'http://island.krgamestudios.com/entry.cgi',
+        changeOrigin: true
+      }
+    },
+
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactRedux from 'react-redux';
-import Redux from 'redux';
+import * as ReactRedux from 'react-redux';
+import * as Redux from 'redux';
 import thunk from 'redux-thunk';
 
 //hack

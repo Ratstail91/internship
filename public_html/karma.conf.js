@@ -30,24 +30,23 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.js*': ['babel'],
-      'scripts/**/*.js*': ['babel'],
-      'test/**/*.js*': ['babel']
+      'src/**/*.js*': ['babel', 'webpack'],
+      'scripts/**/*.js*': ['babel', 'webpack'],
+      'test/**/*.js*': ['babel', 'webpack']
     },
 
     //CUSTOM
     babelPreprocessor: {
       options: {
         presets: ['es2015', 'react'],
-        plugins: ['transform-es2015-modules-umd'],
-        sourceMap: 'inline'
+        plugins: ['transform-es2015-modules-umd']
       },
       filename: function (file) {
         return file.originalPath.replace(/\.js$/, '.es5.js');
       },
       sourceFileName: function (file) {
         return file.originalPath;
-     }
+      }
     },
 
     webpack: webpackConfig,

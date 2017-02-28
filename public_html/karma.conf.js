@@ -18,6 +18,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+//      'src/index.jsx',
       'test/**/*.js*'
     ],
 
@@ -41,23 +42,21 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.js*': ['babel', 'webpack'],
-      'scripts/**/*.js*': ['babel', 'webpack'],
-      'test/**/*.js*': ['babel', 'webpack']
+//      'src/index.jsx': ['webpack', 'coverage'],
+      'test/**/*.js*': ['webpack', 'coverage']
     },
 
     //CUSTOM
     babelPreprocessor: {
       options: {
-        presets: ['es2015', 'react'],
-        plugins: ['transform-es2015-modules-umd']
-      },
-      filename: function (file) {
-        return file.originalPath.replace(/\.js$/, '.es5.js');
-      },
-      sourceFileName: function (file) {
-        return file.originalPath;
+        presets: ['es2015', 'react', 'stage-0'],
       }
+//      filename: function (file) {
+//        return file.originalPath.replace(/\.js$/, '.es5.js');
+//      },
+//      sourceFileName: function (file) {
+//        return file.originalPath;
+//      }
     },
 
     webpack: webpackConfig,
@@ -69,11 +68,19 @@ module.exports = function(config) {
       stats: 'errors-only'
     },
 
+    plugins: [
+      'karma-babel-preprocessor',
+      'karma-coverage-es6',
+      'karma-jasmine',
+      'karma-phantomjs-launcher',
+      'karma-webpack'
+    ],
+
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
 
     // web server port

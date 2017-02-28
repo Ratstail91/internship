@@ -5,7 +5,8 @@
   "main": " ",
   "scripts": {
     "start": "webpack",
-    "test": "./node_modules/.bin/karma start karma.conf.js"
+    "test": "./node_modules/.bin/karma start karma.conf.js",
+    "coverage": "BABEL_ENV=test babel-core node_modules/isparta/bin/isparta cover"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,8 @@
     "jasmine-core": "^2.5.2",
     "karma": "^1.5.0",
     "karma-babel-preprocessor": "^6.0.1",
+    "karma-coverage": "^1.1.1",
+    "karma-coverage-es6": "^0.2.7",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.2",
     "react": "^15.4.1",

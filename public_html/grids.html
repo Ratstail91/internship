@@ -1,0 +1,554 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/semantic-ui/2.2.8/semantic.min.css" />
+    <link rel="stylesheet" type="text/css" href="styles/grid.css" />
+  </head>
+  <body>
+    <!-- Basic -->
+    <div>Basic</div>
+    <div class="ui grid">
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+    </div>
+
+    <!-- Columns -->
+    <div>Columns</div>
+    <div class="ui grid">
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="two wide column red">Hello world</div>
+      <div class="eight wide column blue">Hello world</div>
+      <div class="six wide column red">Hello world</div>
+    </div>
+
+    <!-- Rows -->
+    <div>Rows</div>
+    <div class="ui grid">
+      <div class="row">
+        <div class="four wide column red">Hello world</div>
+        <div class="four wide column blue">Hello world</div>
+        <div class="four wide column red">Hello world</div>
+      </div>
+      <div class="row">
+        <div class="four wide column blue">Hello world</div>
+        <div class="four wide column red">Hello world</div>
+        <div class="four wide column blue">Hello world</div>
+        <div class="four wide column red">Hello world</div>
+      </div>
+    </div>
+
+    <!-- Gutter -->
+    <div>Gutters - Space Between Text</div>
+    <div class="ui grid">
+      <div class="three column row">
+        <div class="column red">Hello world</div>
+        <div class="column blue">Hello world</div>
+        <div class="column red">Hello world</div>
+      </div>
+      <div class="eight column row">
+        <div class="column red">Hello world</div>
+        <div class="column blue">Hello world</div>
+        <div class="column red">Hello world</div>
+      </div>
+    </div>
+
+    <!-- Relaxed Gutter -->
+    <div>Relaxed Gutters - Text on the edge of the screen</div>
+    <div class="ui relaxed grid">
+      <div class="three column row">
+        <div class="column red">Hello world</div>
+        <div class="column blue">Hello world</div>
+        <div class="column red">Hello world</div>
+      </div>
+      <div class="eight column row">
+        <div class="column red">Hello world</div>
+        <div class="column blue">Hello world</div>
+        <div class="column red">Hello world</div>
+      </div>
+    </div>
+
+    <!-- Padding -->
+    <div>Padding - Notice the lack of gap between the column and the button</div>
+    <div class="ui top attached button">Button before grid</div>
+    <div class="ui padded grid">
+      <div class="sixteen wide column red"></div>
+    </div>
+
+    <!-- Page Grid -->
+    <div>Page Grid</div>
+    <div class="ui grid container">
+        <div class="four wide column red">Hello world</div>
+        <div class="four wide column blue">Hello world</div>
+        <div class="four wide column red">Hello world</div>
+        <div class="four wide column blue">Hello world</div>
+    </div>
+
+    <!-- Auto Flow -->
+    <div>Autoflow</div>
+    <div class="ui grid">
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="four wide column red">Hello world</div>
+    </div> 
+
+    <!-- Column Content -->
+    <div>Column Content - needs specific formatting</div>
+    <div class="ui three column grid">
+      <div class="column"><div class="ui segment red"></div></div>
+      <div class="column"><div class="ui segment blue"></div></div>
+      <div class="column"><div class="ui segment red"></div></div>
+    </div>
+
+    <!-- (x) wide -->
+    <div>(X) Wide Columns</div>
+    <div class="ui grid">
+      <div class="eight wide column red"></div>
+      <div class="eight wide column blue"></div>
+      <div class="ten wide column red"></div>
+      <div class="six wide column blue"></div>
+      <div class="four wide column red"></div>
+      <div class="twelve wide column blue"></div>
+      <div class="two wide column red"></div>
+      <div class="fourteen wide column blue"></div>
+      <div class="sixteen wide column green"></div>
+    </div>
+
+    <!-- Row Rappers -->
+    <div>Row Wrappers</div>
+    <div class="ui grid">
+      <div class="row">
+        <div class="eight wide column green"></div>
+      </div>
+      <div class="eight wide column red"></div>
+      <div class="eight wide column blue"></div>      
+    </div>
+
+    <!-- Clearing Content -->
+    <div>Clearing Content - Cool</div>
+    <div class="ui grid">
+      <div class="four column row">
+        <div class="left floated column red"></div>
+        <div class="right floated column blue"></div>
+      </div>
+    </div>
+
+    <!-- Divided & Celled -->
+    <div>Divided & Celled<div>
+    <div class="ui celled grid">
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column red"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+      <div class="four wide column"></div>
+    </div>
+
+    <!-- Colors -->
+    <div>Colors</div>
+    <div class="ui grid">
+      <div class="eight wide column olive"></div>
+      <div class="eight wide column black"></div>
+      <div class="sixteen wide column" style="background:#888"></div>
+      <div class="eight wide column black"></div>
+      <div class="eight wide column olive"></div>
+    </div>
+
+    <!-- Equal Width -->
+    <div class="ui equal width grid">
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column green"></div>
+    </div>
+
+    <!-- Centered Columns -->
+    <div>Centered Columns</div>
+    <div class="ui two column centered grid">
+      <div class="four wide column blue"></div>
+      <div class="four wide column red"></div>
+    </div>
+
+    <!-- Responsive Grid -->
+    <div>Responsive Grid</div>
+    <div class="ui grid stackable container">
+      <div class="four wide column red"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column red"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column red"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column red"></div>
+    </div>
+
+    <!-- Reversed Responsive Grid -->
+    <div>Reversed Responsive Grid</div>
+    <div class="ui mobile reversed grid stackable container">
+      <div class="four wide column red"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column red"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column red"></div>
+      <div class="four wide column blue"></div>
+      <div class="four wide column red"></div>
+    </div>
+
+    <!-- Doubling -->
+    <div>Doubling</div>
+    <div class="ui grid container">
+      <div class="doubling eight column row">
+        <div class="column red"></div>
+        <div class="column blue"></div>
+        <div class="column red"></div>
+        <div class="column blue"></div>
+      </div>
+    </div>
+
+    <!-- Computer Only -->
+    <div>Computer Only</div>
+    <div class="ui grid container">
+      <div class="computer only column red"></div>
+      <div class="four wide tablet four wide computer only column blue"></div>
+      <div class="computer only column red"></div>
+      <div class="four wide tablet four wide computer only column blue"></div>
+      </div>
+    </div>
+
+    <!-- UI Grid -->
+    <div>UI Grid</div>
+    <div class="ui grid">
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+    </div>
+
+    <!-- Divided -->
+    <div>Divided</div>
+    <div class="ui divided grid">
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+    </div>
+
+    <!-- Vertically Divided -->
+    <div>Vertically Divided</div>
+    <div class="ui four column grid">
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+      <div class="column red"></div>
+      <div class="column blue"></div>
+    </div>
+
+    <!-- Celled -->
+    <div>Celled</div>
+    <div class="ui celled grid">
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+    </div>
+
+    <!-- Internally Celled -->
+    <div>Internally Celled</div>
+    <div class="ui internally celled grid">
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+      <div class="column"></div>
+    </div>
+
+    <!-- Rows -->
+    <div>Rows</div>
+    <div class="ui grid">
+      <div class="row">
+        <div class="four wide column red">Hello world</div>
+        <div class="four wide column blue">Hello world</div>
+        <div class="four wide column red">Hello world</div>
+      </div>
+      <div class="row">
+        <div class="four wide column blue">Hello world</div>
+        <div class="four wide column red">Hello world</div>
+        <div class="four wide column blue">Hello world</div>
+        <div class="four wide column red">Hello world</div>
+      </div>
+    </div>
+
+    <!-- Columns -->
+    <div>Columns</div>
+    <div class="ui grid">
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="four wide column red">Hello world</div>
+      <div class="four wide column blue">Hello world</div>
+      <div class="two wide column red">Hello world</div>
+      <div class="eight wide column blue">Hello world</div>
+      <div class="six wide column red">Hello world</div>
+    </div>
+
+    <!-- Floated -->
+    <div>Floated</div>
+    <div class="ui grid">
+      <div class="four column row">
+        <div class="left floated column red"></div>
+        <div class="right floated column blue"></div>
+      </div>
+    </div>
+
+    <!-- Column widths -->
+    <div>Column Widths</div>
+    <div class="ui grid">
+      <div class="four wide column">
+        <img>
+      </div>
+      <div class="nine wide column">
+        <p></p>
+      </div>
+      <div class="three wide column">
+        <p></p>
+      </div>
+    </div>
+
+    <!-- Equal width -->
+    <div>Equal Width</div>
+    <div class="ui equal width grid">
+      <div class="column">
+        <div class="ui segment red"></div>
+      </div>
+      <div class="eight wide column">
+        <div class="ui segment red"></div>
+      </div>
+      <div class="column">
+        <div class="ui segment red"></div>
+      </div>
+    </div>
+
+    <!-- stretched rows -->
+    <div>Stretched Rows</div>
+    <div class="ui three column divided grid">
+      <div class="stretched row">
+        <div class="column">
+          <div class="ui segment red">
+            1
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment red">
+            1
+          </div>
+          <div class="ui segment red">
+            2
+          </div>
+        </div>
+        <div class="column">
+          <div class="ui segment red">
+            1
+          </div>
+          <div class="ui segment red">
+            2
+          </div>
+          <div class="ui segment red">
+            3
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colors -->
+    <div>The colors, children!</div>
+    <div class="ui five column padded grid stackable">
+      <div class="red column">Red</div>
+      <div class="orange column">Orange</div>
+      <div class="yellow column">Yellow</div>
+      <div class="olive column">Olive</div>
+      <div class="green column">Green</div>
+      <div class="teal column">Teal</div>
+      <div class="blue column">Blue</div>
+      <div class="violet column">Violet</div>
+      <div class="purple column">Purple</div>
+      <div class="pink column">Pink</div>
+      <div class="brown column">Brown</div>
+      <div class="grey column">Grey</div>
+      <div class="black column">Black</div>
+    </div>
+
+  <!-- Device Sizes -->
+  <div>Device Sizes</div>
+  <div class="ui grid">
+    <div class="two column large screen only row">
+      <div class="column">
+        <div class="ui segment">
+          Large Screen
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Large Screen
+        </div>
+      </div>
+    </div>
+    <div class="two column large screen only row">
+      <div class="column">
+        <div class="ui segment">
+          Widescreen
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Widescreen
+        </div>
+      </div>
+    </div>
+    <div class="two column mobile only row">
+      <div class="column">
+        <div class="ui segment">
+          Mobile
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Mobile
+        </div>
+      </div>
+    </div>
+    <div class="three column row">
+      <div class="computer only column">
+        <div class="ui segment">
+          Computer
+        </div>
+      </div>
+      <div class="tablet mobile only column">
+        <div class="ui segment">
+          Tablet and Mobile
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          All Sizes
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          All Sizes
+        </div>
+      </div>
+    </div>
+    <div class="four column computer only row">
+      <div class="column">
+        <div class="ui segment">
+          Computer
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Computer
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Computer
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Computer
+        </div>
+      </div>
+    </div>
+    <div class="three column tablet only row">
+      <div class="column">
+        <div class="ui segment">
+          Tablet
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Tablet
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          Tablet
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </body>
+</html>

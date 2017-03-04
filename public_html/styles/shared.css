@@ -1,0 +1,124 @@
+/* -- UTILITIES -- */
+.textLeft {
+	text-align: left !important;
+}
+
+.textCentered {
+	text-align: center !important;
+}
+
+.textRight {
+	text-align: right !important;
+}
+
+.textLarge {
+	font-size: 42px !important;
+}
+
+.textMedium {
+	font-size: 24px !important;
+}
+
+.textSmall {
+	font-size: 14px !important;
+}
+
+.paddingLarge {
+	padding: 50px !important;
+}
+
+.paddingMedium {
+	padding: 0.8rem 0.4rem !important;
+}
+
+.paddingSmall {
+	padding: 0.8rem 0.4rem !important;
+}
+
+.bordered {
+	border-style: solid !important;
+	border-width: 3px !important;
+}
+
+/* STANDARD */
+*,
+*:before,
+*:after {
+	font-size: inherit;
+	padding: 0;
+	margin: 0;
+}
+
+html {
+	min-height:100vh;
+}
+
+body {
+	min-height: 100vh;
+	background: #EEF;
+	margin: 0;
+}
+
+#root {
+	min-height: 100vh;
+}
+
+/* -- FORM LIST */
+input {
+	min-width: 100%;
+	font-size: inherit;
+}
+
+/* -- DATATABLE */
+.scrollable {
+	overflow-y: scroll;
+	max-height: 600px;
+	min-height: calc(100% - 2.9rem);
+}
+
+.ui.table thead th {
+	border: 0px solid #000;
+	border-bottom: 3px solid #000;
+	text-align: center;
+	margin: 0;
+}
+
+.ui.table tbody tr td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin: 0;
+}
+
+.ui.table tbody tr td {
+	text-align: right;
+	border-bottom: 0px solid #000;
+	border-right: 0px solid #000;
+	margin: 0;
+}
+
+.ui.table tbody tr:nth-child(2n) {
+	background-color: #BBB;
+}
+
+.ui.table tbody tr:hover {
+	background-color: red;
+}
+
+.ui.table thead th.descend:after {
+	display: inline;
+	content: "\25BC";
+}
+
+.ui.table thead th.ascend:after {
+	display: inline;
+	content: "\25B2";
+}
+
+/* -- PIE CHART -- */
+
+/* -- BAR CHART -- */
+
+/* -- SUPER -- */
+
+/* -- SEMANTIC UI TWEAKS -- */
+

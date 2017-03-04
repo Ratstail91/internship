@@ -25,8 +25,6 @@ module.exports = function(config) {
       'src/index.jsx'
     ],
 
-    ],
-
     proxies: {
       '/refresh.cgi': {
         'target': 'http://island.krgamestudios.com/refresh.cgi',

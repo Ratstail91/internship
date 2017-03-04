@@ -1,3 +1,9 @@
-import { welcome } from './welcome_panel.jsx';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-welcome();
+import Welcome from './welcome_panel.jsx';
+
+ReactDOM.render(
+  <Welcome />,
+  document.querySelector('#root')
+);

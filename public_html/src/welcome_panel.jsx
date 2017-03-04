@@ -1,7 +1,11 @@
-function welcome() {
-  var rootNode = document.querySelector('#root');
+import React from 'react';
 
-  rootNode.innerHTML = "Welcome";
-};
+class WelcomePanel extends React.Component {
+  render() {
+    return (
+      <h1>Welcome World!</h1>
+    );
+  }
+}
 
-export { welcome };
+export default WelcomePanel;

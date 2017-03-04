@@ -1,4 +1,7 @@
-import { welcome } from '../src/welcome_panel.jsx';
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import Welcome from '../src/welcome_panel.jsx';
 
 describe("Intergration Test Suite", function() {
   it("Main Test", function() {
@@ -7,13 +10,13 @@ describe("Intergration Test Suite", function() {
 
   it("Welcome Test", function() {
     var rootNode = document.createElement('DIV');
-    rootNode.id = "root";
 
-    var bodyNode = document.getElementsByTagName('BODY')[0];
-    bodyNode.appendChild(rootNode);
+    ReactDOM.render(
+      <Welcome />,
+      rootNode
+    );
 
-    welcome();
-
-    expect(rootNode.innerHTML).toBe('Welcome');
+    expect(rootNode.childNodes.length).toEqual(1);
+    expect(rootNode.childNodes[0].innerHTML).toBe("Welcome World!");
   });
 });

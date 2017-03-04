@@ -1,4 +1,5 @@
 #directories
 logs/**
+/**/coverage
 /**/node_modules
 *.bundle.js

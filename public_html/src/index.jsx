@@ -1,2 +1,3 @@
-console.log("Hello World");
+import { welcome } from './welcome_panel.jsx';
 
+welcome();

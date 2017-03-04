@@ -1,6 +1,8 @@
 // Karma configuration
 // Generated on Sat Mar 04 2017 19:09:40 GMT+1100 (AEDT)
 
+var webpackConfig = require('./webpack.config.js');
+
 module.exports = function(config) {
   config.set({
 
@@ -22,19 +24,24 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
+      'src/index.jsx'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      'src/**/*.js*': ['webpack', 'coverage'],
+      'test/**/*.js*': ['webpack', 'coverage']
     },
+
+    webpack: webpackConfig,
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
 
     // web server port

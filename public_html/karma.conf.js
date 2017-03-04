@@ -1,6 +1,4 @@
 // Karma configuration
-// Generated on Sat Mar 04 2017 19:09:40 GMT+1100 (AEDT)
-
 var webpackConfig = require('./webpack.config.js');
 
 module.exports = function(config) {
@@ -27,11 +25,25 @@ module.exports = function(config) {
       'src/index.jsx'
     ],
 
+    ],
+
+    proxies: {
+      '/refresh.cgi': {
+        'target': 'http://island.krgamestudios.com/refresh.cgi',
+        changeOrigin: true
+      },
+      '/entry.cgi': {
+        'target': 'http://island.krgamestudios.com/entry.cgi',
+        changeOrigin: true
+      }
+    },
+
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/**/*.js*': ['webpack', 'coverage'],
+      'scripts/**/*.js*': ['webpack', 'coverage'],
       'test/**/*.js*': ['webpack', 'coverage']
     },
 

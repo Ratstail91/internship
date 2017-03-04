@@ -1,9 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 
-import Welcome from './welcome_panel.jsx';
+import DevTools from './dev_tools.jsx';
+import App from './app.jsx';
 
-ReactDOM.render(
-  <Welcome />,
-  document.querySelector('#root')
+import { reduce } from './reducer.js';
+
+var store = createStore(
+  reduce,
+  compose(
+    applyMiddleware(thunk),
+    DevTools.instrument()
+  )
 );
+
+//start the process
+ReactDOM.render(
+  <Provider store={store}>
+    <div>
+      <App />
+      <DevTools />
+    </div>
+  </Provider>,
+  document.querySelector("#root"));
+

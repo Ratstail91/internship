@@ -4,8 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack",
+    "test": "./node_modules/.bin/karma start karma.conf.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.5.0",
+    "webpack": "^2.2.1"
+  },
+  "devDependencies": {
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2"
+  }
 }

@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "start": "webpack",
-    "test": "./node_modules/.bin/karma start karma.conf.js"
+    "test": "xvfb-run ./node_modules/.bin/karma start karma.conf.js"
   },
   "author": "",
   "license": "ISC",

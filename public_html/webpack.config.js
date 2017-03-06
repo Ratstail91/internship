@@ -7,15 +7,14 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.jsx$/,
+        test: new RegExp('jsx?$'),
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: new RegExp('./node_modules'),
         query: {
           presets: ['react', 'es2015', 'stage-0'],
           plugins: ['istanbul']
         }
       }
     ]
-  },
-  devtool: 'inline-source-map'
+  }
 };

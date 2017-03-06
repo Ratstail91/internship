@@ -1,4 +1,4 @@
-import d3 from './d3.v3.js';
+import * as d3 from 'd3';
 
 //PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the legend

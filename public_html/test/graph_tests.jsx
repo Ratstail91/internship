@@ -1,4 +1,4 @@
-import d3 from '../scripts/d3.v3.js';
+import * as d3 from 'd3';
 
 import { drawPieGraph, updatePieGraph } from '../scripts/pie_graph.js';
 import { drawBarGraph, updateBarGraph } from '../scripts/bar_graph.js';

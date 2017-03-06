@@ -33,7 +33,11 @@ export function addUser(fname, lname, email, birthdate, income) {
 
     //async add to the local list
     httpRequest.onreadystatechange = function() {
-      if (httpRequest.readyState === 4 && httpRequest.status === 200) {
+      if (httpRequest.readyState !== 4) {
+        return;
+      }
+
+      if (httpRequest.status === 200) {
         if (httpRequest.responseText === 'success') {
           dispatch(addUserLocal(fname, lname, email, birthdate, income, SOURCE_LOCAL));
         }
@@ -41,6 +45,9 @@ export function addUser(fname, lname, email, birthdate, income) {
         else {
           console.log("addUser: ", httpRequest.responseText);
         }
+      }
+      else {
+        console.log("status:". httpRequest.status);
       }
     }
 
@@ -56,13 +63,20 @@ export function refreshDatabase() {
 
     //callback
     request.onreadystatechange = function() {
-      if (request.readyState === 4 && request.status === 200) {
+      if (request.readyState !== 4) {
+        return;
+      }
+
+      if (request.status === 200) {
         //save the given entries
         var arr = JSON.parse(request.responseText);
         for (var i = 0; i < arr.length; i++) {
           var x = arr[i];
           dispatch(addUserLocal(x.fname, x.lname, x.email, x.birthdate, x.income, SOURCE_FOREIGN));
         };
+      }
+      else {
+        console.log("status:", request.status);
       }
     }
 

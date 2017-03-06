@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import DevTools from '../src/dev_tools.jsx';
 import App from '../src/app.jsx';
 
-import { reduce } from '../src/reducer.js';
+import { reduce } from '../src/reducer.jsx';
 
 import { drawPieGraph, updatePieGraph } from '../scripts/pie_graph.js';
 import { drawBarGraph, updateBarGraph } from '../scripts/bar_graph.js';

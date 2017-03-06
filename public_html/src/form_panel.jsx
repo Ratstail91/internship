@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Form, Button } from 'semantic-ui-react';
-import { addUser } from './actions.js';
+import { addUser } from './actions.jsx';
 
 class FormPanel extends React.Component {
   constructor(props) {

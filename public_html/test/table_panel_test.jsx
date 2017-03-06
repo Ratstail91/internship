@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
-import { reduce } from '../src/reducer.js';
+import { reduce } from '../src/reducer.jsx';
 
 import TablePanel from '../src/table_panel.jsx';
 

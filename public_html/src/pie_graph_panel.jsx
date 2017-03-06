@@ -5,7 +5,7 @@ import { Card } from 'semantic-ui-react';
 
 import { drawPieGraph, updatePieGraph } from '../scripts/pie_graph.js';
 import { drawGraphLegend, updateGraphLegend } from '../scripts/graph_legend.js';
-import { SOURCE_LOCAL } from './actions.js';
+import { SOURCE_LOCAL } from './actions.jsx';
 
 class PieGraphPanel extends React.Component {
   constructor(props) {

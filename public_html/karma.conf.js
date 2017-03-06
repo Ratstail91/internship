@@ -24,16 +24,18 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
-      'src/index.jsx'
+      'src/index.jsx',
+      'scripts/d3.v3.js',
+      'scripts/d3.v3.min.js'
     ],
 
     proxies: {
-      'refresh.cgi': {
-        'target': 'http://island.krgamestudios.com/refresh.cgi',
+      '/refresh.cgi': {
+        'target': 'http://helloworld.qps.local/refresh.cgi',
         changeOrigin: true
       },
-      'entry.cgi': {
-        'target': 'http://island.krgamestudios.com/entry.cgi',
+      '/entry.cgi': {
+        'target': 'http://helloworld.qps.local/entry.cgi',
         changeOrigin: true
       }
     },

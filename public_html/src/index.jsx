@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import DevTools from './dev_tools.jsx';
 import App from './app.jsx';
 
-import { reduce } from './reducer.js';
+import { reduce } from './reducer.jsx';
 
 var store = createStore(
   reduce,

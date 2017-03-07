@@ -63,8 +63,6 @@ export function refreshDatabase() {
 
     //callback
     request.onreadystatechange = function() {
-window.dump(request.readyState, request.status, request.response);
-
       if (request.readyState !== 4) {
         return;
       }

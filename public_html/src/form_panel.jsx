@@ -70,7 +70,7 @@ class FormPanel extends React.Component {
       <Card fluid centered={true}>
       <Card.Content>
 
-      <Form className="textMedium" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
+      <Form id="formlist" className="textMedium" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
 
         <Form.Field>
           <p className="left aligned">Email:</p>

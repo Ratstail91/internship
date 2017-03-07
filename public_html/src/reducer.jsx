@@ -16,7 +16,6 @@ export function reduce(state = initialState, action) {
           income: action.income,
           source: action.source
         }];
-    break;
 
     case SORT_STORE:
       //copy the state
@@ -29,26 +28,20 @@ export function reduce(state = initialState, action) {
             var strcmp = function(l, r) { return (l<r?-1:(l>r?1:0)); };
             var result = strcmp(a[action.columnName], b[action.columnName]);
             return action.reverse ? -result : result;
-          break;
 
           case "integer":
             var result = a[action.columnName] - b[action.columnName];
             return action.reverse ? -result : result;
-          break;
         }
       });
 
       //return a sorted store
       return sortedState;
-    break;
 
     case CLEAR_STORE:
       return initialState;
-    break;
 
     default:
       return state;
   }
-
-  return state;
 }

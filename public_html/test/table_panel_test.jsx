@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import sinon from 'sinon';
 
 import { reduce } from '../src/reducer.jsx';
 
@@ -10,10 +11,22 @@ import TablePanel from '../src/table_panel.jsx';
 
 describe("TablePanel", function() {
   var store;
+  var xhr;
+  var requestList = [];
 
   beforeEach(function() {
     //recreate the store
     store = createStore(reduce, applyMiddleware(thunk));
+    xhr = sinon.useFakeXMLHttpRequest();
+    xhr.onCreate = function(xhr) {
+      requestList.push(xhr);
+    }
+  });
+
+  afterEach(function() {
+    //reset the world
+    xhr.restore();
+    requestList = [];
   });
 
   it("Render", function() {
@@ -28,6 +41,13 @@ describe("TablePanel", function() {
       ,
       rootDiv
     );
+
+    //check the requests
+    for (var i = 0; i < requestList.length; i++) {
+      expect(requestList[i].method).toBe('GET');
+      expect(requestList[i].url).toBe('/refresh.cgi');
+      requestList[i].respond(200, 'Content-type: text/html\n\n', '[{"email":"foo@bar.com","fname":"foo","lname":"bar","birthdate":"1968-01-01","income":"1337"}]');
+    }
 
     //examine the output
     expect(rootDiv.childNodes.length).toEqual(1);

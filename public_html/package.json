@@ -38,6 +38,7 @@
     "redux-devtools-log-monitor": "^1.2.0",
     "redux-thunk": "^2.1.0",
     "semantic-ui-css": "^2.2.4",
-    "semantic-ui-react": "^0.64.0"
+    "semantic-ui-react": "^0.64.0",
+    "sinon": "git+https://github.com/sinonjs/sinon.git"
   }
 }

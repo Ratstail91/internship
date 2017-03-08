@@ -2,27 +2,37 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Header, Table } from 'semantic-ui-react';
 
-import { refreshDatabase, sortStore } from './actions.jsx';
+import { refreshDatabase } from './actions.jsx';
 
-//prevent an infinite loop
-var sorted = false;
+var headRow;
 
 class TablePanel extends React.Component {
   constructor(props) {
     super(props);
+
+    this.headerOnClick = this.headerOnClick.bind(this);
+
+    //build the header row
+    headRow = (
+      <Table.Row className="paddingSmall">
+        <Table.HeaderCell onClick={() => { this.headerOnClick("fname", "text") }}>First Name</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => { this.headerOnClick("lname", "text") }}>Last Name</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => { this.headerOnClick("email", "text") }}>Email</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => { this.headerOnClick("birthdate", "text") }}>Age</Table.HeaderCell>
+        <Table.HeaderCell onClick={() => { this.headerOnClick("income","integer") }}>Income</Table.HeaderCell>
+      </Table.Row>
+    );
+
+    this.state = {
+      sorted: false,
+      ascend: false,
+      column: -1,
+      method: -1
+    };
   }
 
   componentWillMount() {
     this.props.refreshDatabase();
-  }
-
-  componentWillUpdate() {
-    if (!sorted) {
-      sorted = this.conditionalSort();
-    }
-    else {
-      sorted = false;
-    }
   }
 
   //fixed
@@ -42,82 +52,41 @@ class TablePanel extends React.Component {
     return today.getFullYear() - date.getFullYear() - thisYear;
   }
 
-  headerOnClick(e) {
+  headerOnClick(fieldName, sortMethod) {
     //BUG: the age field is sorted backwards, since it uses text
-    //get this first
-    var switchNames = e.target.classList.contains("ascend");
 
-    //wipe "ascend" and "descend" classes from the DOM
-    //NOTE: refs did not work, so if you have a problem with this REDACTED
-    var selection;
-    while((selection = document.querySelector(".ascend")) !== null) {
-      selection.className = "";
-    }
-    while((selection = document.querySelector(".descend")) !== null) {
-      selection.className = "";
-    }
-
-    //mark as sorted
-    if (!switchNames) {
-      e.target.className = "ascend";
-    }
-    else {
-      e.target.className = "descend";
-    }
-
-    //shortcut
-    var attr = e.target.attributes;
-
-    //call the sort function
-    this.props.sort(
-      attr.getNamedItem("data-name").value,
-      attr.getNamedItem("data-type").value,
-      !e.target.classList.contains("ascend")
-    );
-    sorted = true;
-  }
-
-  conditionalSort() {
-    //Once again, the refs didn't work
-    var selection = document.querySelector(".ascend");
-    if (selection === null) {
-      selection = document.querySelector(".descend");
-    }
-    if (selection === null) {
-      return false;
-    }
-
-    //shortcut
-    var attr = selection.attributes;
-
-    //call the sort function
-    this.props.sort(
-      attr.getNamedItem("data-name").value,
-      attr.getNamedItem("data-type").value,
-      !selection.classList.contains("ascend")
-    );
-
-    return true;
+    //update the state (info for the sort)
+    this.setState({
+      sorted: true,
+      ascend: !this.state.ascend,
+      column: fieldName,
+      method: sortMethod
+    });
   }
 
   render() {
-    //build the header row
-    var headrow = (
-      <Table.Header>
-        <Table.Row className="paddingSmall">
-          <Table.HeaderCell data-name={"fname"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>First Name</Table.HeaderCell>
-          <Table.HeaderCell data-name={"lname"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Last Name</Table.HeaderCell>
-          <Table.HeaderCell data-name={"email"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Email</Table.HeaderCell>
-          <Table.HeaderCell data-name={"birthdate"} data-type={"text"} onClick={this.headerOnClick.bind(this)}>Age</Table.HeaderCell>
-          <Table.HeaderCell data-name={"income"} data-type={"integer"} onClick={this.headerOnClick.bind(this)}>Income</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-    );
+    //make a new state
+    var sortedState = [...this.props.state];
+
+    if (this.state.sorted) {
+      //actually sort the damn thing
+      sortedState.sort(function(a, b) {
+        switch(this.state.method) {
+          case "text":
+            var strcmp = function(l, r) { return (l<r?-1:(l>r?1:0)); };
+            var result = strcmp(a[this.state.column], b[this.state.column]);
+            return this.state.ascend ? -result : result;
+          case "integer":
+            var result = a[this.state.column] - b[this.state.column];
+            return this.state.ascend ? -result : result;
+        }
+      }.bind(this));
+    }
 
     //build the body
     var arr = [];
-    for (var i = 0; i < this.props.state.length; i++) {
-      var row = this.props.state[i];
+    for (var i = 0; i < sortedState.length; i++) {
+      var row = sortedState[i];
       arr.push(
        <Table.Row className="paddingSmall">
           <Table.Cell>{row.fname}</Table.Cell>
@@ -140,7 +109,7 @@ class TablePanel extends React.Component {
 
         <div className="scrollable">
           <Table celled id="entrylist" unstackable={true} className="textMedium">
-            {headrow}
+            <Table.Header>{headRow}</Table.Header>
             <Table.Body>{arr}</Table.Body>
           </Table>
         </div>
@@ -163,8 +132,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    refreshDatabase: () => { dispatch(refreshDatabase()); },
-    sort: (name, type, reverse) => { dispatch(sortStore(name, type, reverse)); }
+    refreshDatabase: () => { dispatch(refreshDatabase()); }
   };
 }
 

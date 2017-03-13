@@ -1,24 +1,20 @@
-config = {
-	entry: './src/app.jsx',
-	output: {
-		path:'./',
-		filename: 'output.js',
-	},
-	devServer: {
-		inline: true,
-		port: 8080
-	},
-	module: {
-		loaders: [
-			{
-				test: /\.jsx?$/,
-				exclude: /node_modules/,
-				loader: 'babel',
-				query: {
-					presets: ['es2015', 'react']
-				}
-			}
-		]
-	}
-}
-module.exports = config;
+module.exports = {
+  entry: "./src/index.jsx",
+  output: {
+    path: "./",
+    filename: "output.bundle.js"
+  },
+  module: {
+    loaders: [
+      {
+        test: new RegExp('jsx?$'),
+        loader: 'babel-loader',
+        exclude: new RegExp('./node_modules'),
+        query: {
+          presets: ['react', 'es2015', 'stage-0'],
+          plugins: ['istanbul']
+        }
+      }
+    ]
+  }
+};

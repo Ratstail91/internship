@@ -1,5 +1,4 @@
 export const ADD_USER_LOCAL = 'ADD_USER_LOCAL';
-export const SORT_STORE = 'SORT_STORE';
 export const CLEAR_STORE = 'CLEAR_STORE';
 
 export const SOURCE_LOCAL = 'SOURCE_LOCAL';
@@ -33,7 +32,11 @@ export function addUser(fname, lname, email, birthdate, income) {
 
     //async add to the local list
     httpRequest.onreadystatechange = function() {
-      if (httpRequest.readyState === 4 && httpRequest.status === 200) {
+      if (httpRequest.readyState !== 4) {
+        return;
+      }
+
+      if (httpRequest.status === 200) {
         if (httpRequest.responseText === 'success') {
           dispatch(addUserLocal(fname, lname, email, birthdate, income, SOURCE_LOCAL));
         }
@@ -41,6 +44,9 @@ export function addUser(fname, lname, email, birthdate, income) {
         else {
           console.log("addUser: ", httpRequest.responseText);
         }
+      }
+      else {
+        console.log("status:". httpRequest.status);
       }
     }
 
@@ -56,7 +62,11 @@ export function refreshDatabase() {
 
     //callback
     request.onreadystatechange = function() {
-      if (request.readyState === 4 && request.status === 200) {
+      if (request.readyState !== 4) {
+        return;
+      }
+
+      if (request.status === 200) {
         //save the given entries
         var arr = JSON.parse(request.responseText);
         for (var i = 0; i < arr.length; i++) {
@@ -64,21 +74,15 @@ export function refreshDatabase() {
           dispatch(addUserLocal(x.fname, x.lname, x.email, x.birthdate, x.income, SOURCE_FOREIGN));
         };
       }
+      else {
+        console.log("status:", request.status);
+      }
     }
 
     //finally, send the request
     request.open('GET', '/refresh.cgi');
     request.send();
   }
-}
-
-export function sortStore(name, type = "text", reverse = false) {
-  return {
-    type: SORT_STORE,
-    columnName: name,
-    columnType: type,
-    reverse: reverse
-  };
 }
 
 export function clearStore() {

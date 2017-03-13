@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Form, Button } from 'semantic-ui-react';
-import { addUser } from './actions.js';
+import { addUser } from './actions.jsx';
 
 class FormPanel extends React.Component {
   constructor(props) {
@@ -70,7 +70,7 @@ class FormPanel extends React.Component {
       <Card fluid centered={true}>
       <Card.Content>
 
-      <Form className="textMedium" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
+      <Form id="formlist" className="textMedium" onSubmit={(e)=>{ e.preventDefault(); this.myClick(); }}>
 
         <Form.Field>
           <p className="left aligned">Email:</p>

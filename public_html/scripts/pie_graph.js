@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+
 //PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the pie graph
 //PARAM: h = height of the pie graph
@@ -118,7 +120,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
     .remove();
 
   //initialize text labels
-  labels = svg.select(".labels")
+  var labels = svg.select(".labels")
     .selectAll("text")
     .data(pie(dataset));
 
@@ -205,7 +207,7 @@ function updatePieGraph(node, dataset, duration = 1000) {
         pos = arc.centroid(d);
         outerPos = outerArc.centroid(d);
       }
-      shift = midAngle(d) < Math.PI ? (w/2) : (-w/2);
+      var shift = midAngle(d) < Math.PI ? (w/2) : (-w/2);
       return "" + pos + " " + outerPos + " " + [shift, outerPos[1]];
     });
 
@@ -233,3 +235,5 @@ function updatePieGraph(node, dataset, duration = 1000) {
 
   return svg;
 }
+
+export { drawPieGraph, updatePieGraph };

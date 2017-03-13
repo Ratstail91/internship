@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+
 //PARAM: node = the <div> element to contain the svg
 //PARAM: w = width of the legend
 //PARAM: h = height of the legend
@@ -164,3 +166,4 @@ function updateGraphLegend(node, dataset) {
   return svg;
 }
 
+export { drawGraphLegend, updateGraphLegend };

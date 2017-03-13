@@ -27,17 +27,6 @@ module.exports = function(config) {
       'scripts/d3.v3.min.js'
     ],
 
-    proxies: {
-      '/refresh.cgi': {
-        'target': 'http://helloworld.qps.local/refresh.cgi',
-        changeOrigin: true
-      },
-      '/entry.cgi': {
-        'target': 'http://helloworld.qps.local/entry.cgi',
-        changeOrigin: true
-      }
-    },
-
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor

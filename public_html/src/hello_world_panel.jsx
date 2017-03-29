@@ -6,6 +6,12 @@ import { Card } from 'semantic-ui-react';
 class HelloWorldPanel extends React.Component {
   constructor(props) {
     super(props);
+
+    setTimeout(function () {
+      this.setState({text: "foo bar"});
+    }.bind(this), 2000);
+
+    this.state = { text: "Hello world" };
   }
 
   render() {
@@ -13,7 +19,7 @@ class HelloWorldPanel extends React.Component {
       <Card fluid centered={true}>
       <Card.Content>
 
-        <p>Hello World!</p>
+        <p>{this.state.text}</p>
 
       </Card.Content>
       </Card>

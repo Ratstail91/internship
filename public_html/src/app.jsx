@@ -24,12 +24,12 @@ class App extends React.Component {
       minHeight: "100vh"
     };
 
+//    return (
+//      <div style={style}>
+//        <HelloWorldPanel />
+//      </div>
+//    );
     return (
-      <div style={style}>
-        <HelloWorldPanel />
-      </div>
-    );
-/*    return (
       <div style={style}>
         <HeaderPanel />
         <Grid centered stackable columns={2}>
@@ -59,7 +59,6 @@ class App extends React.Component {
         <FooterPanel />
       </div>
     );
-*/
   }
 };
 

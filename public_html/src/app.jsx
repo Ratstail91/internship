@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 
 //includes
+import HelloWorldPanel from './hello_world_panel.jsx';
 import HeaderPanel from './header_panel.jsx';
 import FormPanel from './form_panel.jsx';
 import TablePanel from './table_panel.jsx';
@@ -12,10 +13,7 @@ import FooterPanel from './footer_panel.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
-  }
-
-  componentWillMount() {
-    this.setState({});
+    this.state = {};
   }
 
   //render
@@ -27,6 +25,11 @@ class App extends React.Component {
     };
 
     return (
+      <div style={style}>
+        <HelloWorldPanel />
+      </div>
+    );
+/*    return (
       <div style={style}>
         <HeaderPanel />
         <Grid centered stackable columns={2}>
@@ -56,6 +59,7 @@ class App extends React.Component {
         <FooterPanel />
       </div>
     );
+*/
   }
 };
 
